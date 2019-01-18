@@ -165,7 +165,7 @@
           this.$refs['dataForm'].resetFields()
           if (this.dataForm.shopId) {
             this.$http({
-              url: this.$http.adornUrl(`/generator/tshop/info/${this.dataForm.shopId}`),
+              url: this.$http.adornUrl(`/shop/tshop/info/${this.dataForm.shopId}`),
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {

@@ -172,8 +172,8 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/generator/torder/list'),
-          method: 'get',
+          url: this.$http.adornUrl('/order/torder/list'),
+          method: 'post',
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,
@@ -223,8 +223,8 @@
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/generator/torder/delete'),
-            method: 'post',
+            url: this.$http.adornUrl('/order/torder/delete'),
+            method: 'delete',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {
             if (data && data.code === 0) {

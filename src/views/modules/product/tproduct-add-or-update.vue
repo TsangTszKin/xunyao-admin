@@ -207,7 +207,7 @@
           this.$refs['dataForm'].resetFields()
           if (this.dataForm.id) {
             this.$http({
-              url: this.$http.adornUrl(`/generator/tproduct/info/${this.dataForm.id}`),
+              url: this.$http.adornUrl(`/admin/product/info/${this.dataForm.id}`),
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
@@ -247,8 +247,8 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/generator/tproduct/${!this.dataForm.id ? 'save' : 'update'}`),
-              method: 'post',
+              url: this.$http.adornUrl(`/admin/product/${!this.dataForm.id ? 'save' : 'update'}`),
+              method: 'put',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
                 'createBy': this.dataForm.createBy,

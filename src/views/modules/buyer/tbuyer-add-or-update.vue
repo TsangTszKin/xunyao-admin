@@ -88,7 +88,7 @@
           this.$refs['dataForm'].resetFields()
           if (this.dataForm.buyerId) {
             this.$http({
-              url: this.$http.adornUrl(`/generator/tbuyer/info/${this.dataForm.buyerId}`),
+              url: this.$http.adornUrl(`/admin/tbuyer/info/${this.dataForm.buyerId}`),
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
@@ -111,8 +111,8 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/generator/tbuyer/${!this.dataForm.buyerId ? 'save' : 'update'}`),
-              method: 'post',
+              url: this.$http.adornUrl(`/admin/buyer/tbuyer/${!this.dataForm.buyerId ? 'save' : 'update'}`),
+              method: 'put',
               data: this.$http.adornData({
                 'buyerId': this.dataForm.buyerId || undefined,
                 'nickname': this.dataForm.nickname,

@@ -130,8 +130,8 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/generator/tbuyer/list'),
-          method: 'get',
+          url: this.$http.adornUrl('/admin/buyer/tbuyer/list'),
+          method: 'post',
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,

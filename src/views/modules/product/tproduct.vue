@@ -232,7 +232,7 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/generator/tproduct/list'),
+          url: this.$http.adornUrl('/admin/product/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -283,8 +283,8 @@
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/generator/tproduct/delete'),
-            method: 'post',
+            url: this.$http.adornUrl('/admin/product/delete'),
+            method: 'delete',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {
             if (data && data.code === 0) {

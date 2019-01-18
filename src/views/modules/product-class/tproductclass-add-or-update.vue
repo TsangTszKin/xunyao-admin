@@ -81,7 +81,7 @@
           this.$refs['dataForm'].resetFields()
           if (this.dataForm.id) {
             this.$http({
-              url: this.$http.adornUrl(`/generator/tproductclass/info/${this.dataForm.id}`),
+              url: this.$http.adornUrl(`/product/tproductclass/info/${this.dataForm.id}`),
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
@@ -103,8 +103,8 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/generator/tproductclass/${!this.dataForm.id ? 'save' : 'update'}`),
-              method: 'post',
+              url: this.$http.adornUrl(`/product/tproductclass/${!this.dataForm.id ? 'save' : 'update'}`),
+              method: 'put',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
                 'parentId': this.dataForm.parentId,
