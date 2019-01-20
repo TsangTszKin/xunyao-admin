@@ -19,9 +19,9 @@
     <el-form-item label="微信头像" prop="headimgurl">
       <el-input v-model="dataForm.headimgurl" placeholder="微信头像"></el-input>
     </el-form-item>
-    <el-form-item label="" prop="createTime">
+    <!-- <el-form-item label="" prop="createTime">
       <el-input v-model="dataForm.createTime" placeholder=""></el-input>
-    </el-form-item>
+    </el-form-item> -->
     <el-form-item label="备注" prop="remarks">
       <el-input v-model="dataForm.remarks" placeholder="备注"></el-input>
     </el-form-item>
@@ -48,7 +48,7 @@
           password: '',
           openId: '',
           headimgurl: '',
-          createTime: '',
+          // createTime: '',
           remarks: '',
           delFlag: ''
         },
@@ -68,9 +68,9 @@
           headimgurl: [
             { required: true, message: '微信头像不能为空', trigger: 'blur' }
           ],
-          createTime: [
-            { required: true, message: '不能为空', trigger: 'blur' }
-          ],
+          // createTime: [
+          //   { required: true, message: '不能为空', trigger: 'blur' }
+          // ],
           remarks: [
             { required: true, message: '备注不能为空', trigger: 'blur' }
           ],
@@ -93,14 +93,14 @@
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.code === 0) {
-                this.dataForm.nickname = data.tbuyer.nickname
-                this.dataForm.phone = data.tbuyer.phone
-                this.dataForm.password = data.tbuyer.password
-                this.dataForm.openId = data.tbuyer.openId
-                this.dataForm.headimgurl = data.tbuyer.headimgurl
-                this.dataForm.createTime = data.tbuyer.createTime
-                this.dataForm.remarks = data.tbuyer.remarks
-                this.dataForm.delFlag = data.tbuyer.delFlag
+                this.dataForm.nickname = data.tBuyer.nickname
+                this.dataForm.phone = data.tBuyer.phone
+                this.dataForm.password = data.tBuyer.password
+                this.dataForm.openId = data.tBuyer.openId
+                this.dataForm.headimgurl = data.tBuyer.headimgurl
+                // this.dataForm.createTime = data.tBuyer.createTime
+                this.dataForm.remarks = data.tBuyer.remarks
+                this.dataForm.delFlag = data.tBuyer.delFlag
               }
             })
           }
@@ -120,7 +120,7 @@
                 'password': this.dataForm.password,
                 'openId': this.dataForm.openId,
                 'headimgurl': this.dataForm.headimgurl,
-                'createTime': this.dataForm.createTime,
+                // 'createTime': this.dataForm.createTime,
                 'remarks': this.dataForm.remarks,
                 'delFlag': this.dataForm.delFlag
               })

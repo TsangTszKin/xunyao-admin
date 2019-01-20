@@ -5,7 +5,8 @@
   window.SITE_CONFIG = {};
 
   // api接口请求地址
-  window.SITE_CONFIG['baseUrl'] = 'http://192.168.0.110:8080';
+  // window.SITE_CONFIG['baseUrl'] = 'http://192.168.0.110:8080';
+  window.SITE_CONFIG['baseUrl'] = 'http://zwdjack.iok.la:40229';
 
   // cdn地址 = 域名 + 版本号
   window.SITE_CONFIG['domain']  = './'; // 域名

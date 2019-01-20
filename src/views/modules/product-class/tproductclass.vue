@@ -47,18 +47,6 @@
         label="排序">
       </el-table-column>
       <el-table-column
-        prop="createDate"
-        header-align="center"
-        align="center"
-        label="创建时间">
-      </el-table-column>
-      <el-table-column
-        prop="updateDate"
-        header-align="center"
-        align="center"
-        label="修改时间">
-      </el-table-column>
-      <el-table-column
         prop="remarks"
         header-align="center"
         align="center"
@@ -125,7 +113,7 @@
         this.dataListLoading = true
         this.$http({
           url: this.$http.adornUrl('/product/tproductclass/list'),
-          method: 'get',
+          method: 'post',
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,

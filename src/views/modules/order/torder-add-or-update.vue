@@ -43,9 +43,6 @@
     <el-form-item label="备注" prop="remarks">
       <el-input v-model="dataForm.remarks" placeholder="备注"></el-input>
     </el-form-item>
-    <el-form-item label="创建时间" prop="createDate">
-      <el-input v-model="dataForm.createDate" placeholder="创建时间"></el-input>
-    </el-form-item>
     <el-form-item label="删除标识" prop="delFlag">
       <el-input v-model="dataForm.delFlag" placeholder="删除标识"></el-input>
     </el-form-item>
@@ -77,7 +74,6 @@
           memo: '',
           invoiceTitle: '',
           remarks: '',
-          createDate: '',
           delFlag: ''
         },
         dataRule: {
@@ -120,9 +116,6 @@
           remarks: [
             { required: true, message: '备注不能为空', trigger: 'blur' }
           ],
-          createDate: [
-            { required: true, message: '创建时间不能为空', trigger: 'blur' }
-          ],
           delFlag: [
             { required: true, message: '删除标识不能为空', trigger: 'blur' }
           ]
@@ -155,7 +148,6 @@
                 this.dataForm.memo = data.torder.memo
                 this.dataForm.invoiceTitle = data.torder.invoiceTitle
                 this.dataForm.remarks = data.torder.remarks
-                this.dataForm.createDate = data.torder.createDate
                 this.dataForm.delFlag = data.torder.delFlag
               }
             })
@@ -184,7 +176,6 @@
                 'memo': this.dataForm.memo,
                 'invoiceTitle': this.dataForm.invoiceTitle,
                 'remarks': this.dataForm.remarks,
-                'createDate': this.dataForm.createDate,
                 'delFlag': this.dataForm.delFlag
               })
             }).then(({data}) => {

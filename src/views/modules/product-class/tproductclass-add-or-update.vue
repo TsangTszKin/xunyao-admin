@@ -13,12 +13,6 @@
     <el-form-item label="排序" prop="bySort">
       <el-input v-model="dataForm.bySort" placeholder="排序"></el-input>
     </el-form-item>
-    <el-form-item label="创建时间" prop="createDate">
-      <el-input v-model="dataForm.createDate" placeholder="创建时间"></el-input>
-    </el-form-item>
-    <el-form-item label="修改时间" prop="updateDate">
-      <el-input v-model="dataForm.updateDate" placeholder="修改时间"></el-input>
-    </el-form-item>
     <el-form-item label="备注" prop="remarks">
       <el-input v-model="dataForm.remarks" placeholder="备注"></el-input>
     </el-form-item>
@@ -43,8 +37,6 @@
           parentId: '',
           className: '',
           bySort: '',
-          createDate: '',
-          updateDate: '',
           remarks: '',
           delFlag: ''
         },
@@ -57,12 +49,6 @@
           ],
           bySort: [
             { required: true, message: '排序不能为空', trigger: 'blur' }
-          ],
-          createDate: [
-            { required: true, message: '创建时间不能为空', trigger: 'blur' }
-          ],
-          updateDate: [
-            { required: true, message: '修改时间不能为空', trigger: 'blur' }
           ],
           remarks: [
             { required: true, message: '备注不能为空', trigger: 'blur' }
@@ -86,13 +72,11 @@
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.code === 0) {
-                this.dataForm.parentId = data.tproductclass.parentId
-                this.dataForm.className = data.tproductclass.className
-                this.dataForm.bySort = data.tproductclass.bySort
-                this.dataForm.createDate = data.tproductclass.createDate
-                this.dataForm.updateDate = data.tproductclass.updateDate
-                this.dataForm.remarks = data.tproductclass.remarks
-                this.dataForm.delFlag = data.tproductclass.delFlag
+                this.dataForm.parentId = data.tProductClass.parentId
+                this.dataForm.className = data.tProductClass.className
+                this.dataForm.bySort = data.tProductClass.bySort
+                this.dataForm.remarks = data.tProductClass.remarks
+                this.dataForm.delFlag = data.tProductClass.delFlag
               }
             })
           }
@@ -110,8 +94,6 @@
                 'parentId': this.dataForm.parentId,
                 'className': this.dataForm.className,
                 'bySort': this.dataForm.bySort,
-                'createDate': this.dataForm.createDate,
-                'updateDate': this.dataForm.updateDate,
                 'remarks': this.dataForm.remarks,
                 'delFlag': this.dataForm.delFlag
               })

@@ -26,6 +26,13 @@
         width="80"
         label="ID">
       </el-table-column>
+      <!-- <el-table-column
+        prop="img"
+        header-align="center"
+        align="center"
+        width="80"
+        label="预览">
+      </el-table-column> -->
       <el-table-column
         prop="url"
         header-align="center"
@@ -103,6 +110,9 @@
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
+            // data.page.list.forEach(element=>{
+            //   element.img = <img src="" />
+            // })
             this.dataList = data.page.list
             this.totalPage = data.page.totalCount
           } else {
