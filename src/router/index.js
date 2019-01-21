@@ -41,7 +41,7 @@ const mainRoutes = {
     { path: '/shop', component: _import('modules/shop/tshop'), name: 'shop', meta: { title: '商铺列表', isTab: true } },
     { path: '/product-class', component: _import('modules/product-class/tproductclass'), name: 'product-class', meta: { title: '产品分类列表', isTab: true } },
     { path: '/product', component: _import('modules/product/tproduct'), name: 'product', meta: { title: '产品列表', isTab: true } },
-    { path: '/order', component: _import('modules/order/torder'), name: 'order', meta: { title: '订单列表', isTab: true } },
+    { path: '/order', component: _import('modules/order/torder'), name: 'order', meta: { title: '订单列表', isTab: true } }
   ],
   beforeEnter(to, from, next) {
     let token = Vue.cookie.get('token')

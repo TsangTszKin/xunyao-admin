@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Vue from 'vue'
 import App from '@/App'
 import router from '@/router'                 // api: https://github.com/vuejs/vue-router
