@@ -122,6 +122,9 @@
     components: {
       AddOrUpdate
     },
+    mounted(){
+      console.log(1)
+    },
     activated () {
       this.getDataList()
     },
