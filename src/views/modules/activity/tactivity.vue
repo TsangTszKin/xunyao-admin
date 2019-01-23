@@ -1,10 +1,13 @@
 <template>
-  <div class="mod-oss">
-    <el-form :inline="true" :model="dataForm">
+  <div class="mod-config">
+    <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-button type="primary" @click="configHandle()">云存储配置</el-button>
-        <el-button type="primary" @click="uploadHandle()">上传文件</el-button>
-        <el-button type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button @click="getDataList()">查询</el-button>
+        <el-button v-if="isAuth('generator:tactivity:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('generator:tactivity:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -23,31 +26,103 @@
         prop="id"
         header-align="center"
         align="center"
-        width="80"
-        label="ID">
+        label="主键id">
       </el-table-column>
       <el-table-column
-        prop="img"
+        prop="shopId"
         header-align="center"
         align="center"
-        width="80"
-        label="预览">
-        <template slot-scope="scope">
-          <img class="avatar"  style="height:36px" :src="scope.row.url" />
-        </template>
+        label="商家id">
       </el-table-column>
       <el-table-column
-        prop="url"
+        prop="name"
         header-align="center"
         align="center"
-        label="URL地址">
+        label="活动名称">
+      </el-table-column>
+      <el-table-column
+        prop="startTime"
+        header-align="center"
+        align="center"
+        label="活动开始时间">
+      </el-table-column>
+      <el-table-column
+        prop="endTime"
+        header-align="center"
+        align="center"
+        label="活动结束时间">
+      </el-table-column>
+      <el-table-column
+        prop="type"
+        header-align="center"
+        align="center"
+        label="活动类型 1满多少免邮 2满多少减 3满多少减抵压金">
+      </el-table-column>
+      <el-table-column
+        prop="status"
+        header-align="center"
+        align="center"
+        label="(1：进行中，0：未开始)">
+      </el-table-column>
+      <el-table-column
+        prop="meet"
+        header-align="center"
+        align="center"
+        label="满多少元">
+      </el-table-column>
+      <el-table-column
+        prop="cashRequired"
+        header-align="center"
+        align="center"
+        label="cash_required(减现金 0 不减 1 减)">
+      </el-table-column>
+      <el-table-column
+        prop="cash"
+        header-align="center"
+        align="center"
+        label="(减多少现金)">
+      </el-table-column>
+      <el-table-column
+        prop="postage"
+        header-align="center"
+        align="center"
+        label="(是否包邮 0 不包邮 1 包邮)">
+      </el-table-column>
+      <el-table-column
+        prop="createBy"
+        header-align="center"
+        align="center"
+        label="创建人">
       </el-table-column>
       <el-table-column
         prop="createDate"
         header-align="center"
         align="center"
-        width="180"
         label="创建时间">
+      </el-table-column>
+      <el-table-column
+        prop="updateBy"
+        header-align="center"
+        align="center"
+        label="修改人">
+      </el-table-column>
+      <el-table-column
+        prop="updateDate"
+        header-align="center"
+        align="center"
+        label="修改时间">
+      </el-table-column>
+      <el-table-column
+        prop="remarks"
+        header-align="center"
+        align="center"
+        label="备注">
+      </el-table-column>
+      <el-table-column
+        prop="delFlag"
+        header-align="center"
+        align="center"
+        label="删除标识">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -56,6 +131,7 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
+          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
           <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
@@ -69,33 +145,30 @@
       :total="totalPage"
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
-    <!-- 弹窗, 云存储配置 -->
-    <config v-if="configVisible" ref="config"></config>
-    <!-- 弹窗, 上传文件 -->
-    <upload v-if="uploadVisible" ref="upload" @refreshDataList="getDataList"></upload>
+    <!-- 弹窗, 新增 / 修改 -->
+    <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
   </div>
 </template>
 
 <script>
-  import Config from './oss-config'
-  import Upload from './oss-upload'
+  import AddOrUpdate from './tactivity-add-or-update'
   export default {
     data () {
       return {
-        dataForm: {},
+        dataForm: {
+          key: ''
+        },
         dataList: [],
         pageIndex: 1,
         pageSize: 10,
         totalPage: 0,
         dataListLoading: false,
         dataListSelections: [],
-        configVisible: false,
-        uploadVisible: false
+        addOrUpdateVisible: false
       }
     },
     components: {
-      Config,
-      Upload
+      AddOrUpdate
     },
     activated () {
       this.getDataList()
@@ -105,17 +178,15 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/sys/oss/list'),
+          url: this.$http.adornUrl('/sales/tactivity/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
-            'limit': this.pageSize
+            'limit': this.pageSize,
+            'key': this.dataForm.key
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
-            // data.page.list.forEach(element=>{
-            //   element.img = <img src="" />
-            // })
             this.dataList = data.page.list
             this.totalPage = data.page.totalCount
           } else {
@@ -140,18 +211,11 @@
       selectionChangeHandle (val) {
         this.dataListSelections = val
       },
-      // 云存储配置
-      configHandle () {
-        this.configVisible = true
+      // 新增 / 修改
+      addOrUpdateHandle (id) {
+        this.addOrUpdateVisible = true
         this.$nextTick(() => {
-          this.$refs.config.init()
-        })
-      },
-      // 上传文件
-      uploadHandle () {
-        this.uploadVisible = true
-        this.$nextTick(() => {
-          this.$refs.upload.init()
+          this.$refs.addOrUpdate.init(id)
         })
       },
       // 删除
@@ -165,7 +229,7 @@
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/sys/oss/delete'),
+            url: this.$http.adornUrl('/generator/tactivity/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {
@@ -182,7 +246,7 @@
               this.$message.error(data.msg)
             }
           })
-        }).catch(() => {})
+        })
       }
     }
   }

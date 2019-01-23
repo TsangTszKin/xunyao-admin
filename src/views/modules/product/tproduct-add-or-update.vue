@@ -40,7 +40,8 @@
         <el-input v-model="dataForm.englishName" placeholder="英文名字"></el-input>
       </el-form-item>
       <el-form-item label="商品图片（多张，隔开）" prop="productImg">
-        <el-input v-model="dataForm.productImg" placeholder="商品图片（多张，隔开）"></el-input>
+        <!-- <el-input v-model="dataForm.productImg" placeholder="商品图片（多张，隔开）"></el-input> -->
+        <ImgSelect :isMulti="true" @changeImgSelect="changeImgSelect"  :value="dataForm.productImg" />
       </el-form-item>
       <el-form-item label="规格" prop="specification">
         <el-input v-model="dataForm.specification" placeholder="规格"></el-input>
@@ -91,9 +92,12 @@
 
 <script>
 import ProductClassPicker from '@/components/ProductClassPicker';
+import ImgSelect from '@/components/ImgSelect';
+
 export default {
   components: {
-    ProductClassPicker
+    ProductClassPicker,
+    ImgSelect
   },
   data() {
     return {
@@ -291,6 +295,9 @@ export default {
     },
     changeSelectCallBack(value) {
       this.dataForm.classId = value;
+    },
+    changeImgSelect(url) {
+      this.dataForm.productImg = url;
     }
   }
 }

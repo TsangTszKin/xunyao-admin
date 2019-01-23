@@ -13,9 +13,17 @@
         label-width="80px"
       >
         <el-form-item label="商铺logo" prop="delFlag">
-          <el-button
+          <!-- <el-button
             @click="$store.commit('setShowImgSelect', true);$refs.ImgSelect.getDataList()"
-          >选择图片</el-button>
+          >选择图片</el-button>-->
+          <!-- <el-select v-model="dataForm.shopLogo" placeholder="请选择">
+            <el-option v-for="item in dataList" :key="item.id" :label="item.url" :value="item.url">
+              <img class="avatar" :src="item.url" style="height:36px">
+            </el-option>
+          </el-select> -->
+
+          <ImgSelect @changeImgSelect="changeImgSelect" :value="dataForm.shopLogo" />
+
           <img v-if="dataForm.shopLogo" :src="dataForm.shopLogo" style="width: 48px;height: 48px;">
         </el-form-item>
         <el-form-item label="删除标识" prop="delFlag">
@@ -75,7 +83,7 @@
         <el-button type="primary" @click="dataFormSubmit()">确定</el-button>
       </span>
     </el-dialog>
-    <ImgSelect @getImgUrlCakkBack="getImgUrlCakkBack" ref="ImgSelect"/>
+    
   </div>
 </template>
 
@@ -90,7 +98,7 @@ export default {
   },
   mounted() {
     // console.log("SITE_CONFIG", SITE_CONFIG)
-
+    this.getDataList();
   },
   data() {
     return {
@@ -171,7 +179,8 @@ export default {
         isClosed: [
           { required: true, message: '0:否；1是不能为空', trigger: 'blur' }
         ]
-      }
+      },
+      dataList: [],
     }
   },
   methods: {
@@ -223,6 +232,7 @@ export default {
               'ownerId': this.dataForm.ownerId,
               'shopName': this.dataForm.shopName,
               'shopLog': this.dataForm.shopLog,
+              'shopLogo': this.dataForm.shopLogo,
               'address': this.dataForm.address,
               'longitude': this.dataForm.longitude,
               'latitude': this.dataForm.latitude,
@@ -270,10 +280,26 @@ export default {
       }
       return (isJPG || isPNG) && isLt2M;
     },
-    getImgUrlCakkBack(url) {
+    changeImgSelect(url) {
       this.dataForm.shopLogo = url;
-      this.$store.commit('setShowImgSelect', false);
-    }
+    },
+    // 获取数据列表
+    getDataList() {
+      this.$http({
+        url: this.$http.adornUrl('/sys/oss/list'),
+        method: 'get',
+        params: this.$http.adornParams({
+          'page': 1,
+          'limit': 100
+        })
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          this.dataList = data.page.list
+        } else {
+          this.dataList = []
+        }
+      })
+    },
   }
 }
 </script>
