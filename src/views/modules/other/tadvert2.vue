@@ -89,7 +89,7 @@ export default {
     getDataList() {
       this.dataListLoading = true;
       this.$http({
-        url: this.$http.adornUrl("/other/tadvert/indexList"),
+        url: this.$http.adornUrl("/other/tadvert/shopList"),
         method: "get",
         params: this.$http.adornParams({
           page: this.pageIndex,

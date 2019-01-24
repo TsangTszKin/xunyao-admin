@@ -27,13 +27,12 @@
       style="width: 100%;"
     >
       <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-      <el-table-column prop="buyerId" header-align="center" align="center" label="主键id"></el-table-column>
+      <el-table-column prop="id" header-align="center" align="center" label="主键id"></el-table-column>
       <el-table-column prop="nickname" header-align="center" align="center" label="昵称"></el-table-column>
       <el-table-column prop="phone" header-align="center" align="center" label="手机号"></el-table-column>
       <el-table-column prop="password" header-align="center" align="center" label="登陆密码"></el-table-column>
       <el-table-column prop="openId" header-align="center" align="center" label="微信openid"></el-table-column>
       <el-table-column prop="headimgurl" header-align="center" align="center" label="微信头像"></el-table-column>
-      <el-table-column prop="createTime" header-align="center" align="center" label></el-table-column>
       <el-table-column prop="remarks" header-align="center" align="center" label="备注"></el-table-column>
       <el-table-column prop="delFlag" header-align="center" align="center" label="删除标识"></el-table-column>
       <el-table-column fixed="right" header-align="center" align="center" width="150" label="操作">
