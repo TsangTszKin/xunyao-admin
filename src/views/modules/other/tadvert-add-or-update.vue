@@ -22,12 +22,6 @@
     <el-form-item label="广告状态 1上架 2下架" prop="status">
       <el-input v-model="dataForm.status" placeholder="广告状态 1上架 2下架"></el-input>
     </el-form-item>
-    <el-form-item label="创建时间" prop="createTime">
-      <el-input v-model="dataForm.createTime" placeholder="创建时间"></el-input>
-    </el-form-item>
-    <el-form-item label="更新时间" prop="updateTime">
-      <el-input v-model="dataForm.updateTime" placeholder="更新时间"></el-input>
-    </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
@@ -49,8 +43,6 @@
           pic: '',
           link: '',
           status: '',
-          createTime: '',
-          updateTime: ''
         },
         dataRule: {
           title: [
@@ -71,12 +63,6 @@
           status: [
             { required: true, message: '广告状态 1上架 2下架不能为空', trigger: 'blur' }
           ],
-          createTime: [
-            { required: true, message: '创建时间不能为空', trigger: 'blur' }
-          ],
-          updateTime: [
-            { required: true, message: '更新时间不能为空', trigger: 'blur' }
-          ]
         }
       }
     },
@@ -99,8 +85,6 @@
                 this.dataForm.pic = data.tadvert.pic
                 this.dataForm.link = data.tadvert.link
                 this.dataForm.status = data.tadvert.status
-                this.dataForm.createTime = data.tadvert.createTime
-                this.dataForm.updateTime = data.tadvert.updateTime
               }
             })
           }
@@ -121,8 +105,6 @@
                 'pic': this.dataForm.pic,
                 'link': this.dataForm.link,
                 'status': this.dataForm.status,
-                'createTime': this.dataForm.createTime,
-                'updateTime': this.dataForm.updateTime
               })
             }).then(({data}) => {
               if (data && data.code === 0) {

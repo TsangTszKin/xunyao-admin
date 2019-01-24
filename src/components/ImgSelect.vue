@@ -52,8 +52,13 @@ export default {
       })
     },
     changeSelection(value) {
-      console.log("changeSelection", value)
-      this.$emit("changeImgSelect", common.arrayToString(value))
+      console.log("changeSelection", value);
+      if (this.isMulti) {
+        this.$emit("changeImgSelect", common.arrayToString(value))
+      } else {
+        this.$emit("changeImgSelect", value);
+      }
+
     }
 
   },
@@ -61,7 +66,9 @@ export default {
     value: { //深度监听，可监听到对象、数组的变化
       handler(newV, oldV) {
         // do something, 可使用this
-        this.data = newV.split(',');
+        if (this.isMulti) {
+          this.data = newV.split(',');
+        }
         console.log(newV, oldV);
       },
       deep: true

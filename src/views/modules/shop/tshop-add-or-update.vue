@@ -13,17 +13,7 @@
         label-width="80px"
       >
         <el-form-item label="商铺logo" prop="delFlag">
-          <!-- <el-button
-            @click="$store.commit('setShowImgSelect', true);$refs.ImgSelect.getDataList()"
-          >选择图片</el-button>-->
-          <!-- <el-select v-model="dataForm.shopLogo" placeholder="请选择">
-            <el-option v-for="item in dataList" :key="item.id" :label="item.url" :value="item.url">
-              <img class="avatar" :src="item.url" style="height:36px">
-            </el-option>
-          </el-select> -->
-
-          <ImgSelect @changeImgSelect="changeImgSelect" :value="dataForm.shopLogo" />
-
+          <ImgSelect @changeImgSelect="changeImgSelect" :value="dataForm.shopLogo"/>
           <img v-if="dataForm.shopLogo" :src="dataForm.shopLogo" style="width: 48px;height: 48px;">
         </el-form-item>
         <el-form-item label="删除标识" prop="delFlag">
@@ -37,9 +27,6 @@
         </el-form-item>
         <el-form-item label="店铺名称" prop="shopName">
           <el-input v-model="dataForm.shopName" placeholder="店铺名称"></el-input>
-        </el-form-item>
-        <el-form-item label="店铺log" prop="shopLog">
-          <el-input v-model="dataForm.shopLog" placeholder="店铺log"></el-input>
         </el-form-item>
         <el-form-item label="地址" prop="address">
           <el-input v-model="dataForm.address" placeholder="地址"></el-input>
@@ -83,7 +70,6 @@
         <el-button type="primary" @click="dataFormSubmit()">确定</el-button>
       </span>
     </el-dialog>
-    
   </div>
 </template>
 
@@ -112,7 +98,6 @@ export default {
         remarks: '',
         ownerId: '',
         shopName: '',
-        shopLog: '',
         address: '',
         longitude: '',
         latitude: '',
@@ -139,9 +124,6 @@ export default {
         ],
         shopName: [
           { required: true, message: '店铺名称不能为空', trigger: 'blur' }
-        ],
-        shopLog: [
-          { required: true, message: '店铺log不能为空', trigger: 'blur' }
         ],
         address: [
           { required: true, message: '地址不能为空', trigger: 'blur' }
@@ -200,7 +182,7 @@ export default {
               this.dataForm.remarks = data.tShop.remarks
               this.dataForm.ownerId = data.tShop.ownerId
               this.dataForm.shopName = data.tShop.shopName
-              this.dataForm.shopLog = data.tShop.shopLog
+              this.dataForm.shopLogo = data.tShop.shopLogo
               this.dataForm.address = data.tShop.address
               this.dataForm.longitude = data.tShop.longitude
               this.dataForm.latitude = data.tShop.latitude
@@ -231,7 +213,6 @@ export default {
               'remarks': this.dataForm.remarks,
               'ownerId': this.dataForm.ownerId,
               'shopName': this.dataForm.shopName,
-              'shopLog': this.dataForm.shopLog,
               'shopLogo': this.dataForm.shopLogo,
               'address': this.dataForm.address,
               'longitude': this.dataForm.longitude,
