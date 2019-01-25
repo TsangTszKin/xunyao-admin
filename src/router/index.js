@@ -46,7 +46,9 @@ const mainRoutes = {
     { path: '/advert-index', component: _import('modules/other/tadvert'), name: 'advert-index', meta: { title: '首页广告', isTab: true } },
     { path: '/advert-shop', component: _import('modules/other/tadvert2'), name: 'advert-shop', meta: { title: '商铺广告', isTab: true } },
     { path: '/suggest', component: _import('modules/other/tsuggest'), name: 'suggest', meta: { title: '反馈', isTab: true } },
-    { path: '/message', component: _import('modules/other/tmessage'), name: 'message', meta: { title: '站内信', isTab: true } }
+    { path: '/message', component: _import('modules/other/tmessage'), name: 'message', meta: { title: '站内信', isTab: true } },
+    { path: '/money-trade', component: _import('modules/other/tmoneylog'), name: 'money-trade', meta: { title: '资金交易', isTab: true } },
+    { path: '/product-audit', component: _import('modules/product/tproductauditlog'), name: 'product-audit', meta: { title: '产品审核', isTab: true } }
   ],
   beforeEnter(to, from, next) {
     let token = Vue.cookie.get('token')
