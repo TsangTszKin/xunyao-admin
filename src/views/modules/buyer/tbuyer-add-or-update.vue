@@ -1,33 +1,37 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
+    :title="!dataForm.id ? '新增买家信息' : '修改买家信息'"
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
+    
+    <el-form-item label="OPENID" prop="openId">
+      <el-input v-model="dataForm.openId" readonly="readonly" placeholder="微信openid"></el-input>
+    </el-form-item>
+    <el-form-item label="微信头像" prop="headimgurl">
+      <img class="avatar"  style="height:36px" :src="dataForm.headimgurl" />
+    </el-form-item>
     <el-form-item label="昵称" prop="nickname">
       <el-input v-model="dataForm.nickname" placeholder="昵称"></el-input>
     </el-form-item>
     <el-form-item label="手机号" prop="phone">
       <el-input v-model="dataForm.phone" placeholder="手机号"></el-input>
     </el-form-item>
-    <el-form-item label="登陆密码" prop="password">
+    <el-form-item label="保证金" prop="money">
+      <el-input v-model="dataForm.money" placeholder="保证金"></el-input>
+    </el-form-item>
+    <!-- <el-form-item v-if="!dataForm.id" label="登陆密码" prop="password">
       <el-input v-model="dataForm.password" placeholder="登陆密码"></el-input>
-    </el-form-item>
-    <el-form-item label="微信openid" prop="openId">
-      <el-input v-model="dataForm.openId" placeholder="微信openid"></el-input>
-    </el-form-item>
-    <el-form-item label="微信头像" prop="headimgurl">
-      <el-input v-model="dataForm.headimgurl" placeholder="微信头像"></el-input>
-    </el-form-item>
+    </el-form-item> -->
     <!-- <el-form-item label="" prop="createTime">
       <el-input v-model="dataForm.createTime" placeholder=""></el-input>
     </el-form-item> -->
     <el-form-item label="备注" prop="remarks">
       <el-input v-model="dataForm.remarks" placeholder="备注"></el-input>
     </el-form-item>
-    <el-form-item label="删除标识" prop="delFlag">
+    <!-- <el-form-item label="删除标识" prop="delFlag">
       <el-input v-model="dataForm.delFlag" placeholder="删除标识"></el-input>
-    </el-form-item>
+    </el-form-item> -->
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
@@ -42,7 +46,7 @@
       return {
         visible: false,
         dataForm: {
-          buyerId: 0,
+          id: 0,
           nickname: '',
           phone: '',
           password: '',
@@ -50,6 +54,7 @@
           headimgurl: '',
           // createTime: '',
           remarks: '',
+          user:{},
           delFlag: ''
         },
         dataRule: {
@@ -58,6 +63,9 @@
           ],
           phone: [
             { required: true, message: '手机号不能为空', trigger: 'blur' }
+          ],
+          money: [
+            { required: true, message: '保证金不能为空', trigger: 'blur' }
           ],
           password: [
             { required: true, message: '登陆密码不能为空', trigger: 'blur' }
@@ -82,25 +90,18 @@
     },
     methods: {
       init (id) {
-        this.dataForm.buyerId = id || 0
+        this.dataForm.id = id || 0
         this.visible = true
         this.$nextTick(() => {
-          this.$refs['dataForm'].resetFields()
-          if (this.dataForm.buyerId) {
+          //this.$refs['dataForm'].resetFields()
+          if (this.dataForm.id) {
             this.$http({
-              url: this.$http.adornUrl(`/admin/tbuyer/info/${this.dataForm.buyerId}`),
+              url: this.$http.adornUrl(`/admin/buyer/tbuyer/info/${this.dataForm.id}`),
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.code === 0) {
-                this.dataForm.nickname = data.tBuyer.nickname
-                this.dataForm.phone = data.tBuyer.phone
-                this.dataForm.password = data.tBuyer.password
-                this.dataForm.openId = data.tBuyer.openId
-                this.dataForm.headimgurl = data.tBuyer.headimgurl
-                // this.dataForm.createTime = data.tBuyer.createTime
-                this.dataForm.remarks = data.tBuyer.remarks
-                this.dataForm.delFlag = data.tBuyer.delFlag
+                this.dataForm = data.tBuyer
               }
             })
           }
@@ -108,22 +109,13 @@
       },
       // 表单提交
       dataFormSubmit () {
+        //this.dataForm.money = this.dataForm.user.money;
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/admin/buyer/tbuyer/${!this.dataForm.buyerId ? 'save' : 'update'}`),
+              url: this.$http.adornUrl(`/admin/buyer/tbuyer/${!this.dataForm.id ? 'save' : 'update'}`),
               method: 'put',
-              data: this.$http.adornData({
-                'buyerId': this.dataForm.buyerId || undefined,
-                'nickname': this.dataForm.nickname,
-                'phone': this.dataForm.phone,
-                'password': this.dataForm.password,
-                'openId': this.dataForm.openId,
-                'headimgurl': this.dataForm.headimgurl,
-                // 'createTime': this.dataForm.createTime,
-                'remarks': this.dataForm.remarks,
-                'delFlag': this.dataForm.delFlag
-              })
+              data: this.$http.adornData(this.dataForm)
             }).then(({data}) => {
               if (data && data.code === 0) {
                 this.$message({

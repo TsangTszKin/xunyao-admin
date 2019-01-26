@@ -39,6 +39,7 @@ const mainRoutes = {
     { path: '/demo-ueditor', component: _import('demo/ueditor'), name: 'demo-ueditor', meta: { title: 'demo-ueditor', isTab: true } },
     { path: '/buyer', component: _import('modules/buyer/tbuyer'), name: 'buyer', meta: { title: '买家列表', isTab: true } },
     { path: '/shop', component: _import('modules/shop/tshop'), name: 'shop', meta: { title: '商铺列表', isTab: true } },
+    { path: '/shopapply', component: _import('modules/shop/tshopapply'), name: 'shopapply', meta: { title: '商铺入驻申请', isTab: true } },
     { path: '/product-class', component: _import('modules/product-class/tproductclass'), name: 'product-class', meta: { title: '产品分类列表', isTab: true } },
     { path: '/product', component: _import('modules/product/tproduct'), name: 'product', meta: { title: '产品列表', isTab: true } },
     { path: '/order', component: _import('modules/order/torder'), name: 'order', meta: { title: '订单列表', isTab: true } },

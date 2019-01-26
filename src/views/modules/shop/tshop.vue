@@ -27,23 +27,23 @@
       style="width: 100%;"
     >
       <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-      <el-table-column prop="shopId" header-align="center" align="center" label="主键id"></el-table-column>
-      <el-table-column prop="delFlag" header-align="center" align="center" label="删除标识"></el-table-column>
-      <el-table-column prop="remarks" header-align="center" align="center" label="备注"></el-table-column>
-      <el-table-column prop="ownerId" header-align="center" align="center" label="店长id"></el-table-column>
-      <el-table-column prop="shopName" header-align="center" align="center" label="店铺名称"></el-table-column>
+      <!-- <el-table-column prop="shopId" header-align="center" align="center" label="主键id"></el-table-column> -->
+      <!-- <el-table-column prop="delFlag" header-align="center" align="center" label="删除标识"></el-table-column> -->
       <el-table-column prop="shopLogo" header-align="center" align="center" label="店铺logo">
         <template slot-scope="scope">
           <img class="avatar" style="height:36px" :src="scope.row.shopLogo">
         </template>
       </el-table-column>
+      <el-table-column prop="userName" header-align="center" align="center" label="店长姓名"></el-table-column>
+      <el-table-column prop="shopName" header-align="center" align="center" label="店铺名称"></el-table-column>
+      <!-- <el-table-column prop="remarks" header-align="center" align="center" label="备注"></el-table-column> -->
       <el-table-column prop="address" header-align="center" align="center" label="地址"></el-table-column>
-      <el-table-column prop="longitude" header-align="center" align="center" label="经度"></el-table-column>
-      <el-table-column prop="latitude" header-align="center" align="center" label="纬度"></el-table-column>
+      <!-- <el-table-column prop="longitude" header-align="center" align="center" label="经度"></el-table-column>
+      <el-table-column prop="latitude" header-align="center" align="center" label="纬度"></el-table-column> -->
       <el-table-column prop="phone" header-align="center" align="center" label="手机号"></el-table-column>
       <el-table-column prop="telephone" header-align="center" align="center" label="座机号"></el-table-column>
       <el-table-column prop="businessTime" header-align="center" align="center" label="营业时间"></el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="shopService"
         header-align="center"
         align="center"
@@ -57,8 +57,13 @@
         header-align="center"
         align="center"
         label="其它从业资质"
-      ></el-table-column>
-      <el-table-column prop="isClosed" header-align="center" align="center" label="0:否；1是"></el-table-column>
+      ></el-table-column> -->
+      <el-table-column prop="isClosed" header-align="center" align="center" label="是否关闭">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.isClosed === 1" size="small" type="danger">是</el-tag>
+          <el-tag v-else size="small">否</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" header-align="center" align="center" width="150" label="操作">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.shopId)">修改</el-button>

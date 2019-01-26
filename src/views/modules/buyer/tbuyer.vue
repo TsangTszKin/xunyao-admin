@@ -6,13 +6,13 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button
-          v-if="isAuth('generator:tbuyer:save')"
+        <!-- <el-button
+          v-if="isAuth('buyer:tbuyer:save')"
           type="primary"
           @click="addOrUpdateHandle()"
-        >新增</el-button>
+        >新增</el-button> -->
         <el-button
-          v-if="isAuth('generator:tbuyer:delete')"
+          v-if="isAuth('buyer:tbuyer:delete')"
           type="danger"
           @click="deleteHandle()"
           :disabled="dataListSelections.length <= 0"
@@ -27,18 +27,24 @@
       style="width: 100%;"
     >
       <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-      <el-table-column prop="id" header-align="center" align="center" label="主键id"></el-table-column>
+      <!-- <el-table-column prop="id" header-align="center" align="center" label="主键id"></el-table-column> -->
+      <el-table-column prop="openId" header-align="center" align="center" label="微信openid"></el-table-column>
+      <el-table-column prop="headimgurl" header-align="center" align="center" label="微信头像">
+        <template slot-scope="scope">
+          <img class="avatar"  style="height:36px" :src="scope.row.headimgurl" />
+        </template>
+
+      </el-table-column>
       <el-table-column prop="nickname" header-align="center" align="center" label="昵称"></el-table-column>
       <el-table-column prop="phone" header-align="center" align="center" label="手机号"></el-table-column>
-      <el-table-column prop="password" header-align="center" align="center" label="登陆密码"></el-table-column>
-      <el-table-column prop="openId" header-align="center" align="center" label="微信openid"></el-table-column>
-      <el-table-column prop="headimgurl" header-align="center" align="center" label="微信头像"></el-table-column>
+      <el-table-column prop="money" header-align="center" align="center" label="已交保证金"></el-table-column>
+      <!-- <el-table-column prop="password" header-align="center" align="center" label="登陆密码"></el-table-column> -->
       <el-table-column prop="remarks" header-align="center" align="center" label="备注"></el-table-column>
-      <el-table-column prop="delFlag" header-align="center" align="center" label="删除标识"></el-table-column>
+      <!-- <el-table-column prop="delFlag" header-align="center" align="center" label="删除标识"></el-table-column> -->
       <el-table-column fixed="right" header-align="center" align="center" width="150" label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.buyerId)">修改</el-button>
-          <el-button type="text" size="small" @click="deleteHandle(scope.row.buyerId)">删除</el-button>
+          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
+          <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -130,7 +136,7 @@ export default {
     // 删除
     deleteHandle(id) {
       var ids = id ? [id] : this.dataListSelections.map(item => {
-        return item.buyerId
+        return item.id
       })
       this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
         confirmButtonText: '确定',
@@ -138,7 +144,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$http({
-          url: this.$http.adornUrl('/generator/tbuyer/delete'),
+          url: this.$http.adornUrl('/admin/buyer/tbuyer/delete'),
           method: 'post',
           data: this.$http.adornData(ids, false)
         }).then(({ data }) => {
