@@ -2,11 +2,11 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
+        <el-input v-model="dataForm.name" placeholder="商品名称" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button
+        <!-- <el-button
           v-if="isAuth('generator:tproduct:save')"
           type="primary"
           @click="addOrUpdateHandle()"
@@ -16,7 +16,7 @@
           type="danger"
           @click="deleteHandle()"
           :disabled="dataListSelections.length <= 0"
-        >批量删除</el-button>
+        >批量删除</el-button> -->
       </el-form-item>
     </el-form>
     <el-table
@@ -29,20 +29,21 @@
       <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
       <el-table-column prop="name" header-align="center" align="center" label="商品名称"></el-table-column>
       <el-table-column prop="className" header-align="center" align="center" label="所属分类"></el-table-column>
+      <el-table-column prop="shopName" header-align="center" align="center" label="所属商家"></el-table-column>
       <el-table-column prop="oldPrice" header-align="center" align="center" label="原价格"></el-table-column>
       <el-table-column prop="discountPrice" header-align="center" align="center" label="优惠价"></el-table-column>
       <el-table-column prop="commonName" header-align="center" align="center" label="通用名称"></el-table-column>
       <!-- <el-table-column prop="englishName" header-align="center" align="center" label="英文名字"></el-table-column> -->
       <el-table-column prop="specification" header-align="center" align="center" label="规格"></el-table-column>
       <el-table-column prop="stock" header-align="center" align="center" label="库存"></el-table-column>
-      <!-- <el-table-column prop="state" header-align="center" align="center" label="审批状态">
+      <el-table-column prop="state" header-align="center" align="center" label="审批状态">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.state === 0" size="small" type="danger">待审核</el-tag>
           <el-tag v-else-if="scope.row.state === 1" size="small" type="danger">通过</el-tag>
           <el-tag v-else size="small">不通过</el-tag>
         </template>
-      </el-table-column> -->
-      <el-table-column prop="top" header-align="center" align="center" label="是否置顶">
+      </el-table-column>
+      <!-- <el-table-column prop="top" header-align="center" align="center" label="是否置顶">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.top === 1" size="small" type="danger">是</el-tag>
           <el-tag v-else size="small">否</el-tag>
@@ -53,7 +54,7 @@
           <el-tag v-if="scope.row.lowerShelf === 1" size="small" type="danger">是</el-tag>
           <el-tag v-else size="small">否</el-tag>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <!-- <el-table-column prop="manufacturer" header-align="center" align="center" label="生产厂商"></el-table-column>
       <el-table-column prop="barCode" header-align="center" align="center" label="条形码"></el-table-column>
       <el-table-column prop="approvalNumber" header-align="center" align="center" label="批准文号"></el-table-column> -->
@@ -78,8 +79,7 @@
       <el-table-column prop="prescription" header-align="center" align="center" label="是否处方药"></el-table-column> -->
       <el-table-column fixed="right" header-align="center" align="center" width="150" label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-          <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+          <el-button v-if="scope.row.state === 0" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">审批</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import AddOrUpdate from './tproduct-add-or-update'
+import AddOrUpdate from './tproduct-audit-handle'
 export default {
   data() {
     return {

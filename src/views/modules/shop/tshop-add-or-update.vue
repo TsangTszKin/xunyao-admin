@@ -87,36 +87,32 @@
       <el-row type="flex" class="row-bg">
         <el-col :span="12">
             <el-form-item label="药品经营许可" prop="drugLicensing">
-              <img :src="dataForm.drugLicensing" style="width: 120px;height: 120px;"> 
-              <el-button type="text" size="small" @click="openPic(dataForm.drugLicensing)">查看大图</el-button>
+              <img :src="dataForm.drugLicensing" @click="openPic(dataForm.drugLicensing)"> 
             </el-form-item>
         </el-col>
         <el-col :span="12">
             <el-form-item label="营业执照" prop="businessLicense">
-              <img :src="dataForm.businessLicense" style="width: 120px;height: 120px;"> 
-              <el-button type="text" size="small" @click="openPic(dataForm.businessLicense)">查看大图</el-button>
+              <img :src="dataForm.businessLicense" @click="openPic(dataForm.businessLicense)"> 
             </el-form-item>
         </el-col>
       </el-row>
       <el-row type="flex" class="row-bg">
         <el-col :span="12">
             <el-form-item label="药品经营质量管理规范" prop="drugQuality">
-              <img :src="dataForm.drugQuality" style="width: 120px;height: 120px;"> 
-              <el-button type="text" size="small" @click="openPic(dataForm.drugQuality)">查看大图</el-button>
+              <img :src="dataForm.drugQuality" @click="openPic(dataForm.drugQuality)"> 
             </el-form-item>
         </el-col>
         <el-col :span="12">
             <el-form-item label="其它从业资质" prop="otherQualifications">
-              <img :src="dataForm.otherQualifications" style="width: 120px;height: 120px;"> 
-              <el-button type="text" size="small" @click="openPic(dataForm.otherQualifications)">查看大图</el-button>
+              <img :src="dataForm.otherQualifications" @click="openPic(dataForm.otherQualifications)"> 
             </el-form-item>
         </el-col>
       </el-row>
         <el-form-item label="是否关闭" prop="isClosed">
           <el-select class="select" v-model="dataForm.isClosed" placeholder="请选择" >
-                <el-option :value="0" label="否">否</el-option>
-                <el-option :value="1" label="是">是</el-option>
-              </el-select>
+            <el-option :value="0" label="否">否</el-option>
+            <el-option :value="1" label="是">是</el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="备注" prop="remarks">
           <el-input v-model="dataForm.remarks" placeholder="备注"></el-input>

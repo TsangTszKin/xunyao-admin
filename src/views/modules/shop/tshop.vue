@@ -2,15 +2,15 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
+        <el-input v-model="dataForm.shop_name" placeholder="店铺名称" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button
+        <!-- <el-button
           v-if="isAuth('generator:tshop:save')"
           type="primary"
           @click="addOrUpdateHandle()"
-        >新增</el-button>
+        >新增</el-button> -->
         <el-button
           v-if="isAuth('generator:tshop:delete')"
           type="danger"
@@ -118,7 +118,7 @@ export default {
         params: this.$http.adornParams({
           'page': this.pageIndex,
           'limit': this.pageSize,
-          'key': this.dataForm.key
+          'shop_name': this.dataForm.shop_name
         })
       }).then(({ data }) => {
         if (data && data.code === 0) {

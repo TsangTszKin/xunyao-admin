@@ -40,7 +40,7 @@ const mainRoutes = {
     { path: '/buyer', component: _import('modules/buyer/tbuyer'), name: 'buyer', meta: { title: '买家列表', isTab: true } },
     { path: '/shop', component: _import('modules/shop/tshop'), name: 'shop', meta: { title: '商铺列表', isTab: true } },
     { path: '/shopapply', component: _import('modules/shop/tshopapply'), name: 'shopapply', meta: { title: '商铺入驻申请', isTab: true } },
-    { path: '/product-class', component: _import('modules/product-class/tproductclass'), name: 'product-class', meta: { title: '产品分类列表', isTab: true } },
+    { path: '/product-class', component: _import('modules/product/tproductclass'), name: 'product-class', meta: { title: '产品分类列表', isTab: true } },
     { path: '/product', component: _import('modules/product/tproduct'), name: 'product', meta: { title: '产品列表', isTab: true } },
     { path: '/order', component: _import('modules/order/torder'), name: 'order', meta: { title: '订单列表', isTab: true } },
     { path: '/activity', component: _import('modules/activity/tactivity'), name: 'activity', meta: { title: '活动列表', isTab: true } },
@@ -49,7 +49,7 @@ const mainRoutes = {
     { path: '/suggest', component: _import('modules/other/tsuggest'), name: 'suggest', meta: { title: '反馈', isTab: true } },
     { path: '/message', component: _import('modules/other/tmessage'), name: 'message', meta: { title: '站内信', isTab: true } },
     { path: '/money-trade', component: _import('modules/other/tmoneylog'), name: 'money-trade', meta: { title: '资金交易', isTab: true } },
-    { path: '/product-audit', component: _import('modules/product/tproductauditlog'), name: 'product-audit', meta: { title: '产品审核', isTab: true } }
+    { path: '/product-audit', component: _import('modules/product/tproductaudit'), name: 'product-audit', meta: { title: '产品审核', isTab: true } }
   ],
   beforeEnter(to, from, next) {
     let token = Vue.cookie.get('token')
