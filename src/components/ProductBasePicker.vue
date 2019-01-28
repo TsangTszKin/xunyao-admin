@@ -1,5 +1,5 @@
 <template>
-  <el-select :value="value" placeholder="请输入商品名称" @change="changeSelect" 
+  <el-select style="width:100%" :value="value" placeholder="请输入商品名称" @change="changeSelect" 
   filterable remote reserve-keyword :remote-method="remoteSearch">
     <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
   </el-select>

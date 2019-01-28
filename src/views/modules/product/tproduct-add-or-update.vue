@@ -11,14 +11,28 @@
       @keyup.enter.native="dataFormSubmit()"
       label-width="120px"
     >
+      <el-form-item label="商品名称" prop="name">
+        <el-input v-if="dataForm.id" v-model="dataForm.name" placeholder></el-input>
+        <ProductBasePicker v-if="!dataForm.id"
+          @changeSelectCallBack="productBaseChangeSelectCallBack"
+          :value="dataForm.baseid"
+        />
+      </el-form-item>
+      <el-form-item label="商品图片" prop="productImg">
+        <el-upload :action="url" :before-upload="beforeUploadHandle" :on-success="successHandle">
+          <el-button type="primary">上传图片</el-button>
+        </el-upload>
+        <img class="avatar" style="width:200px" :src="dataForm.productImg">
+        <!-- <ImgSelect
+          :isMulti="false"
+          @changeImgSelect="changeImgSelect"
+          :value="dataForm.productImg"
+        /> -->
+      </el-form-item>
       <el-row type="flex" class="row-bg">
         <el-col :span="12">
-          <el-form-item label="商品名称" prop="name">
-            <el-input v-if="dataForm.id" v-model="dataForm.name" placeholder></el-input>
-            <ProductBasePicker v-if="!dataForm.id"
-              @changeSelectCallBack="productBaseChangeSelectCallBack"
-              :value="dataForm.baseid"
-            />
+          <el-form-item label="所属商家" prop="shopId">
+            <ShopPicker @changeSelectCallBack="shopChangeSelectCallBack" :value="dataForm.shopId"/>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -32,29 +46,13 @@
       </el-row>
       <el-row type="flex" class="row-bg">
         <el-col :span="12">
-          <el-form-item label="所属商家" prop="shopId">
-            <ShopPicker @changeSelectCallBack="shopChangeSelectCallBack" :value="dataForm.shopId"/>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
           <el-form-item label="通用名称" prop="commonName">
             <el-input v-model="dataForm.commonName" placeholder="通用名称"></el-input>
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row type="flex" class="row-bg">
         <el-col :span="12">
           <el-form-item label="英文名字" prop="englishName">
             <el-input v-model="dataForm.englishName" placeholder="英文名字"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="商品图片" prop="productImg">
-            <ImgSelect
-              :isMulti="false"
-              @changeImgSelect="changeImgSelect"
-              :value="dataForm.productImg"
-            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -98,7 +96,10 @@
       <el-row type="flex" class="row-bg">
         <el-col :span="12">
           <el-form-item label="是否处方药" prop="prescription">
-            <el-input v-model="dataForm.prescription" placeholder="是否处方药"></el-input>
+            <el-select class="select" v-model="dataForm.prescription" placeholder="请选择" >
+              <el-option :value="0" label="否">否</el-option>
+              <el-option :value="1" label="是">是</el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -110,12 +111,18 @@
       <el-row type="flex" class="row-bg">
         <el-col :span="12">
           <el-form-item label="是否置顶" prop="top">
-            <el-input v-model="dataForm.top" placeholder="是否置顶"></el-input>
+            <el-select class="select" v-model="dataForm.top" placeholder="请选择" >
+              <el-option :value="0" label="否">否</el-option>
+              <el-option :value="1" label="是">是</el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="是否下架" prop="lowerShelf">
-            <el-input v-model="dataForm.lowerShelf" placeholder="是否下架"></el-input>
+            <el-select class="select" v-model="dataForm.lowerShelf" placeholder="请选择" >
+              <el-option :value="0" label="否">否</el-option>
+              <el-option :value="1" label="是">是</el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -133,6 +140,8 @@
       <el-button @click="visible = false">取消</el-button>
       <el-button type="primary" @click="dataFormSubmit()">确定</el-button>
     </span>
+    <!-- 弹窗, 上传文件 -->
+    <upload v-if="uploadVisible" ref="upload" @refreshDataList="uploadComplete"></upload>
   </el-dialog>
 </template>
 
@@ -141,17 +150,20 @@ import ProductClassPicker from "@/components/ProductClassPicker";
 import ProductBasePicker from "@/components/ProductBasePicker";
 import ShopPicker from "@/components/ShopPicker";
 import ImgSelect from "@/components/ImgSelect";
+import Upload from '../oss/oss-upload'
 
 export default {
   components: {
     ProductClassPicker,
     ProductBasePicker,
     ShopPicker,
-    ImgSelect
+    ImgSelect,
+    Upload
   },
   data() {
     return {
       visible: false,
+      url:this.$http.adornUrl(`/admin/other/uploadFile?token=${this.$cookie.get('token')}`),
       dataForm: {
         shopId:0,
         classId:null,
@@ -159,14 +171,16 @@ export default {
         oldPrice:0.0,
         top:0,
         prescription:0,
-        stock:0
+        stock:0,
+        lowerShelf:0,
+        productImg:''
       },
       dataRule: {
         shopId: [
-          { required: true, message: "所属商家不能为空", trigger: "blur" }
+          { required: true, message: "请选择所属商家", trigger: "blur" }
         ],
         classId: [
-          { required: true, message: "所属分类不能为空", trigger: "blur" }
+          { required: true, message: "请选择所属分类", trigger: "blur" }
         ],
         name: [{ required: true, message: "商品名称不能为空", trigger: "blur" }],
         commonName: [
@@ -205,21 +219,13 @@ export default {
           { required: true, message: "原价格不能为空", trigger: "blur" }
         ],
         prescription: [
-          { required: true, message: "是否处方药不能为空", trigger: "blur" }
+          { required: true, message: "请选择是否处方药", trigger: "blur" }
         ],
         stock: [{ required: true, message: "库存不能为空", trigger: "blur" }],
-        state: [
-          {
-            required: true,
-            message: "状态不能为空",
-            trigger: "blur"
-          }
-        ],
-        top: [{ required: true, message: "是否置顶不能为空", trigger: "blur" }],
+        top: [{ required: true, message: "请选择是否置顶", trigger: "blur" }],
         lowerShelf: [
-          { required: true, message: "是否下架不能为空", trigger: "blur" }
-        ],
-        remarks: [{ required: true, message: "备注不能为空", trigger: "blur" }]
+          { required: true, message: "请选择是否下架", trigger: "blur" }
+        ]
       }
     };
   },
@@ -285,7 +291,17 @@ export default {
       this.dataForm.shopName = obj.shopName;
     },
     changeImgSelect(url) {
-      this.dataForm.productImg = url;
+      //this.dataForm.productImg = url;
+    },
+    beforeUploadHandle (file) {
+        if (file.type !== 'image/jpg' && file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
+          this.$message.error('只支持jpg、png、gif格式的图片！')
+          return false
+        }
+      },
+    successHandle (response) {
+      this.dataForm.productImg = response.url;
+      //alert(this.dataForm.productImg);
     }
   }
 };
