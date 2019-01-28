@@ -1,5 +1,6 @@
 <template>
-  <el-select :value="value" placeholder="请选择" @change="changeSelect">
+  <el-select :value="value" placeholder="请输入商品名称" @change="changeSelect" 
+  filterable remote reserve-keyword :remote-method="remoteSearch">
     <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
   </el-select>
 </template>
@@ -15,7 +16,7 @@ export default {
     }
   },
   mounted() {
-    this.getDataList();
+    this.getDataList('');
   },
   data() {
     return {
@@ -30,14 +31,15 @@ export default {
   },
   // 获取数据列表
   methods: {
-    getDataList() {
+    getDataList(searchValue) {
       this.dataListLoading = true
       this.$http({
-        url: this.$http.adornUrl('/product/tproductclass/list'),
-        method: 'post',
+        url: this.$http.adornUrl('/product/tproductbase/list'),
+        method: 'get',
         params: this.$http.adornParams({
           'page': 1,
-          'limit': 100
+          'limit': 20,
+          'name':searchValue
         })
       }).then(({ data }) => {
         if (data && data.code === 0) {
@@ -49,11 +51,14 @@ export default {
         this.dataList.forEach(element => {
           tempArray.push({
             value: element.id,
-            label: element.className
+            label: element.name
           })
           this.options = tempArray;
         })
       })
+    },
+    remoteSearch(searchValue){
+      this.getDataList(searchValue);
     },
     changeSelect(value) {
       let obj = this.dataList.find((item)=>{

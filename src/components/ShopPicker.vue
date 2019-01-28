@@ -1,5 +1,6 @@
 <template>
   <el-select :value="value" placeholder="请选择" @change="changeSelect">
+    <el-option :key="0" label="不限" :value="0"></el-option>
     <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
   </el-select>
 </template>
@@ -33,8 +34,8 @@ export default {
     getDataList() {
       this.dataListLoading = true
       this.$http({
-        url: this.$http.adornUrl('/product/tproductclass/list'),
-        method: 'post',
+        url: this.$http.adornUrl('/shop/tshop/list'),
+        method: 'get',
         params: this.$http.adornParams({
           'page': 1,
           'limit': 100
@@ -48,17 +49,20 @@ export default {
         let tempArray = [];
         this.dataList.forEach(element => {
           tempArray.push({
-            value: element.id,
-            label: element.className
+            value: element.shopId,
+            label: element.shopName
           })
           this.options = tempArray;
         })
       })
     },
     changeSelect(value) {
-      let obj = this.dataList.find((item)=>{
-          return item.id === value;
-      });
+      let obj = {shopId:0,shopName:'不限'};
+      if(value!=0){
+        obj = this.dataList.find((item)=>{
+            return item.shopId === value;
+        });
+      }
       this.$emit("changeSelectCallBack", obj)
     }
   },

@@ -88,7 +88,7 @@ export default {
         params: this.$http.adornParams({
           page: this.pageIndex,
           limit: this.pageSize,
-          className: this.dataForm.kclassNameey
+          className: this.dataForm.className
         })
       }).then(({ data }) => {
         if (data && data.code === 0) {
