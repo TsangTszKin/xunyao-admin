@@ -2,12 +2,17 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
+        <el-input v-model="dataForm.orderSn" placeholder="订单号" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
         <!-- <el-button v-if="isAuth('generator:torder:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button> -->
-        <el-button v-if="isAuth('generator:torder:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <!-- <el-button
+          v-if="isAuth('generator:torder:delete')"
+          type="danger"
+          @click="deleteHandle()"
+          :disabled="dataListSelections.length <= 0"
+        >批量删除</el-button> -->
       </el-form-item>
     </el-form>
     <el-table
@@ -15,112 +20,42 @@
       border
       v-loading="dataListLoading"
       @selection-change="selectionChangeHandle"
-      style="width: 100%;">
-      <el-table-column
-        type="selection"
-        header-align="center"
-        align="center"
-        width="50">
-      </el-table-column>
-      <el-table-column
-        prop="id"
-        header-align="center"
-        align="center"
-        label="主键id">
-      </el-table-column>
-      <el-table-column
-        prop="shopId"
-        header-align="center"
-        align="center"
-        label="店铺id">
-      </el-table-column>
-      <el-table-column
-        prop="buyerId"
-        header-align="center"
-        align="center"
-        label="买家id">
-      </el-table-column>
-      <el-table-column
-        prop="orderSn"
-        header-align="center"
-        align="center"
-        label="订单号">
-      </el-table-column>
-      <el-table-column
-        prop="orderStatus"
-        header-align="center"
-        align="center"
-        label="(订单状态 0未确认；1已确认; 2已完成；3已取消)">
-      </el-table-column>
-      <el-table-column
-        prop="shopOrderStatus"
-        header-align="center"
-        align="center"
-        label="(订单状态 0 未下单；1 已下单；2 商家确认收货；3 买家确认收货；4 违约)">
-      </el-table-column>
-      <el-table-column
-        prop="receiverId"
-        header-align="center"
-        align="center"
-        label="收货地址id">
-      </el-table-column>
-      <el-table-column
-        prop="insteadReceiverId"
-        header-align="center"
-        align="center"
-        label="待收货人地址id">
-      </el-table-column>
-      <el-table-column
-        prop="totalPrice"
-        header-align="center"
-        align="center"
-        label="订单总价">
-      </el-table-column>
-      <el-table-column
-        prop="postFee"
-        header-align="center"
-        align="center"
-        label="运费">
-      </el-table-column>
-      <el-table-column
-        prop="preferential"
-        header-align="center"
-        align="center"
-        label="优惠">
-      </el-table-column>
-      <el-table-column
-        prop="memo"
-        header-align="center"
-        align="center"
-        label="附言">
-      </el-table-column>
-      <el-table-column
-        prop="invoiceTitle"
-        header-align="center"
-        align="center"
-        label="发票名称">
-      </el-table-column>
-      <el-table-column
-        prop="remarks"
-        header-align="center"
-        align="center"
-        label="备注">
-      </el-table-column>
-      <el-table-column
-        prop="delFlag"
-        header-align="center"
-        align="center"
-        label="删除标识">
-      </el-table-column>
-      <el-table-column
-        fixed="right"
-        header-align="center"
-        align="center"
-        width="150"
-        label="操作">
+      style="width: 100%;"
+    >
+      <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
+      <el-table-column prop="orderSn" header-align="center" align="center" label="订单号"></el-table-column>
+      <el-table-column prop="buyerName" header-align="center" align="center" label="下单用户"></el-table-column>
+      <el-table-column prop="shopName" header-align="center" align="center" label="店铺"></el-table-column>
+      <!-- <el-table-column prop="address" header-align="center" align="center" label="收货地址"></el-table-column> -->
+      <el-table-column prop="totalPrice" header-align="center" align="center" label="订单总价"></el-table-column>
+      <el-table-column prop="postFee" header-align="center" align="center" label="运费"></el-table-column>
+      <el-table-column prop="preferential" header-align="center" align="center" label="优惠"></el-table-column>
+      
+      <el-table-column prop="orderStatus" header-align="center" align="center" label="订单状态" >
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-          <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+          <el-tag v-if="scope.row.orderStatus === 0" size="small" type="danger">未确认</el-tag>
+          <el-tag v-else-if="scope.row.orderStatus === 1" size="small" type="danger">已确认</el-tag>
+          <el-tag v-else-if="scope.row.orderStatus === 1" size="small" type="danger">已完成</el-tag>
+          <el-tag v-else size="small">已取消</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="shopOrderStatus" header-align="center" align="center" label="物流状态">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.shopOrderStatus === 0" size="small" type="danger">未下单</el-tag>
+          <el-tag v-else-if="scope.row.shopOrderStatus === 1" size="small" type="danger">已下单</el-tag>
+          <el-tag v-else-if="scope.row.shopOrderStatus === 2" size="small" type="danger">已确认</el-tag>
+          <el-tag v-else-if="scope.row.shopOrderStatus === 3" size="small" type="danger">已发货</el-tag>
+          <el-tag v-else-if="scope.row.shopOrderStatus === 4" size="small" type="danger">已收货</el-tag>
+          <el-tag v-else size="small">已违约</el-tag>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column prop="memo" header-align="center" align="center" label="附言"></el-table-column> -->
+      <!-- <el-table-column prop="invoiceTitle" header-align="center" align="center" label="发票名称"></el-table-column>
+      <el-table-column prop="remarks" header-align="center" align="center" label="备注"></el-table-column> -->
+      <el-table-column fixed="right" header-align="center" align="center" width="150" label="操作">
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改订单</el-button>
+          <!-- <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -131,111 +66,117 @@
       :page-sizes="[10, 20, 50, 100]"
       :page-size="pageSize"
       :total="totalPage"
-      layout="total, sizes, prev, pager, next, jumper">
-    </el-pagination>
+      layout="total, sizes, prev, pager, next, jumper"
+    ></el-pagination>
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
   </div>
 </template>
 
 <script>
-  import AddOrUpdate from './torder-add-or-update'
-  export default {
-    data () {
-      return {
-        dataForm: {
-          key: ''
-        },
-        dataList: [],
-        pageIndex: 1,
-        pageSize: 10,
-        totalPage: 0,
-        dataListLoading: false,
-        dataListSelections: [],
-        addOrUpdateVisible: false
-      }
+import AddOrUpdate from "./torder-add-or-update";
+export default {
+  data() {
+    return {
+      dataForm: {
+        key: ""
+      },
+      dataList: [],
+      pageIndex: 1,
+      pageSize: 10,
+      totalPage: 0,
+      dataListLoading: false,
+      dataListSelections: [],
+      addOrUpdateVisible: false
+    };
+  },
+  components: {
+    AddOrUpdate
+  },
+  activated() {
+    this.getDataList();
+  },
+  methods: {
+    // 获取数据列表
+    getDataList() {
+      this.dataListLoading = true;
+      this.$http({
+        url: this.$http.adornUrl("/order/torder/list"),
+        method: "post",
+        params: this.$http.adornParams({
+          page: this.pageIndex,
+          limit: this.pageSize,
+          orderSn: this.dataForm.orderSn
+        })
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          this.dataList = data.page.list;
+          this.totalPage = data.page.totalCount;
+        } else {
+          this.dataList = [];
+          this.totalPage = 0;
+        }
+        this.dataListLoading = false;
+      });
     },
-    components: {
-      AddOrUpdate
+    // 每页数
+    sizeChangeHandle(val) {
+      this.pageSize = val;
+      this.pageIndex = 1;
+      this.getDataList();
     },
-    activated () {
-      this.getDataList()
+    // 当前页
+    currentChangeHandle(val) {
+      this.pageIndex = val;
+      this.getDataList();
     },
-    methods: {
-      // 获取数据列表
-      getDataList () {
-        this.dataListLoading = true
+    // 多选
+    selectionChangeHandle(val) {
+      this.dataListSelections = val;
+    },
+    // 新增 / 修改
+    addOrUpdateHandle(id) {
+      this.addOrUpdateVisible = true;
+      this.$nextTick(() => {
+        this.$refs.addOrUpdate.init(id);
+      });
+    },
+    // 删除
+    deleteHandle(id) {
+      var ids = id
+        ? [id]
+        : this.dataListSelections.map(item => {
+            return item.id;
+          });
+      this.$confirm(
+        `确定对[id=${ids.join(",")}]进行[${id ? "删除" : "批量删除"}]操作?`,
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }
+      ).then(() => {
         this.$http({
-          url: this.$http.adornUrl('/order/torder/list'),
-          method: 'post',
-          params: this.$http.adornParams({
-            'page': this.pageIndex,
-            'limit': this.pageSize,
-            'key': this.dataForm.key
-          })
-        }).then(({data}) => {
+          url: this.$http.adornUrl("/order/torder/delete"),
+          method: "delete",
+          data: this.$http.adornData(ids, false)
+        }).then(({ data }) => {
           if (data && data.code === 0) {
-            this.dataList = data.page.list
-            this.totalPage = data.page.totalCount
+            this.$message({
+              message: "操作成功",
+              type: "success",
+              duration: 1500,
+              onClose: () => {
+                this.getDataList();
+              }
+            });
           } else {
-            this.dataList = []
-            this.totalPage = 0
+            this.$message.error(data.msg);
           }
-          this.dataListLoading = false
-        })
-      },
-      // 每页数
-      sizeChangeHandle (val) {
-        this.pageSize = val
-        this.pageIndex = 1
-        this.getDataList()
-      },
-      // 当前页
-      currentChangeHandle (val) {
-        this.pageIndex = val
-        this.getDataList()
-      },
-      // 多选
-      selectionChangeHandle (val) {
-        this.dataListSelections = val
-      },
-      // 新增 / 修改
-      addOrUpdateHandle (id) {
-        this.addOrUpdateVisible = true
-        this.$nextTick(() => {
-          this.$refs.addOrUpdate.init(id)
-        })
-      },
-      // 删除
-      deleteHandle (id) {
-        var ids = id ? [id] : this.dataListSelections.map(item => {
-          return item.id
-        })
-        this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$http({
-            url: this.$http.adornUrl('/order/torder/delete'),
-            method: 'delete',
-            data: this.$http.adornData(ids, false)
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.$message({
-                message: '操作成功',
-                type: 'success',
-                duration: 1500,
-                onClose: () => {
-                  this.getDataList()
-                }
-              })
-            } else {
-              this.$message.error(data.msg)
-            }
-          })
-        })
-      }
+        });
+      });
     }
   }
+};
 </script>

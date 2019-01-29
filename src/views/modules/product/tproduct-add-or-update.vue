@@ -133,7 +133,7 @@
         <el-input v-model="dataForm.reminder" placeholder="温馨提示"></el-input>
       </el-form-item>
       <el-form-item label="备注" prop="remarks">
-        <el-input v-model="dataForm.remarks" placeholder="备注"></el-input>
+        <el-input type="textarea" v-model="dataForm.remarks" placeholder="备注"></el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">

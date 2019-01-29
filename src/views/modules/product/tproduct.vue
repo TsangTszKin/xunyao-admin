@@ -54,6 +54,13 @@
           <el-tag v-else size="small">否</el-tag>
         </template>
       </el-table-column>
+      <el-table-column prop="state" header-align="center" align="center" label="审批状态">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.state === 0" size="small" type="danger">待审核</el-tag>
+          <el-tag v-else-if="scope.row.state === 1" size="small" type="danger">通过</el-tag>
+          <el-tag v-else size="small">不通过</el-tag>
+        </template>
+      </el-table-column>
       <!-- <el-table-column prop="manufacturer" header-align="center" align="center" label="生产厂商"></el-table-column>
       <el-table-column prop="barCode" header-align="center" align="center" label="条形码"></el-table-column>
       <el-table-column prop="approvalNumber" header-align="center" align="center" label="批准文号"></el-table-column> -->

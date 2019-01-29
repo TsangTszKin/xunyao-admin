@@ -43,6 +43,7 @@
           <el-tag v-else size="small">不通过</el-tag>
         </template>
       </el-table-column>
+      <el-table-column prop="remarks" header-align="center" align="center" label="备注"></el-table-column>
       <!-- <el-table-column prop="top" header-align="center" align="center" label="是否置顶">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.top === 1" size="small" type="danger">是</el-tag>
@@ -62,7 +63,7 @@
       <!-- <el-table-column prop="createBy" header-align="center" align="center" label="创建人"></el-table-column> -->
       <!-- <el-table-column prop="updateBy" header-align="center" align="center" label="修改人"></el-table-column> -->
       <!-- <el-table-column prop="delFlag" header-align="center" align="center" label="删除标识"></el-table-column> -->
-      <!-- <el-table-column prop="remarks" header-align="center" align="center" label="备注"></el-table-column> -->
+      <!--  -->
       <!-- <el-table-column prop="shopId" header-align="center" align="center" label></el-table-column> -->
       <!-- <el-table-column prop="productImg" header-align="center" align="center" label="商品图片（多张，隔开）">
         <template slot-scope="scope">

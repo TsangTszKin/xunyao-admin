@@ -7,7 +7,7 @@
 
   // api接口请求地址
   // window.SITE_CONFIG['baseUrl'] = 'http://192.168.0.110:8888';
-  window.SITE_CONFIG['baseUrl'] = 'http://192.168.1.100:8888';
+  window.SITE_CONFIG['baseUrl'] = 'http://192.168.1.102:8888';
   // window.SITE_CONFIG['baseUrl'] = 'http://zwdjack.iok.la:40229';
   // @ts-ignore
   // window.SITE_CONFIG['baseUrl'] = 'http://47.106.168.53:8091';

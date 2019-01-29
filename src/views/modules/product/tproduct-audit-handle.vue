@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
+    :title="'商品审批'"
     :close-on-click-modal="false"
     :visible.sync="visible"
   >
@@ -9,296 +9,196 @@
       :rules="dataRule"
       ref="dataForm"
       @keyup.enter.native="dataFormSubmit()"
-      label-width="80px"
+      label-width="120px"
     >
-      <el-form-item label="创建人" prop="createBy">
-        <el-input v-model="dataForm.createBy" placeholder="创建人"></el-input>
+      <el-form-item label="商品名称" prop="name">
+        {{dataForm.name}}
       </el-form-item>
-      <el-form-item label="修改人" prop="updateBy">
-        <el-input v-model="dataForm.updateBy" placeholder="修改人"></el-input>
+      <el-form-item label="商品图片" prop="productImg">
+        <img class="avatar" style="width:200px" :src="dataForm.productImg">
       </el-form-item>
-      <el-form-item label="删除标识" prop="delFlag">
-        <el-input v-model="dataForm.delFlag" placeholder="删除标识"></el-input>
-      </el-form-item>
-      <el-form-item label="备注" prop="remarks">
-        <el-input v-model="dataForm.remarks" placeholder="备注"></el-input>
-      </el-form-item>
-      <el-form-item label prop="shopId">
-        <el-input v-model="dataForm.shopId" placeholder></el-input>
-      </el-form-item>
-      <el-form-item label="所属分类" prop="classId">
-        <!-- <el-input v-model="dataForm.classId" placeholder="所属分类"></el-input> -->
-        <ProductClassPicker @changeSelectCallBack="changeSelectCallBack" :value="dataForm.classId"/>
-      </el-form-item>
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="dataForm.name" placeholder></el-input>
-      </el-form-item>
-      <el-form-item label="通用名称" prop="commonName">
-        <el-input v-model="dataForm.commonName" placeholder="通用名称"></el-input>
-      </el-form-item>
-      <el-form-item label="英文名字" prop="englishName">
-        <el-input v-model="dataForm.englishName" placeholder="英文名字"></el-input>
-      </el-form-item>
-      <el-form-item label="商品图片（多张，隔开）" prop="productImg">
-        <!-- <el-input v-model="dataForm.productImg" placeholder="商品图片（多张，隔开）"></el-input> -->
-        <ImgSelect :isMulti="true" @changeImgSelect="changeImgSelect"  :value="dataForm.productImg" />
-      </el-form-item>
-      <el-form-item label="规格" prop="specification">
-        <el-input v-model="dataForm.specification" placeholder="规格"></el-input>
-      </el-form-item>
-      <el-form-item label="生产厂商" prop="manufacturer">
-        <el-input v-model="dataForm.manufacturer" placeholder="生产厂商"></el-input>
-      </el-form-item>
-      <el-form-item label="条形码" prop="barCode">
-        <el-input v-model="dataForm.barCode" placeholder="条形码"></el-input>
-      </el-form-item>
-      <el-form-item label="批准文号" prop="approvalNumber">
-        <el-input v-model="dataForm.approvalNumber" placeholder="批准文号"></el-input>
-      </el-form-item>
-      <el-form-item label="药品说明(可通过摄像头扫描识别药盒上文字说明)" prop="productExplain">
-        <el-input v-model="dataForm.productExplain" placeholder="药品说明(可通过摄像头扫描识别药盒上文字说明)"></el-input>
+      <el-row type="flex" class="row-bg">
+        <el-col :span="12">
+          <el-form-item label="所属商家" prop="shopId">
+            {{dataForm.shopName}}
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="所属分类" prop="classId">
+            {{dataForm.className}}
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row type="flex" class="row-bg">
+        <el-col :span="12">
+          <el-form-item label="通用名称" prop="commonName">
+            {{dataForm.commonName}}
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="英文名字" prop="englishName">
+            {{dataForm.englishName}}
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row type="flex" class="row-bg">
+        <el-col :span="12">
+          <el-form-item label="规格" prop="specification">
+            {{dataForm.specification}}
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="生产厂商" prop="manufacturer">
+            {{dataForm.manufacturer}}
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row type="flex" class="row-bg">
+        <el-col :span="12">
+          <el-form-item label="条形码" prop="barCode">
+            {{dataForm.barCode}}
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="批准文号" prop="approvalNumber">
+            {{dataForm.approvalNumber}}
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row type="flex" class="row-bg">
+        <el-col :span="12">
+          <el-form-item label="原价格" prop="oldPrice">
+            {{dataForm.oldPrice}}
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="优惠价" prop="discountPrice">
+            {{dataForm.discountPrice}}
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row type="flex" class="row-bg">
+        <el-col :span="12">
+          <el-form-item label="是否处方药" prop="prescription">
+            <el-tag v-if="dataForm.prescription === 1" size="small" type="danger">是</el-tag>
+            <el-tag v-else size="small">否</el-tag>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="库存" prop="stock">
+            {{dataForm.stock}}
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row type="flex" class="row-bg">
+        <el-col :span="12">
+          <el-form-item label="是否置顶" prop="top">
+            <el-tag v-if="dataForm.top === 1" size="small" type="danger">是</el-tag>
+            <el-tag v-else size="small">否</el-tag>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="是否下架" prop="lowerShelf">
+            <el-tag v-if="dataForm.lowerShelf === 1" size="small" type="danger">是</el-tag>
+            <el-tag v-else size="small">否</el-tag>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-form-item label="药品说明" prop="productExplain">
+        {{dataForm.productExplain}}
       </el-form-item>
       <el-form-item label="温馨提示" prop="reminder">
-        <el-input v-model="dataForm.reminder" placeholder="温馨提示"></el-input>
+        {{dataForm.reminder}}
       </el-form-item>
-      <el-form-item label="原价格" prop="oldPrice">
-        <el-input v-model="dataForm.oldPrice" placeholder="原价格"></el-input>
+      <el-form-item label="备注" prop="remarks">
+        {{dataForm.remarks}}
       </el-form-item>
-      <el-form-item label="优惠价(备用)" prop="discountPrice">
-        <el-input v-model="dataForm.discountPrice" placeholder="优惠价(备用)"></el-input>
-      </el-form-item>
-      <el-form-item label="是否处方药" prop="prescription">
-        <el-input v-model="dataForm.prescription" placeholder="是否处方药"></el-input>
-      </el-form-item>
-      <el-form-item label="库存(默认0)" prop="stock">
-        <el-input v-model="dataForm.stock" placeholder="库存(默认0)"></el-input>
-      </el-form-item>
-      <el-form-item label="状态(0：待审核  1：审核通过 2：审核不通过)" prop="state">
-        <el-input v-model="dataForm.state" placeholder="状态(0：待审核  1：审核通过 2：审核不通过)"></el-input>
-      </el-form-item>
-      <el-form-item label="是否置顶" prop="top">
-        <el-input v-model="dataForm.top" placeholder="是否置顶"></el-input>
-      </el-form-item>
-      <el-form-item label="是否下架" prop="lowerShelf">
-        <el-input v-model="dataForm.lowerShelf" placeholder="是否下架"></el-input>
-      </el-form-item>
+      <hr />
+    <el-form-item label="审批状态" prop="state">
+      <el-select class="select" v-model="dataForm.state" placeholder="请选择" >
+        <el-option :value="1" label="通过">通过</el-option>
+        <el-option :value="2" label="不通过">不通过</el-option>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="备注" prop="content">
+      <el-input type="textarea" v-model="dataForm.content" placeholder="备注"></el-input>
+    </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
-      <el-button type="primary" @click="dataFormSubmit()">确定</el-button>
+      <el-button type="primary" @click="dataFormSubmit()">提交审批</el-button>
     </span>
   </el-dialog>
 </template>
 
 <script>
-import ProductClassPicker from '@/components/ProductClassPicker';
-import ImgSelect from '@/components/ImgSelect';
 
 export default {
   components: {
-    ProductClassPicker,
-    ImgSelect
   },
   data() {
     return {
       visible: false,
       dataForm: {
-        id: 0,
-        createBy: '',
-        updateBy: '',
-        delFlag: '',
-        remarks: '',
-        shopId: '',
-        classId: '',
-        name: '',
-        commonName: '',
-        englishName: '',
-        productImg: '',
-        specification: '',
-        manufacturer: '',
-        barCode: '',
-        approvalNumber: '',
-        productExplain: '',
-        reminder: '',
-        oldPrice: '',
-        discountPrice: '',
-        prescription: '',
-        stock: '',
-        state: '',
-        top: '',
-        lowerShelf: ''
+        state:1
       },
       dataRule: {
-        createBy: [
-          { required: true, message: '创建人不能为空', trigger: 'blur' }
-        ],
-        updateBy: [
-          { required: true, message: '修改人不能为空', trigger: 'blur' }
-        ],
-        delFlag: [
-          { required: true, message: '删除标识不能为空', trigger: 'blur' }
-        ],
-        remarks: [
-          { required: true, message: '备注不能为空', trigger: 'blur' }
-        ],
-        shopId: [
-          { required: true, message: '不能为空', trigger: 'blur' }
-        ],
-        classId: [
-          { required: true, message: '所属分类不能为空', trigger: 'blur' }
-        ],
-        name: [
-          { required: true, message: '不能为空', trigger: 'blur' }
-        ],
-        commonName: [
-          { required: true, message: '通用名称不能为空', trigger: 'blur' }
-        ],
-        englishName: [
-          { required: true, message: '英文名字不能为空', trigger: 'blur' }
-        ],
-        productImg: [
-          { required: true, message: '商品图片（多张，隔开）不能为空', trigger: 'blur' }
-        ],
-        specification: [
-          { required: true, message: '规格不能为空', trigger: 'blur' }
-        ],
-        manufacturer: [
-          { required: true, message: '生产厂商不能为空', trigger: 'blur' }
-        ],
-        barCode: [
-          { required: true, message: '条形码不能为空', trigger: 'blur' }
-        ],
-        approvalNumber: [
-          { required: true, message: '批准文号不能为空', trigger: 'blur' }
-        ],
-        productExplain: [
-          { required: true, message: '药品说明(可通过摄像头扫描识别药盒上文字说明)不能为空', trigger: 'blur' }
-        ],
-        reminder: [
-          { required: true, message: '温馨提示不能为空', trigger: 'blur' }
-        ],
-        oldPrice: [
-          { required: true, message: '原价格不能为空', trigger: 'blur' }
-        ],
-        discountPrice: [
-          { required: true, message: '优惠价(备用)不能为空', trigger: 'blur' }
-        ],
-        prescription: [
-          { required: true, message: '是否处方药不能为空', trigger: 'blur' }
-        ],
-        stock: [
-          { required: true, message: '库存(默认0)不能为空', trigger: 'blur' }
-        ],
         state: [
-          { required: true, message: '状态(0：待审核  1：审核通过 2：审核不通过)不能为空', trigger: 'blur' }
+          { required: true, message: "请选择审批状态", trigger: "blur" }
         ],
-        top: [
-          { required: true, message: '是否置顶不能为空', trigger: 'blur' }
-        ],
-        lowerShelf: [
-          { required: true, message: '是否下架不能为空', trigger: 'blur' }
+        content: [
+          { required: true, message: "请填写备注", trigger: "blur" }
         ]
       }
-    }
+    };
   },
   methods: {
     init(id) {
-      this.dataForm.id = id || 0
-      this.visible = true
+      this.dataForm.id = id || 0;
+      this.visible = true;
       this.$nextTick(() => {
-        this.$refs['dataForm'].resetFields()
         if (this.dataForm.id) {
           this.$http({
             url: this.$http.adornUrl(`/admin/product/info/${this.dataForm.id}`),
-            method: 'get',
+            method: "get",
             params: this.$http.adornParams()
           }).then(({ data }) => {
             if (data && data.code === 0) {
-              this.dataForm.createBy = data.tProduct.createBy
-              this.dataForm.updateBy = data.tProduct.updateBy
-              this.dataForm.delFlag = data.tProduct.delFlag
-              this.dataForm.remarks = data.tProduct.remarks
-              this.dataForm.shopId = data.tProduct.shopId
-              this.dataForm.classId = data.tProduct.classId
-              this.dataForm.name = data.tProduct.name
-              this.dataForm.commonName = data.tProduct.commonName
-              this.dataForm.englishName = data.tProduct.englishName
-              this.dataForm.productImg = data.tProduct.productImg
-              this.dataForm.specification = data.tProduct.specification
-              this.dataForm.manufacturer = data.tProduct.manufacturer
-              this.dataForm.barCode = data.tProduct.barCode
-              this.dataForm.approvalNumber = data.tProduct.approvalNumber
-              this.dataForm.productExplain = data.tProduct.productExplain
-              this.dataForm.reminder = data.tProduct.reminder
-              this.dataForm.oldPrice = data.tProduct.oldPrice
-              this.dataForm.discountPrice = data.tProduct.discountPrice
-              this.dataForm.prescription = data.tProduct.prescription
-              this.dataForm.stock = data.tProduct.stock
-              this.dataForm.state = data.tProduct.state
-              this.dataForm.top = data.tProduct.top
-              this.dataForm.lowerShelf = data.tProduct.lowerShelf
+              this.dataForm = data.tProduct;
+              this.dataForm.productId = this.dataForm.id;
+              this.dataForm.state = null;
             }
-          })
+          });
         }
-      })
+      });
     },
     // 表单提交
     dataFormSubmit() {
-      this.$refs['dataForm'].validate((valid) => {
+      this.$refs["dataForm"].validate(valid => {
         if (valid) {
           this.$http({
-            url: this.$http.adornUrl(`/admin/product/insertOrUpdate`),
-            method: 'put',
-            data: this.$http.adornData({
-              'id': this.dataForm.id || undefined,
-              'createBy': this.dataForm.createBy,
-              'updateBy': this.dataForm.updateBy,
-              'delFlag': this.dataForm.delFlag,
-              'remarks': this.dataForm.remarks,
-              'shopId': this.dataForm.shopId,
-              'classId': this.dataForm.classId,
-              'name': this.dataForm.name,
-              'commonName': this.dataForm.commonName,
-              'englishName': this.dataForm.englishName,
-              'productImg': this.dataForm.productImg,
-              'specification': this.dataForm.specification,
-              'manufacturer': this.dataForm.manufacturer,
-              'barCode': this.dataForm.barCode,
-              'approvalNumber': this.dataForm.approvalNumber,
-              'productExplain': this.dataForm.productExplain,
-              'reminder': this.dataForm.reminder,
-              'oldPrice': this.dataForm.oldPrice,
-              'discountPrice': this.dataForm.discountPrice,
-              'prescription': this.dataForm.prescription,
-              'stock': this.dataForm.stock,
-              'state': this.dataForm.state,
-              'top': this.dataForm.top,
-              'lowerShelf': this.dataForm.lowerShelf
-            })
+            url: this.$http.adornUrl(`/admin/product/productAudit`),
+            method: "post",
+            data: this.$http.adornData(this.dataForm)
           }).then(({ data }) => {
             if (data && data.code === 0) {
               this.$message({
-                message: '操作成功',
-                type: 'success',
+                message: "操作成功",
+                type: "success",
                 duration: 1500,
                 onClose: () => {
-                  this.visible = false
-                  this.$emit('refreshDataList')
+                  this.visible = false;
+                  this.$emit("refreshDataList");
                 }
-              })
+              });
             } else {
-              this.$message.error(data.msg)
+              this.$message.error(data.msg);
             }
-          })
+          });
         }
-      })
-    },
-    changeSelectCallBack(value) {
-      this.dataForm.classId = value;
-    },
-    changeImgSelect(url) {
-      this.dataForm.productImg = url;
+      });
     }
   }
-}
+};
 </script>
