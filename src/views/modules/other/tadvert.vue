@@ -2,17 +2,17 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
+        <el-input v-model="dataForm.title" placeholder="广告标题" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
         <el-button
-          v-if="isAuth('generator:tadvert:save')"
+          v-if="isAuth('other:tadvert:save')"
           type="primary"
           @click="addOrUpdateHandle()"
         >新增</el-button>
         <el-button
-          v-if="isAuth('generator:tadvert:delete')"
+          v-if="isAuth('other:tadvert:delete')"
           type="danger"
           @click="deleteHandle()"
           :disabled="dataListSelections.length <= 0"
@@ -27,17 +27,22 @@
       style="width: 100%;"
     >
       <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-      <el-table-column prop="id" header-align="center" align="center" label="主键"></el-table-column>
+      <!-- <el-table-column prop="id" header-align="center" align="center" label="主键"></el-table-column> -->
       <el-table-column prop="title" header-align="center" align="center" label="广告标题"></el-table-column>
-      <el-table-column prop="shopId" header-align="center" align="center" label="店铺ID，可为空"></el-table-column>
-      <el-table-column prop="type" header-align="center" align="center" label="广告类型，1首页广告 2店铺广告"></el-table-column>
+      <!-- <el-table-column prop="type" header-align="center" align="center" label="广告类型，1首页广告 2店铺广告"></el-table-column> -->
       <el-table-column prop="pic" header-align="center" align="center" label="广告图片">
         <template slot-scope="scope">
           <img class="avatar" style="height:36px" :src="scope.row.pic">
         </template>
       </el-table-column>
       <el-table-column prop="link" header-align="center" align="center" label="广告链接"></el-table-column>
-      <el-table-column prop="status" header-align="center" align="center" label="广告状态 1上架 2下架"></el-table-column>
+      <el-table-column prop="status" header-align="center" align="center" label="广告状态">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.status === 1" size="small">上架</el-tag>
+          <el-tag v-else-if="scope.row.status === 2" size="small" type="danger">下架</el-tag>
+        </template>
+        
+      </el-table-column>
       <!-- <el-table-column prop="createTime" header-align="center" align="center" label="创建时间"></el-table-column>
       <el-table-column prop="updateTime" header-align="center" align="center" label="更新时间"></el-table-column> -->
       <el-table-column fixed="right" header-align="center" align="center" width="150" label="操作">
@@ -94,7 +99,7 @@ export default {
         params: this.$http.adornParams({
           page: this.pageIndex,
           limit: this.pageSize,
-          key: this.dataForm.key
+          title: this.dataForm.title
         })
       }).then(({ data }) => {
         if (data && data.code === 0) {
@@ -146,8 +151,8 @@ export default {
         }
       ).then(() => {
         this.$http({
-          url: this.$http.adornUrl("/generator/tadvert/delete"),
-          method: "post",
+          url: this.$http.adornUrl("/other/tadvert/delete"),
+          method: "delete",
           data: this.$http.adornData(ids, false)
         }).then(({ data }) => {
           if (data && data.code === 0) {

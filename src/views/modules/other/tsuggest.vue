@@ -2,12 +2,16 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
+        <el-select class="select" v-model="dataForm.type" placeholder="请选择反馈类型" >
+          <el-option :value="1" label="建议"></el-option>
+          <el-option :value="2" label="意见"></el-option>
+          <el-option :value="3" label="投诉"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <!-- <el-button v-if="isAuth('generator:tsuggest:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('generator:tsuggest:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button> -->
+        <!-- <el-button v-if="isAuth('other:tsuggest:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('other:tsuggest:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button> -->
       </el-form-item>
     </el-form>
     <el-table
@@ -23,46 +27,15 @@
         width="50">
       </el-table-column>
       <el-table-column
-        prop="suggestId"
-        header-align="center"
-        align="center"
-        label="主键id">
-      </el-table-column>
-      <el-table-column
-        prop="createDate"
-        header-align="center"
-        align="center"
-        label="创建时间">
-      </el-table-column>
-      <el-table-column
-        prop="updateDate"
-        header-align="center"
-        align="center"
-        label="修改时间">
-      </el-table-column>
-      <el-table-column
-        prop="delFlag"
-        header-align="center"
-        align="center"
-        label="删除标识">
-      </el-table-column>
-      <el-table-column
-        prop="remarks"
-        header-align="center"
-        align="center"
-        label="备注">
-      </el-table-column>
-      <el-table-column
         prop="type"
         header-align="center"
         align="center"
-        label="类型，1建议、2意见、3投诉">
-      </el-table-column>
-      <el-table-column
-        prop="telephone"
-        header-align="center"
-        align="center"
-        label="电话">
+        label="反馈类型">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.type === 1" size="small">建议</el-tag>
+          <el-tag v-else-if="scope.row.type === 2" size="small" type="danger">意见</el-tag>
+          <el-tag v-else size="small" type="danger">投诉</el-tag>
+        </template>
       </el-table-column>
       <el-table-column
         prop="name"
@@ -71,18 +44,30 @@
         label="姓名">
       </el-table-column>
       <el-table-column
+        prop="telephone"
+        header-align="center"
+        align="center"
+        label="电话">
+      </el-table-column>
+      <el-table-column
         prop="weixin"
         header-align="center"
         align="center"
-        label="地址">
+        label="微信号">
       </el-table-column>
       <el-table-column
         prop="qq"
         header-align="center"
         align="center"
-        label="经度">
+        label="QQ号">
       </el-table-column>
       <el-table-column
+        prop="createDate"
+        header-align="center"
+        align="center"
+        label="提交时间">
+      </el-table-column>
+      <!-- <el-table-column
         fixed="right"
         header-align="center"
         align="center"
@@ -92,7 +77,7 @@
           <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.suggestId)">修改</el-button>
           <el-button type="text" size="small" @click="deleteHandle(scope.row.suggestId)">删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <el-pagination
       @size-change="sizeChangeHandle"
@@ -187,7 +172,7 @@
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/generator/tsuggest/delete'),
+            url: this.$http.adornUrl('/other/tsuggest/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {

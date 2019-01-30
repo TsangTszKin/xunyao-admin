@@ -11,6 +11,9 @@
       @keyup.enter.native="dataFormSubmit()"
       label-width="80px"
     >
+      <el-form-item label="应用店铺" prop="shopId">
+        <ShopPicker @changeSelectCallBack="shopChangeSelectCallBack" :value="dataForm.shopId"/>
+      </el-form-item>
       <el-form-item label="广告标题" prop="title">
         <el-input v-model="dataForm.title" placeholder="广告标题"></el-input>
       </el-form-item>
@@ -53,12 +56,15 @@ export default {
         id: 0,
         title: "",
         shopId: "",
-        type: 1,
+        type: 2,
         pic: "",
         link: "",
         status: ""
       },
       dataRule: {
+        shopId: [
+          { required: true, message: "请选择应用店铺", trigger: "blur" }
+        ],
         title: [
           { required: true, message: "广告标题不能为空", trigger: "blur" }
         ],
@@ -90,7 +96,7 @@ export default {
           }).then(({ data }) => {
             if (data && data.code === 0) {
               this.dataForm = data.tAdvert;
-              this.dataForm.type = 1;
+              this.dataForm.type = 2;
             }
           });
         }

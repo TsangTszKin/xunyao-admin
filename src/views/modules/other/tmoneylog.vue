@@ -2,7 +2,7 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
+        <el-input v-model="dataForm.transactionId" placeholder="流水号" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
@@ -22,23 +22,29 @@
         align="center"
         width="50">
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="id"
         header-align="center"
         align="center"
         label="主键id">
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
-        prop="userId"
+        prop="transactionId"
         header-align="center"
         align="center"
-        label="用户id">
+        label="流水号">
+      </el-table-column>
+      <el-table-column
+        prop="userName"
+        header-align="center"
+        align="center"
+        label="操作用户">
       </el-table-column>
       <el-table-column
         prop="money"
         header-align="center"
         align="center"
-        label="收入/支出金额">
+        label="交易金额">
       </el-table-column>
       <el-table-column
         prop="outTradeId"
@@ -47,22 +53,22 @@
         label="对外交易号">
       </el-table-column>
       <el-table-column
-        prop="transactionId"
-        header-align="center"
-        align="center"
-        label="流水号">
-      </el-table-column>
-      <el-table-column
         prop="type"
         header-align="center"
         align="center"
-        label="类型，1充值 2退款 3交易 4提现">
+        label="交易类型">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.type === 1" size="small">充值</el-tag>
+          <el-tag v-else-if="scope.row.type === 2" size="small">退款</el-tag>
+          <el-tag v-else-if="scope.row.type === 3" size="small">交易</el-tag>
+          <el-tag v-else-if="scope.row.type === 4" size="small">提现</el-tag>
+        </template>
       </el-table-column>
       <el-table-column
         prop="createDate"
         header-align="center"
         align="center"
-        label="创建时间">
+        label="交易时间">
       </el-table-column>
       <el-table-column
         prop="remarks"
@@ -70,12 +76,12 @@
         align="center"
         label="备注">
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="delFlag"
         header-align="center"
         align="center"
         label="删除标识">
-      </el-table-column>
+      </el-table-column> -->
       <!-- <el-table-column
         fixed="right"
         header-align="center"
@@ -135,7 +141,7 @@
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,
-            'key': this.dataForm.key
+            'transactionId': this.dataForm.transactionId
           })
         }).then(({data}) => {
           if (data && data.code === 0) {

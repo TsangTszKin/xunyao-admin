@@ -2,12 +2,15 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
+        <el-select class="select" v-model="dataForm.type" placeholder="请选择消息类型" >
+          <el-option :value="1" label="系统通知"></el-option>
+          <el-option :value="2" label="店家推送"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <!-- <el-button v-if="isAuth('generator:tmessage:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button> -->
-        <el-button v-if="isAuth('generator:tmessage:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <!-- <el-button v-if="isAuth('other:tmessage:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button> -->
+        <el-button v-if="isAuth('other:tmessage:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -23,19 +26,13 @@
         width="50">
       </el-table-column>
       <el-table-column
-        prop="id"
-        header-align="center"
-        align="center"
-        label="主键id">
-      </el-table-column>
-      <el-table-column
-        prop="sendId"
+        prop="sendBy"
         header-align="center"
         align="center"
         label="发送人">
       </el-table-column>
       <el-table-column
-        prop="receiverId"
+        prop="receiverBy"
         header-align="center"
         align="center"
         label="接收人">
@@ -44,13 +41,23 @@
         prop="type"
         header-align="center"
         align="center"
-        label="消息类型，1系统通知，2店家推送">
+        label="消息类型">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.type === 1" size="small">系统通知</el-tag>
+          <el-tag v-else-if="scope.row.type === 2" size="small" type="danger">店家推送</el-tag>
+        </template>
       </el-table-column>
       <el-table-column
         prop="message"
         header-align="center"
         align="center"
         label="消息内容">
+      </el-table-column>
+      <el-table-column
+        prop="createTime"
+        header-align="center"
+        align="center"
+        label="发送时间">
       </el-table-column>
       <el-table-column
         prop="readStatus"
@@ -63,24 +70,6 @@
         header-align="center"
         align="center"
         label="阅读时间">
-      </el-table-column>
-      <el-table-column
-        prop="createTime"
-        header-align="center"
-        align="center"
-        label="创建时间">
-      </el-table-column>
-      <el-table-column
-        prop="remarks"
-        header-align="center"
-        align="center"
-        label="备注">
-      </el-table-column>
-      <el-table-column
-        prop="delFlag"
-        header-align="center"
-        align="center"
-        label="删除标识">
       </el-table-column>
       <el-table-column
         fixed="right"

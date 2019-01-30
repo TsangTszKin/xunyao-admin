@@ -1,11 +1,14 @@
 <template>
-<div class="mod-config">
-    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="120px">
-    <!-- <el-form-item label="店铺ID" prop="shopId">
+  <el-dialog
+    :title="!dataForm.id ? '新增' : '修改'"
+    :close-on-click-modal="false"
+    :visible.sync="visible">
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
+    <el-form-item label="店铺ID" prop="shopId">
       <el-input v-model="dataForm.shopId" placeholder="店铺ID"></el-input>
-    </el-form-item> -->
-    <el-form-item label="最低保证金" prop="min">
-      <el-input v-model="dataForm.min" placeholder="最低保证金"></el-input>
+    </el-form-item>
+    <el-form-item label="最低" prop="min">
+      <el-input v-model="dataForm.min" placeholder="最低"></el-input>
     </el-form-item>
     <el-form-item label="保证金百分比" prop="per">
       <el-input v-model="dataForm.per" placeholder="保证金百分比"></el-input>
@@ -13,24 +16,21 @@
     <el-form-item label="邮费" prop="postage">
       <el-input v-model="dataForm.postage" placeholder="邮费"></el-input>
     </el-form-item>
-    <el-form-item label="配送时间" prop="deliveryTime">
-      <el-input v-model="dataForm.deliveryTime" placeholder="配送时间"></el-input>
-    </el-form-item>
-    <!-- <el-form-item label="状态   0：无效   1：有效" prop="status">
+    <el-form-item label="状态   0：无效   1：有效" prop="status">
       <el-input v-model="dataForm.status" placeholder="状态   0：无效   1：有效"></el-input>
-    </el-form-item> -->
-    <!-- <el-form-item label="类型 1保证金设置" prop="type">
+    </el-form-item>
+    <el-form-item label="类型 1保证金设置" prop="type">
       <el-input v-model="dataForm.type" placeholder="类型 1保证金设置"></el-input>
-    </el-form-item> -->
-    <!-- <el-form-item label="备注" prop="remark">
+    </el-form-item>
+    <el-form-item label="备注" prop="remark">
       <el-input v-model="dataForm.remark" placeholder="备注"></el-input>
-    </el-form-item> -->
+    </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
       <el-button type="primary" @click="dataFormSubmit()">确定</el-button>
     </span>
-  </div>
+  </el-dialog>
 </template>
 
 <script>
@@ -67,28 +67,35 @@
           type: [
             { required: true, message: '类型 1保证金设置不能为空', trigger: 'blur' }
           ],
-          deliveryTime: [
-            { required: true, message: '配送时间不能为空', trigger: 'blur' }
+          remark: [
+            { required: true, message: '备注不能为空', trigger: 'blur' }
           ]
         }
       }
     },
-    created: function(){
-      this.init();
-    },
     methods: {
-      init () {
+      init (id) {
+        this.dataForm.id = id || 0
+        this.visible = true
         this.$nextTick(() => {
           this.$refs['dataForm'].resetFields()
-          this.$http({
-            url: this.$http.adornUrl(`/other/tconfig/getConfig`),
-            method: 'get',
-            params: this.$http.adornParams()
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.dataForm = data.tConfig
-            }
-          })
+          if (this.dataForm.id) {
+            this.$http({
+              url: this.$http.adornUrl(`/other/tconfig/info/${this.dataForm.id}`),
+              method: 'get',
+              params: this.$http.adornParams()
+            }).then(({data}) => {
+              if (data && data.code === 0) {
+                this.dataForm.shopId = data.tconfig.shopId
+                this.dataForm.min = data.tconfig.min
+                this.dataForm.per = data.tconfig.per
+                this.dataForm.postage = data.tconfig.postage
+                this.dataForm.status = data.tconfig.status
+                this.dataForm.type = data.tconfig.type
+                this.dataForm.remark = data.tconfig.remark
+              }
+            })
+          }
         })
       },
       // 表单提交
@@ -96,9 +103,18 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/other/tconfig/saveOrUpdate`),
-              method: 'put',
-              data: this.$http.adornData(this.dataForm)
+              url: this.$http.adornUrl(`/other/tconfig/${!this.dataForm.id ? 'save' : 'update'}`),
+              method: 'post',
+              data: this.$http.adornData({
+                'id': this.dataForm.id || undefined,
+                'shopId': this.dataForm.shopId,
+                'min': this.dataForm.min,
+                'per': this.dataForm.per,
+                'postage': this.dataForm.postage,
+                'status': this.dataForm.status,
+                'type': this.dataForm.type,
+                'remark': this.dataForm.remark
+              })
             }).then(({data}) => {
               if (data && data.code === 0) {
                 this.$message({

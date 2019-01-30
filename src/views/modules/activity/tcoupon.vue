@@ -2,21 +2,12 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.title" placeholder="广告标题" clearable></el-input>
+        <el-input v-model="dataForm.name" placeholder="优惠券名称" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button
-          v-if="isAuth('other:tadvert:save')"
-          type="primary"
-          @click="addOrUpdateHandle()"
-        >新增</el-button>
-        <el-button
-          v-if="isAuth('other:tadvert:delete')"
-          type="danger"
-          @click="deleteHandle()"
-          :disabled="dataListSelections.length <= 0"
-        >批量删除</el-button>
+        <el-button v-if="isAuth('sales:tcoupon:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('sales:tcoupon:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -24,34 +15,92 @@
       border
       v-loading="dataListLoading"
       @selection-change="selectionChangeHandle"
-      style="width: 100%;"
-    >
-      <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-      <!-- <el-table-column prop="id" header-align="center" align="center" label="主键"></el-table-column> -->
-      <el-table-column prop="title" header-align="center" align="center" label="广告标题"></el-table-column>
-      <el-table-column prop="shopName" header-align="center" align="center" label="应用店铺"></el-table-column>
-      <!-- <el-table-column prop="type" header-align="center" align="center" label="广告类型，1首页广告 2店铺广告"></el-table-column> -->
-      <el-table-column prop="pic" header-align="center" align="center" label="广告图片">
+      style="width: 100%;">
+      <el-table-column
+        type="selection"
+        header-align="center"
+        align="center"
+        width="50">
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        header-align="center"
+        align="center"
+        label="优惠券名称">
+      </el-table-column>
+      <el-table-column
+        prop="shopName"
+        header-align="center"
+        align="center"
+        label="所属商家">
+      </el-table-column>
+      <el-table-column
+        prop="activityName"
+        header-align="center"
+        align="center"
+        label="活动名称">
+      </el-table-column>
+      <el-table-column
+        prop="beginTime"
+        header-align="center"
+        align="center"
+        :formatter="dateFormat" 
+        label="开始时间">
+      </el-table-column>
+      <el-table-column
+        prop="endTime"
+        header-align="center"
+        align="center"
+        :formatter="dateFormat" 
+        label="结束时间">
+      </el-table-column>
+      <el-table-column
+        prop="createTime"
+        header-align="center"
+        align="center"
+        label="发放时间">
+      </el-table-column>
+      <el-table-column
+        prop="status"
+        header-align="center"
+        align="center"
+        label="状态">
         <template slot-scope="scope">
-          <img class="avatar" style="height:36px" :src="scope.row.pic">
+          <el-tag v-if="scope.row.status === 0" size="layer">未使用</el-tag>
+          <el-tag v-else-if="scope.row.status === 1" size="small">已使用</el-tag>
+          <el-tag v-else-if="scope.row.status === 2" size="small">已过期</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="link" header-align="center" align="center" label="广告链接"></el-table-column>
-      <el-table-column prop="status" header-align="center" align="center" label="广告状态">
-        <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 1" size="small">上架</el-tag>
-          <el-tag v-else-if="scope.row.status === 2" size="small" type="danger">下架</el-tag>
-        </template>
-        
+      <el-table-column
+        prop="buyerName"
+        header-align="center"
+        align="center"
+        label="领取用户">
       </el-table-column>
-      <!-- <el-table-column prop="createTime" header-align="center" align="center" label="创建时间"></el-table-column>
-      <el-table-column prop="updateTime" header-align="center" align="center" label="更新时间"></el-table-column> -->
-      <el-table-column fixed="right" header-align="center" align="center" width="150" label="操作">
+      <el-table-column
+        prop="useOrderId"
+        header-align="center"
+        align="center"
+        label="使用订单">
+      </el-table-column>
+      <el-table-column
+        prop="useTime"
+        header-align="center"
+        align="center"
+        label="使用时间">
+      </el-table-column>
+      
+      <!-- <el-table-column
+        fixed="right"
+        header-align="center"
+        align="center"
+        width="150"
+        label="操作">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
           <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <el-pagination
       @size-change="sizeChangeHandle"
@@ -60,15 +109,15 @@
       :page-sizes="[10, 20, 50, 100]"
       :page-size="pageSize"
       :total="totalPage"
-      layout="total, sizes, prev, pager, next, jumper"
-    ></el-pagination>
+      layout="total, sizes, prev, pager, next, jumper">
+    </el-pagination>
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
   </div>
 </template>
 
 <script>
-import AddOrUpdate from "./tadvert-add-or-update2";
+import AddOrUpdate from "./tcoupon-add-or-update";
 export default {
   data() {
     return {
@@ -95,12 +144,12 @@ export default {
     getDataList() {
       this.dataListLoading = true;
       this.$http({
-        url: this.$http.adornUrl("/other/tadvert/shopList"),
+        url: this.$http.adornUrl("/sales/tcoupon/list"),
         method: "get",
         params: this.$http.adornParams({
           page: this.pageIndex,
           limit: this.pageSize,
-          title: this.dataForm.title
+          name: this.dataForm.name
         })
       }).then(({ data }) => {
         if (data && data.code === 0) {
@@ -112,6 +161,13 @@ export default {
         }
         this.dataListLoading = false;
       });
+    },
+    dateFormat(row, column) {
+      const date = new Date(row[column.property])
+      return date.getFullYear() + '-' +
+      date.getMonth() + '-' +
+      date.getDate()
+      //return cellValue ? fecha.format(new Date(cellValue), 'YYYY-MM-DD') : '';
     },
     // 每页数
     sizeChangeHandle(val) {
@@ -152,8 +208,8 @@ export default {
         }
       ).then(() => {
         this.$http({
-          url: this.$http.adornUrl("/other/tadvert/delete"),
-          method: "delete",
+          url: this.$http.adornUrl("/sales/tcoupon/delete"),
+          method: "post",
           data: this.$http.adornData(ids, false)
         }).then(({ data }) => {
           if (data && data.code === 0) {

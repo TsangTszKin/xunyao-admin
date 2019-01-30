@@ -64,19 +64,22 @@
       <el-row type="flex" class="row-bg">
         <el-col :span="12">
           <el-form-item label="减多少" prop="cash">
-            <el-input v-model="dataForm.cash" placeholder="减多少，满免费为0"></el-input>
+            <el-input v-model="dataForm.cash" placeholder="减多少元，满免费为0"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="活动状态" prop="status">
-            <el-select class="select" v-model="dataForm.status" placeholder="请选择" >
-              <el-option :value="0" label="未开始"></el-option>
-              <el-option :value="1" label="进行中"></el-option>
-              <el-option :value="2" label="已结束"></el-option>
-            </el-select>
+          <el-form-item label="优惠券数" prop="provideNum">
+            <el-input v-model="dataForm.provideNum" placeholder="请输入要生成的优惠券数量"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
+      <el-form-item label="活动状态" prop="status">
+        <el-select class="select" v-model="dataForm.status" placeholder="请选择" >
+          <el-option :value="0" label="未开始"></el-option>
+          <el-option :value="1" label="进行中"></el-option>
+          <el-option :value="2" label="已结束"></el-option>
+        </el-select>
+      </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
@@ -95,7 +98,7 @@ export default {
     return {
       visible: false,
       dataForm: {
-        shopId: 0,
+        shopId: null,
         startTime:'',
         endTime:'',
         type:null,
@@ -124,7 +127,15 @@ export default {
         meet: [
           { required: true, message: "请输入需满多少元", trigger: "blur" }
         ],
-        cash: [{ required: true, message: "请输入可减多少", trigger: "blur" }]
+        cash: [
+          { required: true, message: "请输入可减多少", trigger: "blur" }
+        ],
+        provideNum: [
+          { required: true, message: "请输入优惠券数", trigger: "blur" }
+        ],
+        status: [
+          { required: true, message: "请选择状态", trigger: "blur" }
+        ]
       }
     };
   },
@@ -143,13 +154,14 @@ export default {
             params: this.$http.adornParams()
           }).then(({ data }) => {
             if (data && data.code === 0) {
-              this.dataForm = data.tactivity;
+              this.dataForm = data.tActivity;
             }
           });
         }
       });
     },
     shopChangeSelectCallBack(obj) {
+      if(obj.shopId==0)obj.shopName="不限";
       this.dataForm.shopId = obj.shopId;
       this.dataForm.shopName = obj.shopName;
     },

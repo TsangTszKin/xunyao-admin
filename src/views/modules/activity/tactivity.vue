@@ -7,12 +7,12 @@
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
         <el-button
-          v-if="isAuth('generator:tactivity:save')"
+          v-if="isAuth('sales:tactivity:save')"
           type="primary"
           @click="addOrUpdateHandle()"
         >新增</el-button>
         <el-button
-          v-if="isAuth('generator:tactivity:delete')"
+          v-if="isAuth('sales:tactivity:delete')"
           type="danger"
           @click="deleteHandle()"
           :disabled="dataListSelections.length <= 0"
@@ -35,12 +35,12 @@
       <el-table-column prop="type" header-align="center" align="center" label="活动类型">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.type === 1" size="layer">满免邮</el-tag>
-          <el-tag v-else-if="scope.row.orderStatus === 2" size="small">满减现金</el-tag>
-          <el-tag v-else-if="scope.row.orderStatus === 3" size="small">满减抵压金</el-tag>
+          <el-tag v-else-if="scope.row.type === 2" size="layer">满减现金</el-tag>
+          <el-tag v-else-if="scope.row.type === 3" size="layer">满减抵压金</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="meet" header-align="center" align="center" label="满多少"></el-table-column>
-      <el-table-column prop="cash" header-align="center" align="center" label="减多少">
+      <el-table-column prop="meet" header-align="center" align="center" label="满多少元"></el-table-column>
+      <el-table-column prop="cash" header-align="center" align="center" label="减多少元">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.type === 1" size="small">免邮</el-tag>
           <div v-else >{{scope.row.cash}}</div>
@@ -59,6 +59,9 @@
           <el-tag v-else size="small">包邮</el-tag>
         </template>
       </el-table-column> -->
+      <el-table-column prop="provideNum" header-align="center" align="center" label="优惠券数"></el-table-column>
+      <el-table-column prop="getNum" header-align="center" align="center" label="已领取数"></el-table-column>
+      <el-table-column prop="useNum" header-align="center" align="center" label="已使用数"></el-table-column>
       <el-table-column prop="status" header-align="center" align="center" label="活动状态">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.type === 1" size="small" type="danger">未开始</el-tag>
@@ -186,8 +189,8 @@ export default {
         }
       ).then(() => {
         this.$http({
-          url: this.$http.adornUrl("/generator/tactivity/delete"),
-          method: "post",
+          url: this.$http.adornUrl("/sales/tactivity/delete"),
+          method: "delete",
           data: this.$http.adornData(ids, false)
         }).then(({ data }) => {
           if (data && data.code === 0) {
