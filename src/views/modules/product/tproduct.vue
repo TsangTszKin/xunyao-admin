@@ -29,6 +29,7 @@
       <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
       <el-table-column prop="name" header-align="center" align="center" label="商品名称"></el-table-column>
       <el-table-column prop="className" header-align="center" align="center" label="所属分类"></el-table-column>
+      <el-table-column prop="shopName" header-align="center" align="center" label="所属商家"></el-table-column>
       <el-table-column prop="oldPrice" header-align="center" align="center" label="原价格"></el-table-column>
       <el-table-column prop="discountPrice" header-align="center" align="center" label="优惠价"></el-table-column>
       <el-table-column prop="commonName" header-align="center" align="center" label="通用名称"></el-table-column>
@@ -56,7 +57,8 @@
       </el-table-column>
       <el-table-column prop="state" header-align="center" align="center" label="审批状态">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.state === 0" size="small" type="danger">待审核</el-tag>
+          <el-tag v-if="scope.row.state === -1" size="small" type="danger">待提交</el-tag>
+          <el-tag v-else-if="scope.row.state === 0" size="small" type="danger">待审核</el-tag>
           <el-tag v-else-if="scope.row.state === 1" size="small" type="danger">通过</el-tag>
           <el-tag v-else size="small">不通过</el-tag>
         </template>
@@ -86,6 +88,7 @@
       <el-table-column fixed="right" header-align="center" align="center" width="150" label="操作">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
+          <el-button type="text" v-if="scope.row.state === -1||scope.row.state === 2" size="small" @click="auditHandle(scope.row.id)">提交审批</el-button>
           <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
@@ -186,6 +189,32 @@ export default {
           url: this.$http.adornUrl('/admin/product/delete'),
           method: 'delete',
           data: this.$http.adornData(ids, false)
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            this.$message({
+              message: '操作成功',
+              type: 'success',
+              duration: 1500,
+              onClose: () => {
+                this.getDataList()
+              }
+            })
+          } else {
+            this.$message.error(data.msg)
+          }
+        })
+      })
+    },
+    auditHandle(id) {
+      this.$confirm(`确定要提交审批吗?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http({
+          url: this.$http.adornUrl('/admin/product/applyAudit'),
+          method: 'post',
+          data: this.$http.adornData(id, false)
         }).then(({ data }) => {
           if (data && data.code === 0) {
             this.$message({

@@ -163,11 +163,12 @@ export default {
   data() {
     return {
       visible: false,
+      uploadVisible:false,
       url:this.$http.adornUrl(`/admin/other/uploadFile?token=${this.$cookie.get('token')}`),
       dataForm: {
-        shopId:0,
+        shopId:'',
         classId:null,
-        state:0,
+        state:-1,
         oldPrice:0.0,
         top:0,
         prescription:0,
@@ -235,7 +236,7 @@ export default {
       this.visible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].resetFields();
-        if (this.dataForm.id) {
+        //if (this.dataForm.id) {
           this.$http({
             url: this.$http.adornUrl(`/admin/product/info/${this.dataForm.id}`),
             method: "get",
@@ -245,7 +246,7 @@ export default {
               this.dataForm = data.tProduct;
             }
           });
-        }
+        //}
       });
     },
     // 表单提交
