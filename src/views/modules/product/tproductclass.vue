@@ -29,8 +29,19 @@
       <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
       <!-- <el-table-column prop="id" header-align="center" align="center" label="主键id"></el-table-column>
       <el-table-column prop="parentId" header-align="center" align="center" label="父id"></el-table-column> -->
+      <el-table-column prop="classImg" header-align="center" align="center" label="分类图片">
+        <template slot-scope="scope">
+          <img class="avatar"  style="height:36px" :src="scope.row.classImg" />
+        </template>
+      </el-table-column>
       <el-table-column prop="className" header-align="center" align="center" label="分类名称"></el-table-column>
       <el-table-column prop="bySort" header-align="center" align="center" label="排序"></el-table-column>
+      <el-table-column prop="isCommend" header-align="center" align="center" label="首页推荐">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.isCommend === 1" size="small" type="danger">是</el-tag>
+          <el-tag v-else size="small">否</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column prop="remarks" header-align="center" align="center" label="备注"></el-table-column>
       <el-table-column prop="createDate" header-align="center" align="center" label="创建日期"></el-table-column>
       <!-- <el-table-column prop="delFlag" header-align="center" align="center" label="删除标识"></el-table-column> -->

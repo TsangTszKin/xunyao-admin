@@ -88,7 +88,12 @@
       return {
         visible: false,
         dataForm2: {},
-        dataForm: {},
+        dataForm: {
+          status:'',
+          username:'',
+          password:'',
+          remarks:'',
+        },
         dataRule: {
           status: [
             { required: true, message: '状态不能为空', trigger: 'blur' }

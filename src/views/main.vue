@@ -18,6 +18,7 @@
   import MainNavbar from './main-navbar'
   import MainSidebar from './main-sidebar'
   import MainContent from './main-content'
+  import WebSocketStore from '@/utils/WebSocketStore';
   export default {
     data () {
       return {
@@ -48,6 +49,7 @@
     },
     created () {
       this.getUserInfo()
+      WebSocketStore.init();
     },
     mounted () {
       this.resetDocumentClientHeight()

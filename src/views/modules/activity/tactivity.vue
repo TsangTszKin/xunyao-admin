@@ -64,9 +64,9 @@
       <el-table-column prop="useNum" header-align="center" align="center" label="已使用数"></el-table-column>
       <el-table-column prop="status" header-align="center" align="center" label="活动状态">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.type === 1" size="small" type="danger">未开始</el-tag>
-          <el-tag v-else-if="scope.row.type === 1" size="small">进行中</el-tag>
-          <el-tag v-else size="small" type="danger">已结束</el-tag>
+          <el-tag v-if="scope.row.status === 0" size="small" type="danger">未开始</el-tag>
+          <el-tag v-else-if="scope.row.status === 1" size="small">进行中</el-tag>
+          <el-tag v-else size="small" status="danger">已结束</el-tag>
         </template>
       </el-table-column>
       <!-- <el-table-column prop="createBy" header-align="center" align="center" label="创建人"></el-table-column>

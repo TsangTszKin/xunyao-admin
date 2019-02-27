@@ -103,8 +103,11 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="库存" prop="stock">
-            <el-input v-model="dataForm.stock" placeholder="库存"></el-input>
+          <el-form-item label="是否有库存" prop="stock">
+            <el-select class="select" v-model="dataForm.stock" placeholder="请选择" >
+              <el-option :value="0" label="否">无</el-option>
+              <el-option :value="1" label="是">有</el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>

@@ -14,7 +14,7 @@
       >
       <el-row type="flex" class="row-bg">
         <el-col :span="12">
-            <el-form-item label="商铺logo" prop="delFlag">
+            <el-form-item label="商铺logo" prop="shopLogo">
               <img v-if="dataForm.shopLogo" :src="dataForm.shopLogo" style="width: 48px;height: 48px;">
             </el-form-item>
         </el-col>
@@ -180,7 +180,7 @@ export default {
         shopService: [
           { required: true, message: '1：支持开发票、2：支持医保支付 3、支持送货上门 0：无不能为空', trigger: 'blur' }
         ],
-        drugLicensing: [
+        /*drugLicensing: [
           { required: true, message: '药品经营许可不能为空', trigger: 'blur' }
         ],
         businessLicense: [
@@ -191,9 +191,9 @@ export default {
         ],
         otherQualifications: [
           { required: true, message: '其它从业资质不能为空', trigger: 'blur' }
-        ],
+        ],*/
         isClosed: [
-          { required: true, message: '0:否；1是不能为空', trigger: 'blur' }
+          { required: true, message: '是否关闭', trigger: 'blur' }
         ]
       },
       dataList: [],

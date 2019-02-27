@@ -10,8 +10,20 @@
     <el-form-item label="分类名称" prop="className">
       <el-input v-model="dataForm.className" placeholder="分类名称"></el-input>
     </el-form-item>
+    <el-form-item label="分类图片" prop="classImg">
+      <el-upload :action="url" :before-upload="beforeUploadHandle" :on-success="successHandle">
+        <el-button type="primary">上传图片</el-button>
+      </el-upload>
+      <img v-if="dataForm.classImg" :src="dataForm.classImg" style="width: 48px;height: 48px;">
+    </el-form-item>
     <el-form-item label="排序" prop="bySort">
       <el-input v-model="dataForm.bySort" placeholder="排序"></el-input>
+    </el-form-item>
+    <el-form-item label="首页推荐" prop="top">
+      <el-select class="select" v-model="dataForm.isCommend" placeholder="请选择" >
+        <el-option :value="1" label="是">是</el-option>
+        <el-option :value="0" label="否">否</el-option>
+      </el-select>
     </el-form-item>
     <el-form-item label="备注" prop="remarks">
       <el-input v-model="dataForm.remarks" placeholder="备注"></el-input>
@@ -28,15 +40,22 @@
 </template>
 
 <script>
+  import Upload from '@/views/modules/oss/oss-upload';
   export default {
+    components: {
+      Upload
+    },
     data () {
       return {
         visible: false,
+        url:this.$http.adornUrl(`/admin/other/uploadFile?token=${this.$cookie.get('token')}`),
         dataForm: {
           id: 0,
           parentId: '',
+          classImg: '',
           className: '',
-          bySort: '',
+          bySort: 1,
+          isCommend: 1,
           remarks: '',
           delFlag: ''
         },
@@ -46,10 +65,11 @@
           ],
           bySort: [
             { required: true, message: '排序不能为空', trigger: 'blur' }
-          ],
-          remarks: [
-            { required: true, message: '备注不能为空', trigger: 'blur' }
           ]
+          // ,
+          // remarks: [
+          //   { required: true, message: '备注不能为空', trigger: 'blur' }
+          // ]
         }
       }
     },
@@ -71,6 +91,16 @@
             })
           }
         })
+      },
+      beforeUploadHandle (file) {
+        if (file.type !== 'image/jpg' && file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
+          this.$message.error('只支持jpg、png、gif格式的图片！')
+          return false
+        }
+      },
+      successHandle (response) {
+        this.dataForm.classImg = response.url;
+        //alert(this.dataForm.productImg);
       },
       // 表单提交
       dataFormSubmit () {
@@ -101,3 +131,29 @@
     }
   }
 </script>
+
+<style scoped>
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+</style>

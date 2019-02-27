@@ -2,16 +2,16 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-select class="select" v-model="dataForm.type" placeholder="请选择反馈类型" >
-          <el-option :value="1" label="建议"></el-option>
-          <el-option :value="2" label="意见"></el-option>
-          <el-option :value="3" label="投诉"></el-option>
+        <el-select class="select" v-model="dataForm.type" placeholder="请选择消息类型" >
+          <el-option :value="1" label="商家消息"></el-option>
+          <el-option :value="2" label="系统消息"></el-option>
+          <el-option :value="3" label="买家消息"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <!-- <el-button v-if="isAuth('other:tsuggest:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('other:tsuggest:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button> -->
+        <el-button v-if="isAuth('other:tmessage:save')" type="primary" @click="addOrUpdateHandle()">发送消息</el-button>
+        <el-button v-if="isAuth('other:tmessage:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -27,57 +27,63 @@
         width="50">
       </el-table-column>
       <el-table-column
+        prop="sendBy"
+        header-align="center"
+        align="center"
+        label="发送人">
+      </el-table-column>
+      <el-table-column
+        prop="receiverBy"
+        header-align="center"
+        align="center"
+        label="接收人">
+      </el-table-column>
+      <el-table-column
         prop="type"
         header-align="center"
         align="center"
-        label="反馈类型">
+        label="消息类型">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.type === 1" size="small">建议</el-tag>
-          <el-tag v-else-if="scope.row.type === 2" size="small" type="danger">意见</el-tag>
-          <el-tag v-else size="small" type="danger">投诉</el-tag>
+          <el-tag v-if="scope.row.type === 1" size="small">商家消息</el-tag>
+          <el-tag v-else-if="scope.row.type === 2" size="small">系统消息</el-tag>
+          <el-tag v-else-if="scope.row.type === 3" size="small">买家消息</el-tag>
         </template>
       </el-table-column>
       <el-table-column
-        prop="name"
+        prop="message"
         header-align="center"
         align="center"
-        label="姓名">
+        label="消息内容">
       </el-table-column>
       <el-table-column
-        prop="telephone"
+        prop="createTime"
         header-align="center"
         align="center"
-        label="电话">
+        label="发送时间">
       </el-table-column>
       <el-table-column
-        prop="weixin"
+        prop="readStatus"
         header-align="center"
         align="center"
-        label="微信号">
+        label="阅读状态">
       </el-table-column>
       <el-table-column
-        prop="qq"
+        prop="readTime"
         header-align="center"
         align="center"
-        label="QQ号">
+        label="阅读时间">
       </el-table-column>
       <el-table-column
-        prop="createDate"
-        header-align="center"
-        align="center"
-        label="提交时间">
-      </el-table-column>
-      <!-- <el-table-column
         fixed="right"
         header-align="center"
         align="center"
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.suggestId)">修改</el-button>
-          <el-button type="text" size="small" @click="deleteHandle(scope.row.suggestId)">删除</el-button>
+          <!-- <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button> -->
+          <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
         </template>
-      </el-table-column> -->
+      </el-table-column>
     </el-table>
     <el-pagination
       @size-change="sizeChangeHandle"
@@ -94,7 +100,7 @@
 </template>
 
 <script>
-  import AddOrUpdate from './tsuggest-add-or-update'
+  import AddOrUpdate from './tmessage-add-or-update'
   export default {
     data () {
       return {
@@ -121,12 +127,12 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/other/tsuggest/list'),
+          url: this.$http.adornUrl('/other/tmessage/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,
-            'type': this.dataForm.type
+            'key': this.dataForm.key
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
@@ -164,7 +170,7 @@
       // 删除
       deleteHandle (id) {
         var ids = id ? [id] : this.dataListSelections.map(item => {
-          return item.suggestId
+          return item.id
         })
         this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
           confirmButtonText: '确定',
@@ -172,8 +178,8 @@
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/other/tsuggest/delete'),
-            method: 'post',
+            url: this.$http.adornUrl('/other/tmessage/delete'),
+            method: 'delete',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {
             if (data && data.code === 0) {

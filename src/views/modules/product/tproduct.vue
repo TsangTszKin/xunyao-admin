@@ -35,7 +35,12 @@
       <el-table-column prop="commonName" header-align="center" align="center" label="通用名称"></el-table-column>
       <!-- <el-table-column prop="englishName" header-align="center" align="center" label="英文名字"></el-table-column> -->
       <el-table-column prop="specification" header-align="center" align="center" label="规格"></el-table-column>
-      <el-table-column prop="stock" header-align="center" align="center" label="库存"></el-table-column>
+      <el-table-column prop="stock" header-align="center" align="center" label="库存">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.stock === 1" size="small" type="danger">有</el-tag>
+          <el-tag v-else size="small">无</el-tag>
+        </template>
+      </el-table-column>
       <!-- <el-table-column prop="state" header-align="center" align="center" label="审批状态">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.state === 0" size="small" type="danger">待审核</el-tag>
