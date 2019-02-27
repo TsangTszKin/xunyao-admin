@@ -9,7 +9,7 @@
         <!-- <el-button v-if="isAuth('generator:torder:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button> -->
         <!-- <el-button
           v-if="isAuth('generator:torder:delete')"
-          type="danger"
+         
           @click="deleteHandle()"
           :disabled="dataListSelections.length <= 0"
         >批量删除</el-button> -->
@@ -33,19 +33,19 @@
       
       <el-table-column prop="orderStatus" header-align="center" align="center" label="订单状态" >
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.orderStatus === 0" size="small" type="danger">待确认</el-tag>
-          <el-tag v-else-if="scope.row.orderStatus === 1" size="small" type="danger">待发货</el-tag>
-          <el-tag v-else-if="scope.row.orderStatus === 2" size="small" type="danger">已完成</el-tag>
+          <el-tag v-if="scope.row.orderStatus === 0" size="small">待确认</el-tag>
+          <el-tag v-else-if="scope.row.orderStatus === 1" size="small">待发货</el-tag>
+          <el-tag v-else-if="scope.row.orderStatus === 2" size="small">已完成</el-tag>
           <el-tag v-else size="small">已取消</el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="shopOrderStatus" header-align="center" align="center" label="物流状态">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.shopOrderStatus === 0" size="small" type="danger">未下单</el-tag>
-          <el-tag v-else-if="scope.row.shopOrderStatus === 1" size="small" type="danger">已下单</el-tag>
-          <el-tag v-else-if="scope.row.shopOrderStatus === 2" size="small" type="danger">已确认</el-tag>
-          <el-tag v-else-if="scope.row.shopOrderStatus === 3" size="small" type="danger">已发货</el-tag>
-          <el-tag v-else-if="scope.row.shopOrderStatus === 4" size="small" type="danger">已收货</el-tag>
+          <el-tag v-if="scope.row.shopOrderStatus === 0" size="small">未下单</el-tag>
+          <el-tag v-else-if="scope.row.shopOrderStatus === 1" size="small">已下单</el-tag>
+          <el-tag v-else-if="scope.row.shopOrderStatus === 2" size="small">已确认</el-tag>
+          <el-tag v-else-if="scope.row.shopOrderStatus === 3" size="small">已发货</el-tag>
+          <el-tag v-else-if="scope.row.shopOrderStatus === 4" size="small">已收货</el-tag>
           <el-tag v-else size="small">已违约</el-tag>
         </template>
       </el-table-column>
@@ -55,7 +55,7 @@
       <el-table-column fixed="right" header-align="center" align="center" width="150" label="操作">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改订单</el-button>
-          <el-button v-if="scope.row.orderStatus === 1" type="text" size="small" @click="confirmSendHandle(scope.row.id)">确认发货</el-button>
+          <el-button v-if="scope.row.orderStatus === 1&&scope.row.shopOrderStatus === 1" type="text" size="small" @click="confirmSendHandle(scope.row.id)">确认发货</el-button>
         </template>
       </el-table-column>
     </el-table>
