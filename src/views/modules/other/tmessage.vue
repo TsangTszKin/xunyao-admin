@@ -5,7 +5,8 @@
         <el-select class="select" v-model="dataForm.type" placeholder="请选择消息类型" >
           <el-option :value="1" label="商家消息"></el-option>
           <el-option :value="2" label="系统消息"></el-option>
-          <el-option :value="3" label="买家消息"></el-option>
+          <el-option :value="3" label="代收货消息"></el-option>
+          <el-option :value="4" label="下单消息"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -35,7 +36,8 @@
         <template slot-scope="scope">
           <el-tag v-if="scope.row.type === 1" size="small">商家消息</el-tag>
           <el-tag v-else-if="scope.row.type === 2" size="small">系统消息</el-tag>
-          <el-tag v-else-if="scope.row.type === 3" size="small">买家消息</el-tag>
+          <el-tag v-else-if="scope.row.type === 3" size="small">代收货消息</el-tag>
+          <el-tag v-else-if="scope.row.type === 4" size="small">下单消息</el-tag>
         </template>
       </el-table-column>
       <el-table-column
