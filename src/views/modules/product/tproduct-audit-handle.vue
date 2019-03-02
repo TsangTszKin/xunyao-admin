@@ -111,9 +111,9 @@
       <el-form-item label="温馨提示" prop="reminder">
         {{dataForm.reminder}}
       </el-form-item>
-      <el-form-item label="备注" prop="remarks">
+      <!-- <el-form-item label="备注" prop="remarks">
         {{dataForm.remarks}}
-      </el-form-item>
+      </el-form-item> -->
       <hr />
     <el-form-item label="审批状态" prop="state">
       <el-select class="select" v-model="dataForm.state" placeholder="请选择" >

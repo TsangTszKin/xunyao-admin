@@ -135,8 +135,14 @@
       <el-form-item label="温馨提示" prop="reminder">
         <el-input v-model="dataForm.reminder" placeholder="温馨提示"></el-input>
       </el-form-item>
-      <el-form-item label="备注" prop="remarks">
-        <el-input type="textarea" v-model="dataForm.remarks" placeholder="备注"></el-input>
+      <el-form-item label="商品详情" prop="remarks">
+        <!-- <el-input type="textarea" v-model="dataForm.remarks" placeholder="备注"></el-input> -->
+        <el-upload :action="url" :before-upload="beforeUploadHandle" :on-success="successHandle2">
+          <el-button type="primary">添加图片</el-button>
+        </el-upload>
+        <div v-for="img in dataForm.detailImgs" :key="img">
+          <img  class="avatar" :src="img">
+        </div>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -177,7 +183,8 @@ export default {
         prescription:0,
         stock:0,
         lowerShelf:0,
-        productImg:''
+        productImg:'',
+        detailImgs:[]
       },
       dataRule: {
         shopId: [
@@ -247,6 +254,9 @@ export default {
           }).then(({ data }) => {
             if (data && data.code === 0) {
               this.dataForm = data.tProduct;
+              if(this.dataForm.detailImgs==null){
+                this.dataForm.detailImgs = [];
+              }
             }
           });
         //}
@@ -298,15 +308,23 @@ export default {
       //this.dataForm.productImg = url;
     },
     beforeUploadHandle (file) {
-        if (file.type !== 'image/jpg' && file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
-          this.$message.error('只支持jpg、png、gif格式的图片！')
-          return false
-        }
-      },
+      if (file.type !== 'image/jpg' && file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
+        this.$message.error('只支持jpg、png、gif格式的图片！')
+        return false
+      }
+    },
     successHandle (response) {
       this.dataForm.productImg = response.url;
+      //alert(this.dataForm.productImg);
+    },
+    successHandle2 (response) {
+      //alert(this.dataForm.detailImgs);
+      this.dataForm.detailImgs.push(response.url);
       //alert(this.dataForm.productImg);
     }
   }
 };
 </script>
+<style>
+.el-upload-list{display: none}
+</style>
