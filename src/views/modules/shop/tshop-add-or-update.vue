@@ -109,7 +109,12 @@
             <el-form-item label="医保服务所在地" prop="serviceArea">
               <!-- <el-cascader :options="cityOption" @change="shebaoAreaChange"></el-cascader> -->
               <el-select class="select" multiple v-model="serviceArea" placeholder="请选择">
-                <el-option v-for="item in areaPickerData" :value="item" :label="item">{{item}}</el-option>
+                <el-option
+                  v-for="(item, i) in areaPickerData"
+                  :value="item"
+                  :key="i"
+                  :label="item"
+                >{{item}}</el-option>
               </el-select>
             </el-form-item>
           </el-col>
