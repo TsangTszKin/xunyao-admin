@@ -22,6 +22,7 @@
         <el-upload :action="url" :before-upload="beforeUploadHandle" :on-success="successHandle">
           <el-button type="primary">上传图片</el-button>
         </el-upload>
+         <el-alert title="请上传200px*200px的图片" type="info" close-text="知道了" style="margin-top: 10px;"></el-alert>
         <img class="avatar" style="width:200px" :src="dataForm.productImg">
         <!-- <ImgSelect
           :isMulti="false"
@@ -140,8 +141,9 @@
         <el-upload :action="url" :before-upload="beforeUploadHandle" :on-success="successHandle2">
           <el-button type="primary">添加图片</el-button>
         </el-upload>
+        <el-alert title="请上传不大于500px*500px的图片" type="info" close-text="知道了" style="margin-top: 10px;"></el-alert>
         <div v-for="img in dataForm.detailImgs" :key="img">
-          <img  class="avatar" :src="img">
+          <img style="width: 100%;" class="avatar" :src="img">
         </div>
       </el-form-item>
     </el-form>

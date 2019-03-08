@@ -29,28 +29,28 @@
       </el-col>
     </el-row>
     <el-form-item label="店铺logo" prop="shopLogo">
-      <img :src="dataForm2.shopLogo" @click="openPic(dataForm2.shopLogo)"> 
+      <img style="width: 100%;" :src="dataForm2.shopLogo" @click="openPic(dataForm2.shopLogo)"> 
     </el-form-item>
     <el-form-item label="身份证正面" prop="cardId1">
-      <img :src="dataForm2.cardId1" @click="openPic(dataForm2.cardId1)"> 
+      <img style="width: 100%;" :src="dataForm2.cardId1" @click="openPic(dataForm2.cardId1)"> 
     </el-form-item>
     <el-form-item label="身份证反面" prop="cardId2">
-      <img :src="dataForm2.cardId2" @click="openPic(dataForm2.cardId2)"> 
+      <img style="width: 100%;" :src="dataForm2.cardId2" @click="openPic(dataForm2.cardId2)"> 
     </el-form-item>
     <el-form-item label="药品经营许可证" prop="drugBusinessCert">
-      <img :src="dataForm2.drugBusinessCert" @click="openPic(dataForm2.drugBusinessCert)"> 
+      <img style="width: 100%;" :src="dataForm2.drugBusinessCert" @click="openPic(dataForm2.drugBusinessCert)"> 
     </el-form-item>
     <el-form-item label="食品经营许可证" prop="foodBusinessCert">
-      <img :src="dataForm2.foodBusinessCert" @click="openPic(dataForm2.foodBusinessCert)"> 
+      <img style="width: 100%;" :src="dataForm2.foodBusinessCert" @click="openPic(dataForm2.foodBusinessCert)"> 
     </el-form-item>
     <el-form-item label="营业执照" prop="businessLicense">
-      <img :src="dataForm2.businessLicense" @click="openPic(dataForm2.businessLicense)"> 
+      <img style="width: 100%;" :src="dataForm2.businessLicense" @click="openPic(dataForm2.businessLicense)"> 
     </el-form-item>
     <el-form-item label="药品经营质量管理规范" prop="drugQualityCert">
-      <img :src="dataForm2.drugQualityCert" @click="openPic(dataForm2.drugQualityCert)"> 
+      <img style="width: 100%;" :src="dataForm2.drugQualityCert" @click="openPic(dataForm2.drugQualityCert)"> 
     </el-form-item>
     <el-form-item label="执业药师注册证" prop="drugRegisterCert">
-      <img :src="dataForm2.drugRegisterCert" @click="openPic(dataForm2.drugRegisterCert)"> 
+      <img style="width: 100%;" :src="dataForm2.drugRegisterCert" @click="openPic(dataForm2.drugRegisterCert)"> 
     </el-form-item>
     <hr />
     <el-form-item label="审批状态" prop="status">

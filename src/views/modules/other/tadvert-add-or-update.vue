@@ -18,6 +18,7 @@
         <el-upload :action="url" :before-upload="beforeUploadHandle" :on-success="successHandle">
           <el-button type="primary">上传图片</el-button>
         </el-upload>
+        <el-alert title="请上传415px*165px的图片" type="info" close-text="知道了" style="margin: 10px 0;"></el-alert>
         <img v-if="dataForm.pic" :src="dataForm.pic" style="width: 300px;">
       </el-form-item>
       <el-form-item label="广告链接" prop="link">

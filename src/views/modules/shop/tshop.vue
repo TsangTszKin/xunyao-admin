@@ -64,6 +64,12 @@
           <el-tag v-else size="small">否</el-tag>
         </template>
       </el-table-column>
+      <el-table-column prop="isClosed" header-align="center" align="center" label="是否VIP">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.isVip === 1" size="small" type="danger">是</el-tag>
+          <el-tag v-else size="small">否</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" header-align="center" align="center" width="150" label="操作">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.shopId)">修改</el-button>
