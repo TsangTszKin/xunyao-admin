@@ -28,12 +28,12 @@
         align="center"
         label="优惠券名称">
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="shopName"
         header-align="center"
         align="center"
         label="所属商家">
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         prop="activityName"
         header-align="center"
