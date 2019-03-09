@@ -59,7 +59,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex" class="row-bg">
+        <!-- <el-row type="flex" class="row-bg">
           <el-col :span="12">
             <el-form-item label="经度" prop="latitude">
               <el-input v-model="dataForm.latitude" placeholder="经度"></el-input>
@@ -70,7 +70,7 @@
               <el-input v-model="dataForm.longitude" placeholder="纬度"></el-input>
             </el-form-item>
           </el-col>
-        </el-row>
+        </el-row> -->
         <el-row type="flex" class="row-bg">
           <el-col :span="24">
             <el-form-item label="营业时间" prop="businessTime">

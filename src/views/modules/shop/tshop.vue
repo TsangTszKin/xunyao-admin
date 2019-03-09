@@ -42,7 +42,11 @@
       <el-table-column prop="latitude" header-align="center" align="center" label="纬度"></el-table-column> -->
       <el-table-column prop="phone" header-align="center" align="center" label="手机号"></el-table-column>
       <el-table-column prop="telephone" header-align="center" align="center" label="座机号"></el-table-column>
-      <el-table-column prop="businessTime" header-align="center" align="center" label="营业时间"></el-table-column>
+      <el-table-column prop="businessTime" header-align="center" align="center" label="营业时间">
+        <template slot-scope="scope">
+          {{scope.row.businessTime}}~{{scope.row.businessTime2}}
+        </template>
+      </el-table-column>
       <!-- <el-table-column
         prop="shopService"
         header-align="center"
