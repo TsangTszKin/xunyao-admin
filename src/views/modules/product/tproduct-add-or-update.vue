@@ -13,7 +13,8 @@
     >
       <el-form-item label="商品名称" prop="name">
         <el-input v-if="dataForm.id" v-model="dataForm.name" placeholder></el-input>
-        <ProductBasePicker v-if="!dataForm.id"
+        <ProductBasePicker
+          v-if="!dataForm.id"
           @changeSelectCallBack="productBaseChangeSelectCallBack"
           :value="dataForm.baseid"
         />
@@ -22,13 +23,13 @@
         <el-upload :action="url" :before-upload="beforeUploadHandle" :on-success="successHandle">
           <el-button type="primary">上传图片</el-button>
         </el-upload>
-         <el-alert title="请上传200px*200px的图片" type="info" close-text="知道了" style="margin-top: 10px;"></el-alert>
+        <el-alert title="请上传200px*200px的图片" type="info" close-text="知道了" style="margin-top: 10px;"></el-alert>
         <img class="avatar" style="width:200px" :src="dataForm.productImg">
         <!-- <ImgSelect
           :isMulti="false"
           @changeImgSelect="changeImgSelect"
           :value="dataForm.productImg"
-        /> -->
+        />-->
       </el-form-item>
       <el-row type="flex" class="row-bg">
         <el-col :span="12">
@@ -52,11 +53,57 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="英文名字" prop="englishName">
-            <el-input v-model="dataForm.englishName" placeholder="英文名字"></el-input>
+          <el-form-item label="成分" prop="basesbasis">
+            <el-input v-model="dataForm.basesbasis" placeholder="成分"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
+      <el-row type="flex" class="row-bg">
+        <el-col :span="12">
+          <el-form-item label="性状" prop="characters">
+            <el-input v-model="dataForm.characters" placeholder="性状"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="不良反应" prop="untowardeffect">
+            <el-input v-model="dataForm.untowardeffect" placeholder="不良反应"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row type="flex" class="row-bg">
+        <el-col :span="24">
+          <el-form-item label="用法用量" prop="usages">
+            <el-input v-model="dataForm.usages" placeholder="用法用量"></el-input>
+          </el-form-item>
+        </el-col>
+        
+      </el-row>
+      <el-row type="flex" class="row-bg">
+       <el-col :span="12">
+          <el-form-item label="贮藏" prop="storage">
+            <el-input v-model="dataForm.storage" placeholder="贮藏"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="禁忌" prop="taboo">
+            <el-input v-model="dataForm.taboo" placeholder="禁忌"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row type="flex" class="row-bg">
+        <el-col :span="12">
+          <el-form-item label="注意事项" prop="announcements">
+            <el-input v-model="dataForm.announcements" placeholder="注意事项"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="药物相互作用" prop="druginteraction">
+            <el-input v-model="dataForm.druginteraction" placeholder="药物相互作用"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
       <el-row type="flex" class="row-bg">
         <el-col :span="12">
           <el-form-item label="规格" prop="specification">
@@ -97,7 +144,7 @@
       <el-row type="flex" class="row-bg">
         <el-col :span="12">
           <el-form-item label="是否处方药" prop="prescription">
-            <el-select class="select" v-model="dataForm.prescription" placeholder="请选择" >
+            <el-select class="select" v-model="dataForm.prescription" placeholder="请选择">
               <el-option :value="0" label="否">否</el-option>
               <el-option :value="1" label="是">是</el-option>
             </el-select>
@@ -105,7 +152,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="是否有库存" prop="stock">
-            <el-select class="select" v-model="dataForm.stock" placeholder="请选择" >
+            <el-select class="select" v-model="dataForm.stock" placeholder="请选择">
               <el-option :value="0" label="否">无</el-option>
               <el-option :value="1" label="是">有</el-option>
             </el-select>
@@ -115,7 +162,7 @@
       <el-row type="flex" class="row-bg">
         <el-col :span="12">
           <el-form-item label="是否置顶" prop="top">
-            <el-select class="select" v-model="dataForm.top" placeholder="请选择" >
+            <el-select class="select" v-model="dataForm.top" placeholder="请选择">
               <el-option :value="0" label="否">否</el-option>
               <el-option :value="1" label="是">是</el-option>
             </el-select>
@@ -123,7 +170,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="是否下架" prop="lowerShelf">
-            <el-select class="select" v-model="dataForm.lowerShelf" placeholder="请选择" >
+            <el-select class="select" v-model="dataForm.lowerShelf" placeholder="请选择">
               <el-option :value="0" label="否">否</el-option>
               <el-option :value="1" label="是">是</el-option>
             </el-select>
@@ -141,7 +188,12 @@
         <el-upload :action="url" :before-upload="beforeUploadHandle" :on-success="successHandle2">
           <el-button type="primary">添加图片</el-button>
         </el-upload>
-        <el-alert title="请上传不大于500px*500px的图片" type="info" close-text="知道了" style="margin-top: 10px;"></el-alert>
+        <el-alert
+          title="请上传不大于500px*500px的图片"
+          type="info"
+          close-text="知道了"
+          style="margin-top: 10px;"
+        ></el-alert>
         <div v-for="img in dataForm.detailImgs" :key="img">
           <img style="width: 100%;" class="avatar" :src="img">
         </div>
@@ -161,7 +213,7 @@ import ProductClassPicker from "@/components/ProductClassPicker";
 import ProductBasePicker from "@/components/ProductBasePicker";
 import ShopPicker from "@/components/ShopPicker";
 import ImgSelect from "@/components/ImgSelect";
-import Upload from '../oss/oss-upload'
+import Upload from "../oss/oss-upload";
 
 export default {
   components: {
@@ -174,19 +226,29 @@ export default {
   data() {
     return {
       visible: false,
-      uploadVisible:false,
-      url:this.$http.adornUrl(`/admin/other/uploadFile?token=${this.$cookie.get('token')}`),
+      uploadVisible: false,
+      url: this.$http.adornUrl(
+        `/admin/other/uploadFile?token=${this.$cookie.get("token")}`
+      ),
       dataForm: {
-        shopId:'',
-        classId:null,
-        state:-1,
-        oldPrice:0.0,
-        top:0,
-        prescription:0,
-        stock:0,
-        lowerShelf:0,
-        productImg:'',
-        detailImgs:[]
+        shopId: "",
+        classId: null,
+        state: -1,
+        oldPrice: 0.0,
+        top: 0,
+        prescription: 0,
+        stock: 0,
+        lowerShelf: 0,
+        productImg: "",
+        detailImgs: [],
+        basesbasis: "",
+        characters: "",
+        usages: "",
+        untowardeffect: "",
+        taboo: "",
+        announcements: "",
+        druginteraction: "",
+        storage: ""
       },
       dataRule: {
         shopId: [
@@ -195,7 +257,9 @@ export default {
         classId: [
           { required: true, message: "请选择所属分类", trigger: "blur" }
         ],
-        name: [{ required: true, message: "商品名称不能为空", trigger: "blur" }],
+        name: [
+          { required: true, message: "商品名称不能为空", trigger: "blur" }
+        ],
         commonName: [
           { required: true, message: "通用名称不能为空", trigger: "blur" }
         ],
@@ -238,7 +302,32 @@ export default {
         top: [{ required: true, message: "请选择是否置顶", trigger: "blur" }],
         lowerShelf: [
           { required: true, message: "请选择是否下架", trigger: "blur" }
-        ]
+        ],
+
+        basesbasis: [
+          { required: true, message: "成分不能为空", trigger: "blur" }
+        ],
+        characters: [
+          { required: true, message: "性状不能为空", trigger: "blur" }
+        ],
+        usages: [
+          { required: true, message: "用法用量不能为空", trigger: "blur" }
+        ],
+        untowardeffect: [
+          { required: true, message: "不良反应不能为空", trigger: "blur" }
+        ],
+        taboo: [
+          { required: true, message: "禁忌不能为空", trigger: "blur" }
+        ],
+        announcements: [
+          { required: true, message: "注意事项不能为空", trigger: "blur" }
+        ],
+        druginteraction: [
+          { required: true, message: "药物相互作用不能为空", trigger: "blur" }
+        ],
+        storage: [
+          { required: true, message: "贮藏不能为空", trigger: "blur" }
+        ],
       }
     };
   },
@@ -249,18 +338,18 @@ export default {
       this.$nextTick(() => {
         this.$refs["dataForm"].resetFields();
         //if (this.dataForm.id) {
-          this.$http({
-            url: this.$http.adornUrl(`/admin/product/info/${this.dataForm.id}`),
-            method: "get",
-            params: this.$http.adornParams()
-          }).then(({ data }) => {
-            if (data && data.code === 0) {
-              this.dataForm = data.tProduct;
-              if(this.dataForm.detailImgs==null){
-                this.dataForm.detailImgs = [];
-              }
+        this.$http({
+          url: this.$http.adornUrl(`/admin/product/info/${this.dataForm.id}`),
+          method: "get",
+          params: this.$http.adornParams()
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            this.dataForm = data.tProduct;
+            if (this.dataForm.detailImgs == null) {
+              this.dataForm.detailImgs = [];
             }
-          });
+          }
+        });
         //}
       });
     },
@@ -292,15 +381,16 @@ export default {
     },
     productChangeSelectCallBack(obj) {
       this.dataForm.classId = obj.id;
+      this.dataForm.productBaseId = obj.id;
       this.dataForm.className = obj.className;
     },
     productBaseChangeSelectCallBack(obj) {
-      for(var key in obj){
+      for (var key in obj) {
         this.dataForm[key] = obj[key];
       }
       this.dataForm.baseid = obj.id;
       this.dataForm.id = null;
-      this.dataForm.productExplain = obj.basesbasis
+      this.dataForm.productExplain = obj.basesbasis;
     },
     shopChangeSelectCallBack(obj) {
       this.dataForm.shopId = obj.shopId;
@@ -309,17 +399,22 @@ export default {
     changeImgSelect(url) {
       //this.dataForm.productImg = url;
     },
-    beforeUploadHandle (file) {
-      if (file.type !== 'image/jpg' && file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
-        this.$message.error('只支持jpg、png、gif格式的图片！')
-        return false
+    beforeUploadHandle(file) {
+      if (
+        file.type !== "image/jpg" &&
+        file.type !== "image/jpeg" &&
+        file.type !== "image/png" &&
+        file.type !== "image/gif"
+      ) {
+        this.$message.error("只支持jpg、png、gif格式的图片！");
+        return false;
       }
     },
-    successHandle (response) {
+    successHandle(response) {
       this.dataForm.productImg = response.url;
       //alert(this.dataForm.productImg);
     },
-    successHandle2 (response) {
+    successHandle2(response) {
       //alert(this.dataForm.detailImgs);
       this.dataForm.detailImgs.push(response.url);
       //alert(this.dataForm.productImg);
@@ -328,5 +423,7 @@ export default {
 };
 </script>
 <style>
-.el-upload-list{display: none}
+.el-upload-list {
+  display: none;
+}
 </style>
