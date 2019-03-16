@@ -385,11 +385,13 @@ export default {
       this.dataForm.className = obj.className;
     },
     productBaseChangeSelectCallBack(obj) {
+      console.log(obj);
       for (var key in obj) {
         this.dataForm[key] = obj[key];
       }
       this.dataForm.baseid = obj.id;
       this.dataForm.id = null;
+      this.dataForm.productBaseId = obj.id;
       this.dataForm.productExplain = obj.basesbasis;
     },
     shopChangeSelectCallBack(obj) {

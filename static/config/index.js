@@ -6,11 +6,11 @@
   window.SITE_CONFIG = {};
 
   // api接口请求地址
-   window.SITE_CONFIG['baseUrl'] = 'http://192.168.0.110:80';
+  //  window.SITE_CONFIG['baseUrl'] = 'http://192.168.0.110:80';
    //window.SITE_CONFIG['baseUrl'] = 'http://192.168.1.102:8888';
   // window.SITE_CONFIG['baseUrl'] = 'http://zwdjack.iok.la:40229';
   // @ts-ignore
-  // window.SITE_CONFIG['baseUrl'] = 'http://47.106.168.53:8091';
+  window.SITE_CONFIG['baseUrl'] = 'http://47.106.168.53:8091';
   // cdn地址 = 域名 + 版本号
   // @ts-ignore
   window.SITE_CONFIG['domain']  = './'; // 域名

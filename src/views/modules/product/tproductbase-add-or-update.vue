@@ -149,22 +149,22 @@
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.code === 0) {
-                this.dataForm.classId = data.tproductbase.classId
-                this.dataForm.name = data.tproductbase.name
-                this.dataForm.commonName = data.tproductbase.commonName
-                this.dataForm.englishName = data.tproductbase.englishName
-                this.dataForm.productImg = data.tproductbase.productImg
-                this.dataForm.specification = data.tproductbase.specification
-                this.dataForm.manufacturer = data.tproductbase.manufacturer
-                this.dataForm.barCode = data.tproductbase.barCode
-                this.dataForm.approvalNumber = data.tproductbase.approvalNumber
-                this.dataForm.productExplain = data.tproductbase.productExplain
-                this.dataForm.reminder = data.tproductbase.reminder
-                this.dataForm.oldPrice = data.tproductbase.oldPrice
-                this.dataForm.discountPrice = data.tproductbase.discountPrice
-                this.dataForm.prescription = data.tproductbase.prescription
-                this.dataForm.remarks = data.tproductbase.remarks
-                this.dataForm.delFlag = data.tproductbase.delFlag
+                this.dataForm.classId = data.tProductBase.classId
+                this.dataForm.name = data.tProductBase.name
+                this.dataForm.commonName = data.tProductBase.commonName
+                this.dataForm.englishName = data.tProductBase.englishName
+                this.dataForm.productImg = data.tProductBase.productImg
+                this.dataForm.specification = data.tProductBase.specification
+                this.dataForm.manufacturer = data.tProductBase.manufacturer
+                this.dataForm.barCode = data.tProductBase.barCode
+                this.dataForm.approvalNumber = data.tProductBase.approvalNumber
+                this.dataForm.productExplain = data.tProductBase.productExplain
+                this.dataForm.reminder = data.tProductBase.reminder
+                this.dataForm.oldPrice = data.tProductBase.oldPrice
+                this.dataForm.discountPrice = data.tProductBase.discountPrice
+                this.dataForm.prescription = data.tProductBase.prescription
+                this.dataForm.remarks = data.tProductBase.remarks
+                this.dataForm.delFlag = data.tProductBase.delFlag
               }
             })
           }
