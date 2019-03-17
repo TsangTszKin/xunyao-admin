@@ -13,9 +13,9 @@
     <el-form-item label="通用名称" prop="commonName">
       <el-input v-model="dataForm.commonName" placeholder="通用名称"></el-input>
     </el-form-item>
-    <el-form-item label="英文名字" prop="englishName">
+    <!-- <el-form-item label="英文名字" prop="englishName">
       <el-input v-model="dataForm.englishName" placeholder="英文名字"></el-input>
-    </el-form-item>
+    </el-form-item> -->
     <el-form-item label="商品图片（多张，隔开）" prop="productImg">
       <el-input v-model="dataForm.productImg" placeholder="商品图片（多张，隔开）"></el-input>
     </el-form-item>
@@ -94,9 +94,9 @@
           commonName: [
             { required: true, message: '通用名称不能为空', trigger: 'blur' }
           ],
-          englishName: [
-            { required: true, message: '英文名字不能为空', trigger: 'blur' }
-          ],
+          // englishName: [
+          //   { required: true, message: '英文名字不能为空', trigger: 'blur' }
+          // ],
           productImg: [
             { required: true, message: '商品图片（多张，隔开）不能为空', trigger: 'blur' }
           ],
