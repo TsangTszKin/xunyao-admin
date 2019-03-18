@@ -120,7 +120,6 @@
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
   </div>
 </template>
-
 <script>
 import AddOrUpdate from './tproduct-add-or-update'
 export default {
@@ -152,15 +151,15 @@ export default {
     getDataList() {
       this.dataListLoading = true
       this.$http({
-        url: this.$http.adornUrl('/admin/product/list'),
+        url: this.$http.adornUrl(`/admin/product/list`),
         method: 'get',
         params: this.$http.adornParams({
           'page': this.pageIndex,
           'limit': this.pageSize,
           // 'key': this.dataForm.key,
-          'shopName': this.dataForm.key,
-          'name': this.dataForm.key,
-          'className': this.dataForm.key,
+          'shopName': this.dataForm.shopName,
+          'name': this.dataForm.name,
+          'className': this.dataForm.className,
         })
       }).then(({ data }) => {
         if (data && data.code === 0) {
