@@ -52,7 +52,8 @@ const mainRoutes = {
     { path: '/config', component: _import('modules/other/tconfig'), name: 'config', meta: { title: '配置', isTab: true } },
     { path: '/money-trade', component: _import('modules/other/tmoneylog'), name: 'money-trade', meta: { title: '资金交易', isTab: true } },
     { path: '/product-audit', component: _import('modules/product/tproductaudit'), name: 'product-audit', meta: { title: '商品审核', isTab: true } },
-    { path: '/productbase', component: _import('modules/product/tproductbase'), name: 'productbase', meta: { title: '商品基础库', isTab: true } }
+    { path: '/productbase', component: _import('modules/product/tproductbase'), name: 'productbase', meta: { title: '商品基础库', isTab: true } },
+    { path: '/withdrawCashApplyList', component: _import('modules/other/twithdrawCashApply'), name: 'withdrawCashApplyList', meta: { title: '提现申请', isTab: true } }
   ],
   beforeEnter(to, from, next) {
     let token = Vue.cookie.get('token')
