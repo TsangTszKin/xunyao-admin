@@ -11,6 +11,7 @@
     <div id="main6" :style="{width: '100%', height: '300px',marginBottom: '50px'}"></div>
     <div id="main7" :style="{width: '100%', height: '300px',marginBottom: '50px'}"></div>
     <div id="main8" :style="{width: '100%', height: '300px',marginBottom: '50px'}"></div>
+    <div id="main10" :style="{width: '100%', height: '300px',marginBottom: '50px'}"></div>
     <div id="main9" :style="{width: '100%', height: '300px',marginBottom: '50px'}"></div>
   </div>
 </template>
@@ -24,16 +25,16 @@ export default {
     return {
       options: [
         {
-          value: 1,
-          label: "年度统计"
+          value: 3,
+          label: "日统计"
         },
         {
           value: 2,
           label: "月份统计"
         },
         {
-          value: 3,
-          label: "日统计"
+          value: 1,
+          label: "年度统计"
         }
       ],
       type: 3
@@ -82,6 +83,7 @@ export default {
       let xArray6 = [];
       let xArray7 = [];
       let xArray8 = [];
+      let xArray9 = [];
 
       data.buyerList.forEach(element => {
         if (!xArray1.includes(element.time)) {
@@ -123,6 +125,11 @@ export default {
           xArray8.push(element.time);
         }
       });
+      data.shopList.forEach(element => {
+        if (!xArray9.includes(element.time)) {
+          xArray9.push(element.time);
+        }
+      });
       xArray1.sort();
       xArray2.sort();
       xArray3.sort();
@@ -131,6 +138,7 @@ export default {
       xArray6.sort();
       xArray7.sort();
       xArray8.sort();
+      xArray9.sort();
 
       //初始化纵坐标
       let yArray = [];
@@ -143,6 +151,7 @@ export default {
       let maleBuyerListData = [];
       let femaleBuyerListData = [];
       let unknownBuyerListData = [];
+      let shopListData = [];
 
       xArray1.forEach(element => {
         let buyerListValue = 0;
@@ -216,6 +225,15 @@ export default {
         });
         unknownBuyerListData.push(unknownBuyerListDataValue);
       });
+      xArray9.forEach(element => {
+        let shopListDataValue = 0;
+        data.shopList.forEach(element2 => {
+          if (element2.time == element) {
+            shopListDataValue = element2.count;
+          }
+        });
+        shopListData.push(shopListDataValue);
+      });
       console.log(orderListData, successOrderListData, failureOrderListData);
       let myChart1 = echarts.init(document.getElementById("main1"));
       let myChart2 = echarts.init(document.getElementById("main2"));
@@ -226,17 +244,18 @@ export default {
       let myChart7 = echarts.init(document.getElementById("main7"));
       let myChart8 = echarts.init(document.getElementById("main8"));
       let myChart9 = echarts.init(document.getElementById("main9"));
+      let myChart10 = echarts.init(document.getElementById("main10"));
 
       // 绘制图表
       let option1 = {
         title: {
-          text: "用户总数"
+          text: "用户数"
         },
         tooltip: {
           trigger: "axis"
         },
         legend: {
-          data: ["用户总数"]
+          data: ["用户数"]
         },
         grid: {
           left: "3%",
@@ -259,7 +278,7 @@ export default {
         },
         series: [
           {
-            name: "用户总数",
+            name: "用户数",
             type: "line",
             stack: "总量",
             data: buyerListData
@@ -268,13 +287,13 @@ export default {
       };
       let option2 = {
         title: {
-          text: "用户访问数"
+          text: "用户访问次数"
         },
         tooltip: {
           trigger: "axis"
         },
         legend: {
-          data: ["用户访问数"]
+          data: ["用户访问次数"]
         },
         grid: {
           left: "3%",
@@ -297,7 +316,7 @@ export default {
         },
         series: [
           {
-            name: "用户访问数",
+            name: "用户访问次数",
             type: "line",
             stack: "总量",
             data: logListData
@@ -306,13 +325,13 @@ export default {
       };
       let option3 = {
         title: {
-          text: "订单总数"
+          text: "订单数"
         },
         tooltip: {
           trigger: "axis"
         },
         legend: {
-          data: ["订单总数"]
+          data: ["订单数"]
         },
         grid: {
           left: "3%",
@@ -335,7 +354,7 @@ export default {
         },
         series: [
           {
-            name: "订单总数",
+            name: "订单数",
             type: "line",
             stack: "总量",
             data: orderListData
@@ -366,7 +385,7 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: xArray3
+          data: xArray4
         },
         yAxis: {
           type: "value"
@@ -404,7 +423,7 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: xArray3
+          data: xArray5
         },
         yAxis: {
           type: "value"
@@ -442,14 +461,14 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: xArray4
+          data: xArray6
         },
         yAxis: {
           type: "value"
         },
         series: [
           {
-            name: "男性",
+            name: "男性用户",
             type: "line",
             stack: "总量",
             data: maleBuyerListData
@@ -480,7 +499,7 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: xArray4
+          data: xArray7
         },
         yAxis: {
           type: "value"
@@ -496,13 +515,13 @@ export default {
       };
       let option8 = {
         title: {
-          text: "未知性别"
+          text: "未知用户"
         },
         tooltip: {
           trigger: "axis"
         },
         legend: {
-          data: ["未知性别"]
+          data: ["未知用户"]
         },
         grid: {
           left: "3%",
@@ -518,14 +537,14 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: xArray4
+          data: xArray8
         },
         yAxis: {
           type: "value"
         },
         series: [
           {
-            name: "未知性别",
+            name: "未知用户",
             type: "line",
             stack: "总量",
             data: unknownBuyerListData
@@ -576,6 +595,44 @@ export default {
           }
         ]
       };
+      let option10 = {
+        title: {
+          text: "店铺增长"
+        },
+        tooltip: {
+          trigger: "axis"
+        },
+        legend: {
+          data: ["店铺增长"]
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: xArray9
+        },
+        yAxis: {
+          type: "value"
+        },
+        series: [
+          {
+            name: "店铺增长",
+            type: "line",
+            stack: "总量",
+            data: shopListData
+          }
+        ]
+      };
       myChart1.setOption(option1);
       myChart2.setOption(option2);
       myChart3.setOption(option3);
@@ -585,6 +642,7 @@ export default {
       myChart7.setOption(option7);
       myChart8.setOption(option8);
       myChart9.setOption(option9);
+      myChart10.setOption(option10);
     }
   },
   watch: {
