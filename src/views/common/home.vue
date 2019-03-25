@@ -1,39 +1,603 @@
 <template>
   <div class="mod-home">
-    <!-- <h3>项目介绍</h3>
-    <ul>
-      <li>renren-fast-vue基于vue、element-ui构建开发，实现<a href="https://gitee.com/renrenio/renren-fast" target="_blank">renren-fast</a>后台管理前端功能，提供一套更优的前端解决方案</li>
-      <li>前后端分离，通过token进行数据交互，可独立部署</li>
-      <li>主题定制，通过scss变量统一一站式定制</li>
-      <li>动态菜单，通过菜单管理统一管理访问路由</li>
-      <li>数据切换，通过mock配置对接口数据／mock模拟数据进行切换</li>
-      <li>发布时，可动态配置CDN静态资源／切换新旧版本</li>
-      <li>演示地址：<a href="http://fast.demo.renren.io" target="_blank">fast.demo.renren.io</a> (账号密码：admin/admin)</li>
-    </ul>
-    <h3>获取帮助</h3>
-    <ul>
-      <li>官方社区：<a href="//renren.io" target="_blank">renren.io</a></li>
-      <li>前端Git地址：<a href="//github.com/daxiongYang/renren-fast-vue" target="_blank">github.com/daxiongYang/renren-fast-vue</a></li>
-      <li>后台Git地址：<a href="//git.oschina.net/renrenio/renren-fast" target="_blank">git.oschina.net/renrenio/renren-fast</a></li>
-      <li>代码生成器：<a href="//git.oschina.net/renrenio/renren-generator" target="_blank">git.oschina.net/renrenio/renren-generator</a></li>
-      <li>如需关注项目最新动态，请Watch、Star项目，同时也是对项目最好的支持</li>
-    </ul>
-    <h3>官方QQ群</h3>
-    <ul>
-      <li>高级群：324780204(大牛云集，跟大牛学习新技能)</li>
-      <li>普通群：145799952(学习交流，互相解答各种疑问)</li>
-    </ul> -->
+    <el-select v-model="type" placeholder="请选择" style="margin-bottom: 50px;">
+      <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+    </el-select>
+    <div id="main1" :style="{width: '100%', height: '300px',marginBottom: '50px'}"></div>
+    <div id="main2" :style="{width: '100%', height: '300px',marginBottom: '50px'}"></div>
+    <div id="main3" :style="{width: '100%', height: '300px',marginBottom: '50px'}"></div>
+    <div id="main4" :style="{width: '100%', height: '300px',marginBottom: '50px'}"></div>
+    <div id="main5" :style="{width: '100%', height: '300px',marginBottom: '50px'}"></div>
+    <div id="main6" :style="{width: '100%', height: '300px',marginBottom: '50px'}"></div>
+    <div id="main7" :style="{width: '100%', height: '300px',marginBottom: '50px'}"></div>
+    <div id="main8" :style="{width: '100%', height: '300px',marginBottom: '50px'}"></div>
+    <div id="main9" :style="{width: '100%', height: '300px',marginBottom: '50px'}"></div>
   </div>
 </template>
 
 <script>
-  export default {
+import echarts from "echarts";
+import common from "../../utils/common";
+
+export default {
+  data() {
+    return {
+      options: [
+        {
+          value: 1,
+          label: "年度统计"
+        },
+        {
+          value: 2,
+          label: "月份统计"
+        },
+        {
+          value: 3,
+          label: "日统计"
+        }
+      ],
+      type: 3
+    };
+  },
+  mounted() {
+    this.getUserInfo();
+  },
+  methods: {
+    // 获取当前管理员信息
+    getUserInfo() {
+      this.$http({
+        url: this.$http.adornUrl("/sys/user/info"),
+        method: "get",
+        params: this.$http.adornParams()
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          this.loading = false;
+          this.userId = data.user.userId;
+          this.userName = data.user.username;
+          this.getData();
+        }
+      });
+    },
+    getData() {
+      this.$http({
+        url: this.$http.adornUrl("/admin/other/statistics"),
+        method: "get",
+        params: this.$http.adornParams({
+          type: this.type
+        })
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          this.initEcharts(data);
+        }
+      });
+    },
+    initEcharts(data) {
+      //初始化横坐标
+      let xArray1 = [];
+      let xArray2 = [];
+      let xArray3 = [];
+      let xArray4 = [];
+      let xArray5 = [];
+
+      let xArray6 = [];
+      let xArray7 = [];
+      let xArray8 = [];
+
+      data.buyerList.forEach(element => {
+        if (!xArray1.includes(element.time)) {
+          xArray1.push(element.time);
+        }
+      });
+      data.logList.forEach(element => {
+        if (!xArray2.includes(element.time)) {
+          xArray2.push(element.time);
+        }
+      });
+      data.orderList.forEach(element => {
+        if (!xArray3.includes(element.time)) {
+          xArray3.push(element.time);
+        }
+      });
+      data.failureOrderList.forEach(element => {
+        if (!xArray4.includes(element.time)) {
+          xArray4.push(element.time);
+        }
+      });
+      data.successOrderList.forEach(element => {
+        if (!xArray5.includes(element.time)) {
+          xArray5.push(element.time);
+        }
+      });
+      data.maleBuyerList.forEach(element => {
+        if (!xArray6.includes(element.time)) {
+          xArray6.push(element.time);
+        }
+      });
+      data.femaleBuyerList.forEach(element => {
+        if (!xArray7.includes(element.time)) {
+          xArray7.push(element.time);
+        }
+      });
+      data.unknownBuyerList.forEach(element => {
+        if (!xArray8.includes(element.time)) {
+          xArray8.push(element.time);
+        }
+      });
+      xArray1.sort();
+      xArray2.sort();
+      xArray3.sort();
+      xArray4.sort();
+      xArray5.sort();
+      xArray6.sort();
+      xArray7.sort();
+      xArray8.sort();
+
+      //初始化纵坐标
+      let yArray = [];
+
+      let buyerListData = [];
+      let logListData = [];
+      let orderListData = [];
+      let failureOrderListData = [];
+      let successOrderListData = [];
+      let maleBuyerListData = [];
+      let femaleBuyerListData = [];
+      let unknownBuyerListData = [];
+
+      xArray1.forEach(element => {
+        let buyerListValue = 0;
+        data.buyerList.forEach(element2 => {
+          if (element2.time == element) {
+            buyerListValue = element2.count;
+          }
+        });
+        buyerListData.push(buyerListValue);
+      });
+      xArray2.forEach(element => {
+        let logListDataValue = 0;
+        data.logList.forEach(element2 => {
+          if (element2.time == element) {
+            logListDataValue = element2.count;
+          }
+        });
+        logListData.push(logListDataValue);
+      });
+      xArray3.forEach(element => {
+        let orderListDataValue = 0;
+        data.orderList.forEach(element2 => {
+          if (element2.time == element) {
+            orderListDataValue = element2.count;
+          }
+        });
+        orderListData.push(orderListDataValue);
+      });
+      xArray4.forEach(element => {
+        let failureOrderListDataValue = 0;
+        data.failureOrderList.forEach(element2 => {
+          if (element2.time == element) {
+            failureOrderListDataValue = element2.count;
+          }
+        });
+        failureOrderListData.push(failureOrderListDataValue);
+      });
+      xArray5.forEach(element => {
+        let successOrderListDataValue = 0;
+        data.successOrderList.forEach(element2 => {
+          if (element2.time == element) {
+            successOrderListDataValue = element2.count;
+          }
+        });
+        successOrderListData.push(successOrderListDataValue);
+      });
+      xArray6.forEach(element => {
+        let maleBuyerListDataValue = 0;
+        data.maleBuyerList.forEach(element2 => {
+          if (element2.time == element) {
+            maleBuyerListDataValue = element2.count;
+          }
+        });
+        maleBuyerListData.push(maleBuyerListDataValue);
+      });
+      xArray7.forEach(element => {
+        let femaleBuyerListDataValue = 0;
+        data.femaleBuyerList.forEach(element2 => {
+          if (element2.time == element) {
+            femaleBuyerListDataValue = element2.count;
+          }
+        });
+        femaleBuyerListData.push(femaleBuyerListDataValue);
+      });
+      xArray8.forEach(element => {
+        let unknownBuyerListDataValue = 0;
+        data.unknownBuyerList.forEach(element2 => {
+          if (element2.time == element) {
+            unknownBuyerListDataValue = element2.count;
+          }
+        });
+        unknownBuyerListData.push(unknownBuyerListDataValue);
+      });
+      console.log(orderListData, successOrderListData, failureOrderListData);
+      let myChart1 = echarts.init(document.getElementById("main1"));
+      let myChart2 = echarts.init(document.getElementById("main2"));
+      let myChart3 = echarts.init(document.getElementById("main3"));
+      let myChart4 = echarts.init(document.getElementById("main4"));
+      let myChart5 = echarts.init(document.getElementById("main5"));
+      let myChart6 = echarts.init(document.getElementById("main6"));
+      let myChart7 = echarts.init(document.getElementById("main7"));
+      let myChart8 = echarts.init(document.getElementById("main8"));
+      let myChart9 = echarts.init(document.getElementById("main9"));
+
+      // 绘制图表
+      let option1 = {
+        title: {
+          text: "用户总数"
+        },
+        tooltip: {
+          trigger: "axis"
+        },
+        legend: {
+          data: ["用户总数"]
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: xArray1
+        },
+        yAxis: {
+          type: "value"
+        },
+        series: [
+          {
+            name: "用户总数",
+            type: "line",
+            stack: "总量",
+            data: buyerListData
+          }
+        ]
+      };
+      let option2 = {
+        title: {
+          text: "用户访问数"
+        },
+        tooltip: {
+          trigger: "axis"
+        },
+        legend: {
+          data: ["用户访问数"]
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: xArray2
+        },
+        yAxis: {
+          type: "value"
+        },
+        series: [
+          {
+            name: "用户访问数",
+            type: "line",
+            stack: "总量",
+            data: logListData
+          }
+        ]
+      };
+      let option3 = {
+        title: {
+          text: "订单总数"
+        },
+        tooltip: {
+          trigger: "axis"
+        },
+        legend: {
+          data: ["订单总数"]
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: xArray3
+        },
+        yAxis: {
+          type: "value"
+        },
+        series: [
+          {
+            name: "订单总数",
+            type: "line",
+            stack: "总量",
+            data: orderListData
+          }
+        ]
+      };
+      let option4 = {
+        title: {
+          text: "订单成功数"
+        },
+        tooltip: {
+          trigger: "axis"
+        },
+        legend: {
+          data: ["订单成功数"]
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: xArray3
+        },
+        yAxis: {
+          type: "value"
+        },
+        series: [
+          {
+            name: "订单成功数",
+            type: "line",
+            stack: "总量",
+            data: successOrderListData
+          }
+        ]
+      };
+      let option5 = {
+        title: {
+          text: "订单失败数"
+        },
+        tooltip: {
+          trigger: "axis"
+        },
+        legend: {
+          data: ["订单失败数"]
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: xArray3
+        },
+        yAxis: {
+          type: "value"
+        },
+        series: [
+          {
+            name: "订单失败数",
+            type: "line",
+            stack: "总量",
+            data: failureOrderListData
+          }
+        ]
+      };
+      let option6 = {
+        title: {
+          text: "男性用户"
+        },
+        tooltip: {
+          trigger: "axis"
+        },
+        legend: {
+          data: ["男性用户"]
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: xArray4
+        },
+        yAxis: {
+          type: "value"
+        },
+        series: [
+          {
+            name: "男性",
+            type: "line",
+            stack: "总量",
+            data: maleBuyerListData
+          }
+        ]
+      };
+      let option7 = {
+        title: {
+          text: "女性用户"
+        },
+        tooltip: {
+          trigger: "axis"
+        },
+        legend: {
+          data: ["女性用户"]
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: xArray4
+        },
+        yAxis: {
+          type: "value"
+        },
+        series: [
+          {
+            name: "女性用户",
+            type: "line",
+            stack: "总量",
+            data: femaleBuyerListData
+          }
+        ]
+      };
+      let option8 = {
+        title: {
+          text: "未知性别"
+        },
+        tooltip: {
+          trigger: "axis"
+        },
+        legend: {
+          data: ["未知性别"]
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: xArray4
+        },
+        yAxis: {
+          type: "value"
+        },
+        series: [
+          {
+            name: "未知性别",
+            type: "line",
+            stack: "总量",
+            data: unknownBuyerListData
+          }
+        ]
+      };
+      let option9 = {
+        title: {
+          text: "用户搜索次数"
+        },
+        tooltip: {
+          trigger: "item",
+          formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        legend: {
+          orient: "vertical",
+          x: "right",
+          data: ["产品搜索", "店铺搜索"]
+        },
+        series: [
+          {
+            name: "用户搜索次数",
+            type: "pie",
+            radius: ["50%", "70%"],
+            avoidLabelOverlap: false,
+            label: {
+              normal: {
+                show: false,
+                position: "center"
+              },
+              emphasis: {
+                show: true,
+                textStyle: {
+                  fontSize: "30",
+                  fontWeight: "bold"
+                }
+              }
+            },
+            labelLine: {
+              normal: {
+                show: false
+              }
+            },
+            data: [
+              { value: data.productSearchCount, name: "产品搜索" },
+              { value: data.shopSearchCount, name: "店铺搜索" }
+            ]
+          }
+        ]
+      };
+      myChart1.setOption(option1);
+      myChart2.setOption(option2);
+      myChart3.setOption(option3);
+      myChart4.setOption(option4);
+      myChart5.setOption(option5);
+      myChart6.setOption(option6);
+      myChart7.setOption(option7);
+      myChart8.setOption(option8);
+      myChart9.setOption(option9);
+    }
+  },
+  watch: {
+    type() {
+      this.getData();
+    }
   }
+};
 </script>
 
 <style>
-  .mod-home {
-    line-height: 1.5;
-  }
+.mod-home {
+  line-height: 1.5;
+}
 </style>
 

@@ -38,23 +38,17 @@
             <el-tag v-else-if="dataForm.orderStatus === 1" size="small" type="danger">已确认</el-tag>
             <el-tag v-else-if="dataForm.orderStatus === 1" size="small" type="danger">已完成</el-tag>
             <el-tag v-else size="small">已取消</el-tag> -->
-            <el-select class="select" v-model="dataForm.orderStatus" placeholder="请选择" >
-              <el-option :value="0" label="未确认">未确认</el-option>
-              <el-option :value="1" label="已确认">已确认</el-option>
-              <el-option :value="2" label="已完成">已完成</el-option>
-              <el-option :value="3" label="已取消">已取消</el-option>
+            <el-select class="select" v-model="dataForm.orderStatus" placeholder="请选择" :disabled="true">
+              <el-option :value="0" label="待确认">待确认</el-option>
+              <el-option :value="1" :label="dataForm.shopOrderStatus === 0?'待发货':'待确认收货'">{{dataForm.shopOrderStatus === 0?'待发货':'待确认收货'}}</el-option>
+              <el-option :value="2"  :label="dataForm.shopOrderStatus === 3?'待确定完成':'已完成'">{{dataForm.shopOrderStatus === 3?'待确定完成':'已完成'}}</el-option>
+              <el-option :value="3"  :label="dataForm.shopOrderStatus === 5?'已取消':'申请取消'">{{dataForm.shopOrderStatus === 5?'已取消':'申请取消'}}</el-option>
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="12" v-if="false">
           <el-form-item label="物流状态" prop="shopOrderStatus">
-            <!-- <el-tag v-if="dataForm.shopOrderStatus === 0" size="small" type="danger">未下单</el-tag>
-            <el-tag v-else-if="dataForm.shopOrderStatus === 1" size="small" type="danger">已下单</el-tag>
-            <el-tag v-else-if="dataForm.shopOrderStatus === 2" size="small" type="danger">已确认</el-tag>
-            <el-tag v-else-if="dataForm.shopOrderStatus === 3" size="small" type="danger">已发货</el-tag>
-            <el-tag v-else-if="dataForm.shopOrderStatus === 4" size="small" type="danger">已收货</el-tag>
-            <el-tag v-else size="small">已违约</el-tag> -->
-            <el-select class="select" v-model="dataForm.shopOrderStatus" placeholder="请选择" >
+            <el-select class="select" v-model="dataForm.shopOrderStatus" placeholder="请选择" :disabled="true">
               <el-option :value="1" label="已下单">已下单</el-option>
               <el-option :value="2" label="已确认">已确认</el-option>
               <el-option :value="3" label="已发货">已发货</el-option>

@@ -18,6 +18,18 @@
           :disabled="dataListSelections.length <= 0"
         >批量删除</el-button>
       </el-form-item>
+      <el-upload
+        style="width: fit-content;float: right;"
+        v-if="isAuth('product:tproductbase:save')"
+        class="upload-demo"
+        :action="importProductUrl"
+        :on-preview="handlePreview"
+        :on-success="importSuccess"
+        :limit="1"
+      >
+        <el-button size="small" type="primary">导入</el-button>
+        <el-alert title="只能上传excel文件" type="warning" style="width: 165px;margin: 5px;"></el-alert>
+      </el-upload>
     </el-form>
     <el-table
       :data="dataList"
@@ -27,33 +39,28 @@
       style="width: 100%;"
     >
       <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-      <!-- <el-table-column prop="id" header-align="center" align="center" label="主键id"></el-table-column> -->
-      <el-table-column prop="className" header-align="center" align="center" label="所属分类"></el-table-column>
+      <el-table-column prop="id" header-align="center" align="center" label="商品ID"></el-table-column>
+      <!-- <el-table-column prop="className" header-align="center" align="center" label="状态"></el-table-column> -->
+      <el-table-column prop="code" header-align="center" align="center" label="商品编号"></el-table-column>
+      <el-table-column prop="commonName" header-align="center" align="center" label="通用名"></el-table-column>
       <el-table-column prop="name" header-align="center" align="center" label="商品名称"></el-table-column>
-      <el-table-column prop="commonName" header-align="center" align="center" label="通用名称"></el-table-column>
-      <el-table-column prop="englishName" header-align="center" align="center" label="英文名字"></el-table-column>
-      <!-- <el-table-column prop="productImg" header-align="center" align="center" label="商品图片"></el-table-column> -->
-      <el-table-column prop="specification" header-align="center" align="center" label="规格"></el-table-column>
-      <el-table-column prop="manufacturer" header-align="center" align="center" label="生产厂商"></el-table-column>
-      <!-- <el-table-column prop="barCode" header-align="center" align="center" label="条形码"></el-table-column> -->
+      <el-table-column prop="unit" header-align="center" align="center" label="单位"></el-table-column>
+      <el-table-column prop="theform" header-align="center" align="center" label="剂型"></el-table-column>
+      <el-table-column prop="specification" header-align="center" align="center" label="规格/型号"></el-table-column>
+      <el-table-column prop="place" header-align="center" align="center" label="生产厂家"></el-table-column>
+      <!-- <el-table-column prop="className" header-align="center" align="center" label="产地"></el-table-column> -->
+      <el-table-column prop="oldPrice" header-align="center" align="center" label="零售价"></el-table-column>
+      <el-table-column prop="discountPrice" header-align="center" align="center" label="会员价"></el-table-column>
+      <el-table-column prop="barCode" header-align="center" align="center" label="条形码"></el-table-column>
       <el-table-column prop="approvalNumber" header-align="center" align="center" label="批准文号"></el-table-column>
-      <!-- <el-table-column
-        prop="productExplain"
-        header-align="center"
-        align="center"
-        label="药品说明(可通过摄像头扫描识别药盒上文字说明)"
-      ></el-table-column>
-      <el-table-column prop="reminder" header-align="center" align="center" label="温馨提示"></el-table-column> -->
-      <el-table-column prop="oldPrice" header-align="center" align="center" label="原价格"></el-table-column>
-      <!-- <el-table-column prop="discountPrice" header-align="center" align="center" label="优惠价"></el-table-column> -->
-      <el-table-column prop="prescription" header-align="center" align="center" label="是否处方药">
+      <!-- <el-table-column prop="className" header-align="center" align="center" label="特价商品"></el-table-column> -->
+      <el-table-column prop="prescription" header-align="center" align="center" label="处方登记">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.prescription === 1" size="small" type="danger">是</el-tag>
           <el-tag v-else size="small">否</el-tag>
         </template>
       </el-table-column>
-      <!-- <el-table-column prop="remarks" header-align="center" align="center" label="备注"></el-table-column> -->
-      <!-- <el-table-column prop="delFlag" header-align="center" align="center" label="删除标识"></el-table-column> -->
+
       <el-table-column fixed="right" header-align="center" align="center" width="150" label="操作">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
@@ -89,7 +96,10 @@ export default {
       totalPage: 0,
       dataListLoading: false,
       dataListSelections: [],
-      addOrUpdateVisible: false
+      addOrUpdateVisible: false,
+      importProductUrl: this.$http.adornUrl(
+        `/product/tproductbase/importProduct?token=${this.$cookie.get("token")}`
+      )
     };
   },
   components: {
@@ -99,6 +109,19 @@ export default {
     this.getDataList();
   },
   methods: {
+    importSuccess() {
+      this.$message({
+        message: "导入成功",
+        type: "success",
+        duration: 1500,
+        onClose: () => {
+          this.getDataList();
+        }
+      });
+    },
+    handlePreview(file) {
+      console.log("file", file);
+    },
     // 获取数据列表
     getDataList() {
       this.dataListLoading = true;

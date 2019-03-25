@@ -89,8 +89,8 @@
         </el-row>
         <el-row type="flex" class="row-bg">
           <el-col :span="12">
-            <el-form-item label="库存更新时间" prop="stockUpdateDate">
-              <el-input v-model="dataForm.stockUpdateDate" placeholder="库存更新时间"></el-input>
+            <el-form-item label="库存更新间隔" prop="stockUpdateDate">
+              <el-input v-model="dataForm.stockUpdateDate" placeholder="库存更新间隔"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -241,7 +241,7 @@ export default {
           }
         ],
         stockUpdateDate: [
-          { required: true, message: "库存更新时间不能为空", trigger: "blur" }
+          { required: true, message: "库存更新间隔不能为空", trigger: "blur" }
         ],
 
         /* businessLicense: [

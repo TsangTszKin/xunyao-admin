@@ -36,7 +36,7 @@
           <el-form-item label="所属商家" prop="shopId">
             <ShopPicker @changeSelectCallBack="shopChangeSelectCallBack" :value="dataForm.shopId"/>
           </el-form-item>
-        </el-col> -->
+        </el-col>-->
         <el-col :span="12">
           <el-form-item label="所属分类" prop="classId">
             <ProductClassPicker
@@ -76,10 +76,9 @@
             <el-input v-model="dataForm.usages" placeholder="用法用量"></el-input>
           </el-form-item>
         </el-col>
-        
       </el-row>
       <el-row type="flex" class="row-bg">
-       <el-col :span="12">
+        <el-col :span="12">
           <el-form-item label="贮藏" prop="storage">
             <el-input v-model="dataForm.storage" placeholder="贮藏"></el-input>
           </el-form-item>
@@ -119,6 +118,18 @@
 
       <el-row type="flex" class="row-bg">
         <el-col :span="12">
+          <el-form-item label="单位" prop="unit">
+            <el-input v-model="dataForm.unit" placeholder="单位"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="剂型" prop="theform">
+            <el-input v-model="dataForm.theform" placeholder="剂型"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row type="flex" class="row-bg">
+        <el-col :span="12">
           <el-form-item label="条形码" prop="barCode">
             <el-input v-model="dataForm.barCode" placeholder="条形码"></el-input>
           </el-form-item>
@@ -130,14 +141,14 @@
         </el-col>
       </el-row>
       <el-row type="flex" class="row-bg">
-        <!-- <el-col :span="12">
-          <el-form-item label="原价格" prop="oldPrice">
-            <el-input v-model="dataForm.oldPrice" placeholder="原价格"></el-input>
-          </el-form-item>
-        </el-col> -->
         <el-col :span="12">
-          <el-form-item label="参考价" prop="discountPrice">
-            <el-input v-model="dataForm.discountPrice" placeholder="参考价"></el-input>
+          <el-form-item label="参考价" prop="oldPrice">
+            <el-input v-model="dataForm.oldPrice" placeholder="参考价"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="会员价" prop="discountPrice">
+            <el-input v-model="dataForm.discountPrice" placeholder="会员价"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -157,7 +168,6 @@
       <el-form-item label="温馨提示" prop="reminder">
         <el-input v-model="dataForm.reminder" placeholder="温馨提示"></el-input>
       </el-form-item>
-      
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
@@ -252,9 +262,14 @@ export default {
         reminder: [
           { required: true, message: "温馨提示不能为空", trigger: "blur" }
         ],
-        // oldPrice: [
-        //   { required: true, message: "原价格不能为空", trigger: "blur" }
-        // ],
+        oldPrice: [
+          { required: true, message: "参考价不能为空", trigger: "blur" }
+        ],
+        discountPrice: [
+          { required: true, message: "会员价不能为空", trigger: "blur" }
+        ],
+        unit: [{ required: true, message: "单位不能为空", trigger: "blur" }],
+        theform: [{ required: true, message: "剂型不能为空", trigger: "blur" }],
         prescription: [
           { required: true, message: "请选择是否处方药", trigger: "blur" }
         ],
@@ -276,18 +291,14 @@ export default {
         untowardeffect: [
           { required: true, message: "不良反应不能为空", trigger: "blur" }
         ],
-        taboo: [
-          { required: true, message: "禁忌不能为空", trigger: "blur" }
-        ],
+        taboo: [{ required: true, message: "禁忌不能为空", trigger: "blur" }],
         announcements: [
           { required: true, message: "注意事项不能为空", trigger: "blur" }
         ],
         druginteraction: [
           { required: true, message: "药物相互作用不能为空", trigger: "blur" }
         ],
-        storage: [
-          { required: true, message: "贮藏不能为空", trigger: "blur" }
-        ],
+        storage: [{ required: true, message: "贮藏不能为空", trigger: "blur" }]
       }
     };
   },
@@ -299,7 +310,9 @@ export default {
         this.$refs["dataForm"].resetFields();
         //if (this.dataForm.id) {
         this.$http({
-          url: this.$http.adornUrl(`/product/tproductbase/info/${this.dataForm.id}`),
+          url: this.$http.adornUrl(
+            `/product/tproductbase/info/${this.dataForm.id}`
+          ),
           method: "get",
           params: this.$http.adornParams()
         }).then(({ data }) => {
@@ -315,27 +328,11 @@ export default {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
           this.$http({
-            url: this.$http.adornUrl(`/product/tproductbase/${!this.dataForm.id ? 'save' : 'update'}`),
+            url: this.$http.adornUrl(
+              `/product/tproductbase/${!this.dataForm.id ? "save" : "update"}`
+            ),
             method: "post",
-            data: this.$http.adornData({
-                'id': this.dataForm.id || undefined,
-                'classId': this.dataForm.classId,
-                'name': this.dataForm.name,
-                'commonName': this.dataForm.commonName,
-                'englishName': this.dataForm.englishName,
-                'productImg': this.dataForm.productImg,
-                'specification': this.dataForm.specification,
-                'manufacturer': this.dataForm.manufacturer,
-                'barCode': this.dataForm.barCode,
-                'approvalNumber': this.dataForm.approvalNumber,
-                'productExplain': this.dataForm.productExplain,
-                'reminder': this.dataForm.reminder,
-                // 'oldPrice': this.dataForm.oldPrice,
-                'discountPrice': this.dataForm.discountPrice,
-                'prescription': this.dataForm.prescription,
-                'remarks': this.dataForm.remarks,
-                'delFlag': this.dataForm.delFlag
-              })
+            data: this.$http.adornData(this.dataForm, false)
           }).then(({ data }) => {
             if (data && data.code === 0) {
               this.$message({
@@ -390,7 +387,7 @@ export default {
     successHandle(response) {
       this.dataForm.productImg = response.url;
       //alert(this.dataForm.productImg);
-    },
+    }
   }
 };
 </script>
