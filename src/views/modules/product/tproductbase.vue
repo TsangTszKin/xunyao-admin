@@ -31,7 +31,7 @@
         <el-alert title="只能上传excel文件" type="warning" style="width: 165px;margin: 5px;"></el-alert>
         <!-- <el-alert title="模板" type="warning" style="width: 165px;margin: 5px;"></el-alert> -->
       </el-upload>
-      <el-button style="width: fit-content;float: right;" size="small" type="primary"><a href="./static/商品基本信息模版.xlsx" style="color:#fff;">下载模板</a></el-button>
+      <el-button style="width: fit-content;float: right;" size="small" type="primary"><a href="./static/template.xlsx" style="color:#fff;">下载模板</a></el-button>
     </el-form>
     <el-table
       :data="dataList"
