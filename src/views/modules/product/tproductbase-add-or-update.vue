@@ -201,7 +201,7 @@ export default {
         `/admin/other/uploadFile?token=${this.$cookie.get("token")}`
       ),
       dataForm: {
-        // shopId: "",
+        id: "",
         classId: null,
         state: -1,
         // oldPrice: 0.0,
@@ -304,23 +304,24 @@ export default {
   },
   methods: {
     init(id) {
+      // alert(1)
       this.dataForm.id = id || 0;
       this.visible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].resetFields();
-        //if (this.dataForm.id) {
-        this.$http({
-          url: this.$http.adornUrl(
-            `/product/tproductbase/info/${this.dataForm.id}`
-          ),
-          method: "get",
-          params: this.$http.adornParams()
-        }).then(({ data }) => {
-          if (data && data.code === 0) {
-            this.dataForm = data.tProductBase;
-          }
-        });
-        //}
+        if (this.dataForm.id) {
+          this.$http({
+            url: this.$http.adornUrl(
+              `/product/tproductbase/info/${this.dataForm.id}`
+            ),
+            method: "get",
+            params: this.$http.adornParams()
+          }).then(({ data }) => {
+            if (data && data.code === 0) {
+              this.dataForm = data.tProductBase;
+            }
+          });
+        }
       });
     },
     // 表单提交

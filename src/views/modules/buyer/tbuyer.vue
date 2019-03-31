@@ -37,6 +37,8 @@
       <el-table-column prop="nickname" header-align="center" align="center" label="昵称"></el-table-column>
       <el-table-column prop="phone" header-align="center" align="center" label="手机号"></el-table-column>
       <el-table-column prop="money" header-align="center" align="center" label="已交保证金"></el-table-column>
+       <el-table-column prop="lockMoney" header-align="center" align="center" label="冻结金额"></el-table-column>
+        <el-table-column prop="breakMoney" header-align="center" align="center" label="违约金额"></el-table-column>
       <!-- <el-table-column prop="password" header-align="center" align="center" label="登陆密码"></el-table-column> -->
       <el-table-column prop="remarks" header-align="center" align="center" label="备注"></el-table-column>
       <!-- <el-table-column prop="delFlag" header-align="center" align="center" label="删除标识"></el-table-column> -->

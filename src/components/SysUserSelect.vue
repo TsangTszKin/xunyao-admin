@@ -7,6 +7,7 @@
     placeholder="请选择"
     :multiple-limit="3"
     @change="changeSelection"
+    :filterable="true"
   >
     <el-option
       v-for="item in list"
