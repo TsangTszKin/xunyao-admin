@@ -61,13 +61,13 @@
     </el-form-item>
     <el-row type="flex" class="row-bg">
       <el-col :span="12">
-          <el-form-item v-if="dataForm.status===1" label="后台登录帐号" prop="username">
-            <el-input v-model="dataForm.username" placeholder="后台登录帐号"></el-input>
+          <el-form-item  label="后台登录帐号" prop="username">
+            <el-input :disabled="true" v-model="dataForm.username" placeholder="后台登录帐号"></el-input>
           </el-form-item>
       </el-col>
       <el-col :span="12">
-          <el-form-item v-if="dataForm.status===1" label="后台登录密码" prop="password">
-            <el-input v-model="dataForm.password" type="password" placeholder="后台登录密码"></el-input>
+          <el-form-item  label="后台登录密码" prop="password">
+            <el-input :disabled="true" v-model="dataForm.password" type="password" placeholder="后台登录密码"></el-input>
           </el-form-item>
       </el-col>
     </el-row>
