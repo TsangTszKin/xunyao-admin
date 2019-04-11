@@ -55,11 +55,11 @@ export default {
           this.loading = false;
           this.userId = data.user.userId;
           this.userName = data.user.username;
-          this.getData();
+          this.getData(data.user.admin);
         }
       });
     },
-    getData() {
+    getData(isAdmin) {
       this.$http({
         url: this.$http.adornUrl("/admin/other/statistics"),
         method: "get",
@@ -68,11 +68,11 @@ export default {
         })
       }).then(({ data }) => {
         if (data && data.code === 0) {
-          this.initEcharts(data);
+          this.initEcharts(data, isAdmin);
         }
       });
     },
-    initEcharts(data) {
+    initEcharts(data, isAdmin) {
       //初始化横坐标
       let xArray1 = [];
       let xArray2 = [];
@@ -125,11 +125,14 @@ export default {
           xArray8.push(element.time);
         }
       });
-      data.shopList.forEach(element => {
-        if (!xArray9.includes(element.time)) {
-          xArray9.push(element.time);
-        }
-      });
+      if (isAdmin) {
+        data.shopList.forEach(element => {
+          if (!xArray9.includes(element.time)) {
+            xArray9.push(element.time);
+          }
+        });
+      }
+
       xArray1.sort();
       xArray2.sort();
       xArray3.sort();
@@ -138,7 +141,7 @@ export default {
       xArray6.sort();
       xArray7.sort();
       xArray8.sort();
-      xArray9.sort();
+      if (isAdmin) xArray9.sort();
 
       //初始化纵坐标
       let yArray = [];
@@ -225,15 +228,16 @@ export default {
         });
         unknownBuyerListData.push(unknownBuyerListDataValue);
       });
-      xArray9.forEach(element => {
-        let shopListDataValue = 0;
-        data.shopList.forEach(element2 => {
-          if (element2.time == element) {
-            shopListDataValue = element2.count;
-          }
+      if (isAdmin)
+        xArray9.forEach(element => {
+          let shopListDataValue = 0;
+          data.shopList.forEach(element2 => {
+            if (element2.time == element) {
+              shopListDataValue = element2.count;
+            }
+          });
+          shopListData.push(shopListDataValue);
         });
-        shopListData.push(shopListDataValue);
-      });
       console.log(orderListData, successOrderListData, failureOrderListData);
       let myChart1 = echarts.init(document.getElementById("main1"));
       let myChart2 = echarts.init(document.getElementById("main2"));
@@ -642,7 +646,9 @@ export default {
       myChart7.setOption(option7);
       myChart8.setOption(option8);
       myChart9.setOption(option9);
-      myChart10.setOption(option10);
+      if (isAdmin) {
+        myChart10.setOption(option10);
+      }
     }
   },
   watch: {

@@ -35,8 +35,23 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="关联帐户" prop="ownerId">
-              <SysUserSelect @changeSelect="changeSelect" :value="dataForm.ownerId"/>
+            <el-form-item label="关联店主" prop="ownerId">
+              <SysUserSelect
+                @changeSelect="changeSelect"
+                :value="dataForm.ownerId"
+                :isMulti="false"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row type="flex" class="row-bg">
+          <el-col :span="24">
+            <el-form-item label="关联店员" prop="ownerId">
+              <SysUserSelect
+                @changeSelect2="changeSelect2"
+                :value="dataForm.salesIds | salesIds"
+                :isMulti="true"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -70,7 +85,7 @@
               <el-input v-model="dataForm.longitude" placeholder="纬度"></el-input>
             </el-form-item>
           </el-col>
-        </el-row> -->
+        </el-row>-->
         <el-row type="flex" class="row-bg">
           <el-col :span="24">
             <el-form-item label="营业时间" prop="businessTime">
@@ -199,6 +214,17 @@ export default {
     // console.log("SITE_CONFIG", SITE_CONFIG)
     this.getDataList();
     // this.initCityPickerData();
+  },
+  filters: {
+    salesIds: function(value) {
+      let tempArray = common.stringToArray(value);
+      let tempArray2 = [];
+      tempArray.forEach(element => {
+        tempArray2.push(Number(element));
+      });
+      console.log("tempArray2", tempArray2);
+      return tempArray2;
+    }
   },
   data() {
     return {
@@ -364,6 +390,10 @@ export default {
     },
     changeSelect(ownerId) {
       this.dataForm.ownerId = ownerId;
+    },
+    changeSelect2(salesIds) {
+      console.log("salesIds", salesIds);
+      this.dataForm.salesIds = common.arrayToString(salesIds);
     },
     // 获取数据列表
     getDataList() {
