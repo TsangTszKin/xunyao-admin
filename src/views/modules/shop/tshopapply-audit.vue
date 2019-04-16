@@ -28,6 +28,18 @@
           </el-form-item>
       </el-col>
     </el-row>
+    <el-row type="flex" class="row-bg">
+      <el-col :span="12">
+          <el-form-item  label="后台登录帐号" prop="username">
+            <el-input :disabled="true" v-model="dataForm.username" placeholder="后台登录帐号"></el-input>
+          </el-form-item>
+      </el-col>
+      <el-col :span="12">
+          <el-form-item  label="后台登录密码" prop="password">
+            <el-input :disabled="true" v-model="dataForm.password" type="password" placeholder="后台登录密码"></el-input>
+          </el-form-item>
+      </el-col>
+    </el-row>
     <el-form-item label="店铺logo" prop="shopLogo">
       <img style="width: 100%;" :src="dataForm2.shopLogo" @click="openPic(dataForm2.shopLogo)"> 
     </el-form-item>
@@ -52,6 +64,7 @@
     <el-form-item label="执业药师注册证" prop="drugRegisterCert">
       <img style="width: 100%;" :src="dataForm2.drugRegisterCert" @click="openPic(dataForm2.drugRegisterCert)"> 
     </el-form-item>
+    
     <hr />
     <el-form-item label="审批状态" prop="status">
       <el-select class="select" v-model="dataForm.status" placeholder="请选择" >
@@ -59,18 +72,7 @@
         <el-option :value="2" label="不通过">不通过</el-option>
       </el-select>
     </el-form-item>
-    <el-row type="flex" class="row-bg">
-      <el-col :span="12">
-          <el-form-item  label="后台登录帐号" prop="username">
-            <el-input :disabled="true" v-model="dataForm.username" placeholder="后台登录帐号"></el-input>
-          </el-form-item>
-      </el-col>
-      <el-col :span="12">
-          <el-form-item  label="后台登录密码" prop="password">
-            <el-input :disabled="true" v-model="dataForm.password" type="password" placeholder="后台登录密码"></el-input>
-          </el-form-item>
-      </el-col>
-    </el-row>
+    
     <el-form-item label="备注" prop="remarks">
       <el-input v-model="dataForm.remarks" placeholder="备注"></el-input>
     </el-form-item>

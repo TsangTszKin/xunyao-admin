@@ -18,7 +18,7 @@
           <img class="avatar" style="height:36px" :src="scope.row.pic">
         </template>
       </el-table-column>
-      <el-table-column prop="link" header-align="center" align="center" label="广告链接"></el-table-column>
+      <!-- <el-table-column prop="link" header-align="center" align="center" label="广告链接"></el-table-column> -->
       <el-table-column prop="status" header-align="center" align="center" label="广告状态">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status === 1" size="small">上架</el-tag>

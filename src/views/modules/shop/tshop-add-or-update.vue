@@ -70,7 +70,7 @@
         <el-row type="flex" class="row-bg">
           <el-col :span="24">
             <el-form-item label="地址" prop="address">
-              <el-input v-model="dataForm.address" placeholder="地址"></el-input>
+              <el-input :disabled="true" v-model="dataForm.address" placeholder="地址"></el-input>
             </el-form-item>
           </el-col>
         </el-row>

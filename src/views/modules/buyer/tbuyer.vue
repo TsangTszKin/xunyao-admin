@@ -1,8 +1,14 @@
 <template>
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
+      <el-form-item label="年龄">
+        <el-input v-model="dataForm.borndate2" placeholder="小于等于"></el-input>
+      </el-form-item>
+      <el-form-item label="年龄">
+        <el-input v-model="dataForm.borndate1" placeholder="大于等于"></el-input>
+      </el-form-item>
       <el-form-item>
-        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
+        <el-input v-model="dataForm.key" placeholder="用户名" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
@@ -35,10 +41,13 @@
         </template>
       </el-table-column>
       <el-table-column prop="nickname" header-align="center" align="center" label="昵称"></el-table-column>
+      <el-table-column prop="realname" header-align="center" align="center" label="真实姓名"></el-table-column>
+      <el-table-column prop="idCard" header-align="center" align="center" label="身份证号"></el-table-column>
+      <el-table-column prop="borndate" header-align="center" align="center" label="出生日期"></el-table-column>
       <el-table-column prop="phone" header-align="center" align="center" label="手机号"></el-table-column>
       <el-table-column prop="money" header-align="center" align="center" label="已交保证金"></el-table-column>
-       <el-table-column prop="lockMoney" header-align="center" align="center" label="冻结金额"></el-table-column>
-        <el-table-column prop="breakMoney" header-align="center" align="center" label="违约金额"></el-table-column>
+      <el-table-column prop="lockMoney" header-align="center" align="center" label="冻结金额"></el-table-column>
+      <el-table-column prop="breakMoney" header-align="center" align="center" label="违约金额"></el-table-column>
       <!-- <el-table-column prop="password" header-align="center" align="center" label="登陆密码"></el-table-column> -->
       <el-table-column prop="remarks" header-align="center" align="center" label="备注"></el-table-column>
       <!-- <el-table-column prop="delFlag" header-align="center" align="center" label="删除标识"></el-table-column> -->
@@ -85,7 +94,9 @@ export default {
   data() {
     return {
       dataForm: {
-        key: ""
+        key: "",
+        borndate1: "",
+        borndate2: ""
       },
       dataList: [],
       pageIndex: 1,
@@ -115,7 +126,9 @@ export default {
         params: this.$http.adornParams({
           page: this.pageIndex,
           limit: this.pageSize,
-          key: this.dataForm.key
+          key: this.dataForm.key,
+          borndate1: this.dataForm.borndate1,
+          borndate2: this.dataForm.borndate2
         })
       }).then(({ data }) => {
         if (data && data.code === 0) {
