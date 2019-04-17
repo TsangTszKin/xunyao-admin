@@ -6,7 +6,7 @@
 
   // api接口请求地址
   // window.SITE_CONFIG['baseUrl'] = 'http://demo.renren.io/renren-fast';
-  window.SITE_CONFIG['baseUrl'] = 'http://47.106.168.53:8091';
+  window.SITE_CONFIG['baseUrl'] = 'http://testapi.gu-dao.cn';
 
   // cdn地址 = 域名 + 版本号
   window.SITE_CONFIG['domain']  = './'; // 域名
